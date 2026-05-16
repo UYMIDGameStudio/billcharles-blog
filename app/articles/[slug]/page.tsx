@@ -1,3 +1,4 @@
+// app/articles/[slug]/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 import fs from 'fs';
@@ -5,14 +6,18 @@ import path from 'path';
 import matter from 'gray-matter';
 import ReactMarkdown from 'react-markdown';
 
-// 1. 注意这里：加上了 async，并且修改了 params 的类型为 Promise
 export default async function Article({ params }: { params: Promise<{ slug: string }> }) {
   
-  // 2. 注意这里：必须先 await 等待网址解析完成 (Next.js 15 新特性)
   const resolvedParams = await params;
-  const slug = resolvedParams.slug;
+  
+  // 🔥 关键修复：解码中文 slug
+  let slug = decodeURIComponent(resolvedParams.slug);
+  
+  // 额外健壮处理：如果 slug 末尾带了 .md 也自动去掉（防止双重问题）
+  if (slug.endsWith('.md')) {
+    slug = slug.replace(/\.md$/, '');
+  }
 
-  // 根据解析出的 slug 去找文件
   const filePath = path.join(process.cwd(), 'content', `${slug}.md`);
   
   let fileContent = '';
@@ -22,14 +27,18 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
     return (
       <main className="min-h-screen bg-[#F1EFEA] text-stone-900 font-serif flex flex-col items-center justify-center">
         <h1 className="text-3xl font-bold mb-4">Article not found</h1>
-        {/* 这里加了一行调试信息，如果还报错，您能一眼看出它在找什么文件 */}
-        <p className="text-stone-500 mb-8 font-sans">Looking for: {slug}.md</p>
-        <Link href="/articles" className="text-stone-500 hover:text-stone-900 underline">Return to articles</Link>
+        {/* 调试信息现在会显示解码后的真实文件名，更好排查 */}
+        <p className="text-stone-500 mb-8 font-sans text-sm">
+          Looking for: <span className="font-mono text-red-600">{slug}.md</span>
+        </p>
+        <Link href="/articles" className="text-stone-500 hover:text-stone-900 underline">
+          Return to articles
+        </Link>
       </main>
     );
   }
 
-  // 解析 Markdown 的头部信息(data)和正文(content)
+  // 解析 Markdown
   const { data, content } = matter(fileContent);
 
   return (
