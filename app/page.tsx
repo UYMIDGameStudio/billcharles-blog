@@ -12,11 +12,12 @@ export default function Home() {
       
       {/* --- 眉页 (Header) 模块 --- */}
       <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#F1EFEA]/85 border-b border-stone-200">
-        <div className="max-w-5xl mx-auto px-6 h-16 relative flex items-center justify-between font-sans">
+        <div className="max-w-5xl mx-auto px-5 md:px-6 h-16 relative flex items-center justify-between font-sans">
           
           {/* 左侧：微缩头像 + 站名 */}
           <div className="flex items-center gap-3 relative z-10">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-stone-300 shadow-sm">
+            {/* 新增 flex-shrink-0 防止头像在极窄屏幕被压扁 */}
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-stone-300 shadow-sm flex-shrink-0">
               <Image 
                 src="/image_0.png" 
                 alt="BillCharles Avatar" 
@@ -24,13 +25,15 @@ export default function Home() {
                 className="object-cover" 
               />
             </div>
-            <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-70 transition-opacity text-stone-800">
+            {/* 新增 hidden sm:block，让站点名字在手机竖屏时自动隐藏，为导航腾出空间 */}
+            <Link href="/" className="hidden sm:block text-lg font-bold tracking-tight hover:opacity-70 transition-opacity text-stone-800">
               BillCharles Blog
             </Link>
           </div>
           
-          {/* 居中导航 */}
-          <nav className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-8 text-sm font-medium tracking-wide text-stone-500">
+          {/* 中/右侧导航 */}
+          {/* 新增 md: 前缀，让“绝对居中”只在电脑端生效。手机端自动靠右排列 */}
+          <nav className="flex items-center gap-5 sm:gap-8 text-sm font-medium tracking-wide text-stone-500 md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
             <Link href="/" className="hover:text-stone-900 transition-colors">Home</Link>
             
             {/* 将 #articles 改为 /articles，让它跳转到新的路由页面 */}
@@ -38,9 +41,9 @@ export default function Home() {
             
             <Link href="/notes" className="hover:text-stone-900 transition-colors capitalize">Notes</Link>
           </nav>
-          
-          {/* 右侧占位 */}
-          <div className="w-32 hidden md:block relative z-10"></div>
+
+          {/* 右侧占位符：仅电脑端显示，用于平衡左侧标题宽度，确保导航绝对居中 */}
+          <div className="w-32 hidden md:block"></div>
         </div>
       </header>
 
