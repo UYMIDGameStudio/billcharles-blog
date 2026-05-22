@@ -61,7 +61,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-screen bg-[#F1EFEA] text-stone-900 font-serif selection:bg-stone-200 pb-20" suppressHydrationWarning>
+      <body
+        className="min-h-screen bg-[#F1EFEA] text-stone-900 font-serif selection:bg-stone-200 pb-20"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>
