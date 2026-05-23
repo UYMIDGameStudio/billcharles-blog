@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import SiteHeader from '@/app/components/SiteHeader';
 
 export const metadata = {
   title: 'BillCharles Blog',
@@ -8,46 +8,9 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#F1EFEA] text-stone-900 font-serif selection:bg-stone-200 pb-20">
-      
-      {/* --- 眉页 (Header) 模块 --- */}
-      <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#F1EFEA]/85 border-b border-stone-200">
-        <div className="max-w-5xl mx-auto px-5 md:px-6 h-16 relative flex items-center justify-between font-sans">
-          
-          {/* 左侧：微缩头像 + 站名 */}
-          <div className="flex items-center gap-3 relative z-10">
-            {/* 新增 flex-shrink-0 防止头像在极窄屏幕被压扁 */}
-            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-stone-300 shadow-sm flex-shrink-0">
-              <Image 
-                src="/image_0.png" 
-                alt="BillCharles Avatar" 
-                fill 
-                className="object-cover" 
-              />
-            </div>
-            {/* 新增 hidden sm:block，让站点名字在手机竖屏时自动隐藏，为导航腾出空间 */}
-            <Link href="/" className="hidden sm:block text-lg font-bold tracking-tight hover:opacity-70 transition-opacity text-stone-800">
-              BillCharles Blog
-            </Link>
-          </div>
-          
-          {/* 中/右侧导航 */}
-          {/* 新增 md: 前缀，让“绝对居中”只在电脑端生效。手机端自动靠右排列 */}
-          <nav className="flex items-center gap-5 sm:gap-8 text-sm font-medium tracking-wide text-stone-500 md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
-            <Link href="/" className="hover:text-stone-900 transition-colors">Home</Link>
-            
-            {/* 将 #articles 改为 /articles，让它跳转到新的路由页面 */}
-            <Link href="/articles" className="hover:text-stone-900 transition-colors capitalize">Articles</Link>
-            
-            <Link href="/notes" className="hover:text-stone-900 transition-colors capitalize">Notes</Link>
-          </nav>
+    <main>
+      <SiteHeader activeNav="home" />
 
-          {/* 右侧占位符：仅电脑端显示，用于平衡左侧标题宽度，确保导航绝对居中 */}
-          <div className="w-32 hidden md:block"></div>
-        </div>
-      </header>
-
-      {/* --- 主体内容区 --- */}
       <div className="max-w-4xl mx-auto px-6 py-16 space-y-24 leading-relaxed">
         
         {/* 1. About me */}
@@ -110,7 +73,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 text-base text-stone-700">
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
               <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">COFFEE !</h3>
-              <p className="text-sm leading-relaxed">I'm a loyal coffee enthusiast with a soft spot for oat milk lattes. While I frequent commercial shops like Starbucks, I also love the process of extracting my own shots from whole beans at home.</p>
+              <p className="text-sm leading-relaxed">I&apos;m a loyal coffee enthusiast with a soft spot for oat milk lattes. While I frequent commercial shops like Starbucks, I also love the process of extracting my own shots from whole beans at home.</p>
             </div>
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
               <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">READING</h3>
@@ -118,11 +81,11 @@ export default function Home() {
             </div>
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
               <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">LANGUAGES</h3>
-              <p className="text-sm leading-relaxed">As a multilingual learner, I've been studying German since 8th grade and picked up Japanese in high school. For me, language is more than just a tool for communication—it is a vessel for diverse cultures.</p>
+              <p className="text-sm leading-relaxed">As a multilingual learner, I&apos;ve been studying German since 8th grade and picked up Japanese in high school. For me, language is more than just a tool for communication—it is a vessel for diverse cultures.</p>
             </div>
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
               <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">SOCIAL SCIENCE</h3>
-              <p className="text-sm leading-relaxed">My intellectual interest in social sciences and philosophy was sparked by Karl Marx's Das Kapital. Following middle school, I further refined my analytical framework at the National University of Singapore (NUS) Social Sciences Summer School. To me, social theory is more than an academic discipline; it is a vital lens through which I decode the inner workings of society and the intricate dynamics of power.</p>
+              <p className="text-sm leading-relaxed">My intellectual interest in social sciences and philosophy was sparked by Karl Marx&apos;s Das Kapital. Following middle school, I further refined my analytical framework at the National University of Singapore (NUS) Social Sciences Summer School. To me, social theory is more than an academic discipline; it is a vital lens through which I decode the inner workings of society and the intricate dynamics of power.</p>
             </div>
           </div>
         </section>

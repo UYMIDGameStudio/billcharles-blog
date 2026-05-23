@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ai:demo": "node scripts/ai-demo.mjs"
   },
   "dependencies": {
     "ai": "^6.0.191",

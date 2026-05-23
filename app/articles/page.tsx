@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
-import { getAllPosts } from '@/lib/posts';
+import { formatDisplayDate, getArticles } from '@/lib/posts';
 
 export const metadata = {
   title: 'Articles',
@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 export default function ArticlesPage() {
-  const posts = getAllPosts();
+  const posts = getArticles();
 
   return (
     <main>
@@ -31,7 +31,7 @@ export default function ArticlesPage() {
               >
                 <article className="space-y-3">
                   <div className="flex items-center gap-4 text-xs font-mono text-stone-400 uppercase tracking-widest">
-                    <span>{post.date}</span>
+                    <span>{formatDisplayDate(post.date)}</span>
                     <span className="text-stone-200">/</span>
                     <span>{post.category}</span>
                   </div>

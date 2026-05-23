@@ -1,11 +1,11 @@
 // app/sitemap.ts
 import type { MetadataRoute } from 'next';
-import { getAllPosts } from '@/lib/posts';
+import { getArticles } from '@/lib/posts';
 
 const SITE_URL = 'https://www.billcharles.net';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const posts = getAllPosts();
+  const posts = getArticles();
   const staticEntries: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, changeFrequency: 'monthly', priority: 1 },
     { url: `${SITE_URL}/articles`, changeFrequency: 'weekly', priority: 0.8 },
@@ -19,5 +19,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...postEntries];vercel env pull .env.local
+  return [...staticEntries, ...postEntries];
 }
