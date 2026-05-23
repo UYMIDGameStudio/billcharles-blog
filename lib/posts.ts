@@ -1,9 +1,10 @@
 // lib/posts.ts
 import fs from 'fs';
 import path from 'path';
+import { cache } from 'react';
 import matter from 'gray-matter';
 
-const contentDirectory = path.join(process.cwd(), 'content');
+const contentDir = path.join(process.cwd(), 'content');
 
 export type Post = {
   slug: string;
@@ -11,58 +12,47 @@ export type Post = {
   date: string;
   category: string;
   excerpt?: string;
+  type: 'article' | 'note';   // 新增
 };
 
-export type PostWithContent = Post & {
-  content: string;
-};
+export const getAllPosts = cache((): Post[] => {
+  const allPosts: Post[] = [];
 
-export function getAllPosts(): Post[] {
-  const fileNames = fs.readdirSync(contentDirectory);
-  const allPostsData = fileNames
-    .filter((fileName) => fileName.endsWith('.md'))
-    .map((fileName) => {
-      const slug = fileName.replace(/\.md$/, '');
-      const fullPath = path.join(contentDirectory, fileName);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
-      const { data } = matter(fileContents);
-
-      return {
-        slug,
-        title: data.title || '未命名文章',
-        date: data.date || new Date().toISOString().split('T')[0],
+  // 读取 articles
+  const articlesDir = path.join(contentDir, 'articles');
+  if (fs.existsSync(articlesDir)) {
+    const files = fs.readdirSync(articlesDir);
+    files.filter(f => f.endsWith('.md')).forEach(file => {
+      const content = fs.readFileSync(path.join(articlesDir, file), 'utf8');
+      const { data } = matter(content);
+      allPosts.push({
+        slug: file.replace(/\.md$/, ''),
+        title: data.title || '未命名',
+        date: data.date || '',
         category: data.category || 'Uncategorized',
         excerpt: data.excerpt,
-      } as Post;
+        type: 'article' as const,
+      });
     });
-
-  return allPostsData.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-}
-
-export function getPostsByCategory(category: string): Post[] {
-  return getAllPosts().filter((post) => post.category === category);
-}
-
-export function getPostBySlug(slug: string): PostWithContent | null {
-  // Decode in case slug is URL-encoded (e.g. Chinese filenames)
-  const decodedSlug = decodeURIComponent(slug).replace(/\.md$/, '');
-  const fullPath = path.join(contentDirectory, `${decodedSlug}.md`);
-
-  try {
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
-    const { data, content } = matter(fileContents);
-
-    return {
-      slug: decodedSlug,
-      title: data.title || '未命名文章',
-      date: data.date || new Date().toISOString().split('T')[0],
-      category: data.category || 'Uncategorized',
-      excerpt: data.excerpt,
-      content,
-    };
-  } catch {
-    return null;
   }
-}
+
+  // 读取 notes
+  const notesDir = path.join(contentDir, 'notes');
+  if (fs.existsSync(notesDir)) {
+    const files = fs.readdirSync(notesDir);
+    files.filter(f => f.endsWith('.md')).forEach(file => {
+      const content = fs.readFileSync(path.join(notesDir, file), 'utf8');
+      const { data } = matter(content);
+      allPosts.push({
+        slug: file.replace(/\.md$/, ''),
+        title: data.title || '未命名笔记',
+        date: data.date || '',
+        category: 'Note',
+        excerpt: data.excerpt,
+        type: 'note' as const,
+      });
+    });
+  }
+
+  return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+});
