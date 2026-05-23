@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
   display: 'swap',
 });
 
-const SITE_URL = 'https://www.billcharles.net';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
