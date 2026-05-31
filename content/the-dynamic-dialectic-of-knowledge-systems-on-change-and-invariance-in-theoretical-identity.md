@@ -1,10 +1,8 @@
 ---
-
-## title: "The Dynamic Dialectic of the Evolution of Knowledge Systems: On “Change” and “Invariance” in Theoretical Identity"
+title: 'The Dynamic Dialectic of the Evolution of Knowledge Systems On "Change" and "Invariance" in Theoretical Identity'
+slug: "knowledge-systems-change-and-invariance"
 date: "2026-05-31"
-category: "Philosophy"     # 或者 "Cryptography Column"
-excerpt: "Set against the backdrop of rapid knowledge iteration and the technological transformation wrought by artificial intelligence, and responding to the epistemological anxiety of contemporary society, this paper explores the dialectical relationship between “change” and “invariance” in the evolution of knowledge systems. It integrates analytic philosophy’s critique of exceptionalism about logic, the sociology of science’s reflection on the Mertonian norms, and the conception of truth in Marxist historical materialism, and it draws on the hard-core/protective-belt structure of Lakatos’s “scientific research programmes” in an attempt to dispel the static, absolutely a priori conception of truth while avoiding the trap of relativism. The study argues that the “invariance” of a theoretical system does not consist in frozen, specific propositions but is manifested as an underlying cognitive disposition, an objective material foundation, and a core value anchor; its auxiliary secondary rules and peripheral norms, by contrast, must absorb empirical shocks and the anomalies of the age through an adaptive “change.” Taking the repair mechanism of Russell’s paradox and the reconstruction of the Mertonian norms in the post-academic era as representative cases, this paper attempts to construct an evolutionary model of “revising secondary rules so as to maintain core identity,” and offers a preliminary response to the theoretical difficulty of “how to distinguish the core from the periphery.” The model helps to establish, in a world of uncertainty, a theoretical identity that is at once flexible and stable."
-
+---
 Wang Xinhua
 
 Secondary School Philosophy Conference of Zhejiang
