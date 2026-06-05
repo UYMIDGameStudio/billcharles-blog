@@ -31,6 +31,7 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
             <Link
               key={key}
               href={href}
+              aria-current={activeNav === key ? 'page' : undefined}
               className={
                 activeNav === key
                   ? 'text-stone-900 border-b border-stone-900'

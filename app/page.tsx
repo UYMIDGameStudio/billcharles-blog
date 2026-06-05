@@ -1,14 +1,63 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import SiteHeader from '@/app/components/SiteHeader';
+import SiteFooter from '@/app/components/SiteFooter';
+import JsonLd from '@/app/components/JsonLd';
+import {
+  AUTHOR_EMAIL,
+  AUTHOR_NAME,
+  AUTHOR_ORCID,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from '@/lib/site';
 
-export const metadata = {
-  title: 'BillCharles Blog',
-  description: 'Personal academic blog of Bill Charles',
+export const metadata: Metadata = {
+  // `absolute` prevents the layout title template from doubling the site name.
+  title: { absolute: 'BillCharles Blog — Philosophy, Post-Marxism & Cryptography' },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: 'BillCharles Blog — Philosophy, Post-Marxism & Cryptography',
+    description: SITE_DESCRIPTION,
+  },
 };
+
+const homeJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: AUTHOR_NAME,
+    url: SITE_URL,
+    email: `mailto:${AUTHOR_EMAIL}`,
+    jobTitle: 'Secretary-General',
+    identifier: AUTHOR_ORCID,
+    sameAs: [AUTHOR_ORCID],
+    knowsAbout: [
+      'Western Philosophy',
+      'Post-Marxism',
+      'Psychoanalysis',
+      'Political Economy',
+      'Cryptography',
+      'DAO',
+    ],
+  },
+];
 
 export default function Home() {
   return (
     <main>
+      <JsonLd data={homeJsonLd} />
       <SiteHeader activeNav="home" />
 
       <div className="max-w-4xl mx-auto px-6 py-16 space-y-24 leading-relaxed">
@@ -126,18 +175,18 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="text-base font-bold font-mono uppercase tracking-widest text-stone-800 border-b border-stone-200 pb-2">Cryptography Column</h3>
               <ul className="list-disc list-inside space-y-2 text-sm text-stone-600 font-mono">
-                <li className="hover:text-stone-900 transition-colors cursor-pointer">Web3</li>
-                <li className="hover:text-stone-900 transition-colors cursor-pointer">DAO</li>
-                <li className="hover:text-stone-900 transition-colors cursor-pointer">ZK Rollups</li>
+                <li>Web3</li>
+                <li>DAO</li>
+                <li>ZK Rollups</li>
               </ul>
             </div>
             <div className="space-y-4 md:mt-0 mt-4">
               <h3 className="text-base font-bold font-mono uppercase tracking-widest text-stone-800 border-b border-stone-200 pb-2">Humanities Column</h3>
               <ul className="list-disc list-inside space-y-2 text-sm text-stone-600 font-mono">
-                <li className="hover:text-stone-900 transition-colors cursor-pointer">Philosophy</li>
-                <li className="hover:text-stone-900 transition-colors cursor-pointer">Psychology</li>
-                <li className="hover:text-stone-900 transition-colors cursor-pointer">Psychoanalysis</li>
-                <li className="hover:text-stone-900 transition-colors cursor-pointer">Literature</li>
+                <li>Philosophy</li>
+                <li>Psychology</li>
+                <li>Psychoanalysis</li>
+                <li>Literature</li>
               </ul>
             </div>
           </div>
@@ -147,6 +196,8 @@ export default function Home() {
         </section>
 
       </div>
+
+      <SiteFooter />
     </main>
   );
 }

@@ -1,17 +1,49 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
+import SiteFooter from '@/app/components/SiteFooter';
+import JsonLd from '@/app/components/JsonLd';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
+import { SITE_NAME, SITE_URL } from '@/lib/site';
 
-export const metadata = {
+const description = 'Essays and articles by Bill Charles';
+
+export const metadata: Metadata = {
   title: 'Articles',
-  description: 'Essays and articles by Bill Charles',
+  description,
+  alternates: { canonical: '/articles' },
+  openGraph: {
+    type: 'website',
+    url: `${SITE_URL}/articles`,
+    siteName: SITE_NAME,
+    title: 'Articles',
+    description,
+  },
 };
 
 export default function ArticlesPage() {
   const posts = getArticles();
 
+  const listJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Essays & Articles',
+    url: `${SITE_URL}/articles`,
+    description,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: posts.map((post, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`,
+        name: post.title,
+      })),
+    },
+  };
+
   return (
     <main>
+      <JsonLd data={listJsonLd} />
       <SiteHeader activeNav="articles" />
 
       <section className="max-w-3xl mx-auto px-6 py-20 space-y-16">
@@ -49,6 +81,8 @@ export default function ArticlesPage() {
           )}
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 // app/not-found.tsx
 import Link from 'next/link';
 import SiteHeader from './components/SiteHeader';
+import SiteFooter from './components/SiteFooter';
 
 export const metadata = {
   title: 'Page not found',
@@ -30,6 +31,8 @@ export default function NotFound() {
           </Link>
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

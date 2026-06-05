@@ -1,11 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
+import SiteFooter from '@/app/components/SiteFooter';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { SITE_URL } from '@/lib/site';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Site Map',
   description: 'All pages and articles on BillCharles Blog',
+  alternates: { canonical: '/site-map' },
 };
 
 export default function SiteMapPage() {
@@ -115,6 +118,8 @@ export default function SiteMapPage() {
           Canonical: {SITE_URL}
         </p>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

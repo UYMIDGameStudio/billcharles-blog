@@ -1,11 +1,24 @@
 // app/notes/page.tsx
+import type { Metadata } from 'next';
 import MarkdownContent from '@/app/components/MarkdownContent';
 import SiteHeader from '@/app/components/SiteHeader';
+import SiteFooter from '@/app/components/SiteFooter';
 import { formatDisplayDate, getNotes } from '@/lib/posts';
+import { SITE_NAME, SITE_URL } from '@/lib/site';
 
-export const metadata = {
+const description = 'Research notes and reading fragments by Bill Charles';
+
+export const metadata: Metadata = {
   title: 'Notes',
-  description: 'Research notes and reading fragments by Bill Charles',
+  description,
+  alternates: { canonical: '/notes' },
+  openGraph: {
+    type: 'website',
+    url: `${SITE_URL}/notes`,
+    siteName: SITE_NAME,
+    title: 'Notes',
+    description,
+  },
 };
 
 export default function NotesPage() {
@@ -60,6 +73,8 @@ export default function NotesPage() {
           )}
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }
