@@ -4,14 +4,14 @@ import MarkdownContent from '@/app/components/MarkdownContent';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import { formatDisplayDate, getNotes } from '@/lib/posts';
-import { SITE_NAME, SITE_URL } from '@/lib/site';
+import { RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
 
 const description = 'Research notes and reading fragments by Bill Charles';
 
 export const metadata: Metadata = {
   title: 'Notes',
   description,
-  alternates: { canonical: '/notes' },
+  alternates: { canonical: '/notes', types: RSS_ALTERNATE_TYPES },
   openGraph: {
     type: 'website',
     url: `${SITE_URL}/notes`,

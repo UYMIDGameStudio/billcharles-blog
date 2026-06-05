@@ -53,40 +53,36 @@ function readMarkdownMeta(
   };
 }
 
-/** Articles: `content/*.md` (root) and `content/articles/*.md` */
-function getArticleFilePaths(): { slug: string; filePath: string }[] {
-  const results: { slug: string; filePath: string }[] = [];
-
-  for (const file of fs.readdirSync(contentDir)) {
-    if (!file.endsWith('.md')) continue;
-    const filePath = path.join(contentDir, file);
-    if (!fs.statSync(filePath).isFile()) continue;
-    results.push({ slug: file.replace(/\.md$/, ''), filePath });
-  }
-
-  const articlesDir = path.join(contentDir, 'articles');
-  if (fs.existsSync(articlesDir)) {
-    for (const file of fs.readdirSync(articlesDir)) {
-      if (!file.endsWith('.md')) continue;
-      results.push({
-        slug: file.replace(/\.md$/, ''),
-        filePath: path.join(articlesDir, file),
-      });
-    }
-  }
-
-  return results;
+/** A frontmatter `slug` overrides the filename, enabling short URLs. */
+function effectiveSlug(data: Record<string, unknown>, fileName: string): string {
+  if (typeof data.slug === 'string' && data.slug.trim()) return data.slug.trim();
+  return fileName.replace(/\.md$/, '');
 }
 
+/** Articles: `content/*.md` (root) and `content/articles/*.md` */
+const getArticleEntries = cache((): { slug: string; filePath: string }[] => {
+  const results: { slug: string; filePath: string }[] = [];
+
+  const collect = (dir: string) => {
+    if (!fs.existsSync(dir)) return;
+    for (const file of fs.readdirSync(dir)) {
+      if (!file.endsWith('.md')) continue;
+      const filePath = path.join(dir, file);
+      if (!fs.statSync(filePath).isFile()) continue;
+      const { data } = matter(fs.readFileSync(filePath, 'utf8'));
+      results.push({ slug: effectiveSlug(data, file), filePath });
+    }
+  };
+
+  collect(contentDir);
+  collect(path.join(contentDir, 'articles'));
+
+  return results;
+});
+
 function resolveArticlePath(slug: string): string | null {
-  const candidates = [
-    path.join(contentDir, `${slug}.md`),
-    path.join(contentDir, 'articles', `${slug}.md`),
-  ];
-  for (const filePath of candidates) {
-    if (fs.existsSync(filePath)) return filePath;
-  }
-  return null;
+  const entry = getArticleEntries().find((e) => e.slug === slug);
+  return entry ? entry.filePath : null;
 }
 
 function readNoteFile(filePath: string, slug: string): Note | null {
@@ -108,7 +104,7 @@ function readNoteFile(filePath: string, slug: string): Note | null {
 }
 
 export const getAllPosts = cache((): Post[] => {
-  const allPosts: Post[] = getArticleFilePaths().map(({ slug, filePath }) =>
+  const allPosts: Post[] = getArticleEntries().map(({ slug, filePath }) =>
     readMarkdownMeta(filePath, slug, 'article')
   );
 
