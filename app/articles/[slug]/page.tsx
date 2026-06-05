@@ -3,9 +3,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import MarkdownContent from '@/app/components/MarkdownContent';
 import SiteHeader from '@/app/components/SiteHeader';
+import SiteFooter from '@/app/components/SiteFooter';
+import JsonLd from '@/app/components/JsonLd';
 import { formatDisplayDate, getArticles, getPostBySlug } from '@/lib/posts';
+import { AUTHOR_NAME, SITE_NAME, SITE_URL } from '@/lib/site';
 
 type RouteParams = { slug: string };
+
+/** Convert a frontmatter date to an ISO string, or undefined if unparseable. */
+function toIsoDate(date: string): string | undefined {
+  const parsed = new Date(date);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
+}
 
 // SSG: 预渲染所有文章路由
 export async function generateStaticParams(): Promise<RouteParams[]> {
@@ -22,9 +31,28 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return { title: 'Article Not Found' };
+
+  const canonicalPath = `/articles/${encodeURIComponent(post.slug)}`;
+  const publishedTime = toIsoDate(post.date);
+
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: canonicalPath },
+    openGraph: {
+      type: 'article',
+      url: `${SITE_URL}${canonicalPath}`,
+      siteName: SITE_NAME,
+      title: post.title,
+      description: post.excerpt,
+      authors: [AUTHOR_NAME],
+      ...(publishedTime ? { publishedTime } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+    },
   };
 }
 
@@ -72,8 +100,24 @@ export default async function ArticlePage({
     );
   }
 
+  const canonicalUrl = `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`;
+  const publishedTime = toIsoDate(post.date);
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    url: canonicalUrl,
+    mainEntityOfPage: canonicalUrl,
+    articleSection: post.category,
+    ...(publishedTime ? { datePublished: publishedTime, dateModified: publishedTime } : {}),
+    author: { '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
+    publisher: { '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
+  };
+
   return (
     <main>
+      <JsonLd data={articleJsonLd} />
       <SiteHeader activeNav="articles" />
 
       <article className="max-w-2xl mx-auto px-6 py-20">
@@ -106,6 +150,8 @@ export default async function ArticlePage({
           </Link>
         </footer>
       </article>
+
+      <SiteFooter />
     </main>
   );
 }
