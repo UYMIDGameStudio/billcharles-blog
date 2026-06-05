@@ -18,6 +18,9 @@ import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    types: { 'application/rss+xml': `${SITE_URL}/feed.xml` },
+  },
   title: {
     default: 'BillCharles Blog',
     template: '%s · BillCharles Blog',

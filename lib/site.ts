@@ -3,6 +3,10 @@ export const SITE_NAME = 'BillCharles Blog';
 export const SITE_DESCRIPTION =
   'Personal academic blog of Bill Charles — essays and notes on Western philosophy, post-Marxism, psychoanalysis, and cryptography.';
 
+export const RSS_URL = `${SITE_URL}/feed.xml`;
+/** Reuse in each page's `alternates` so the RSS link survives metadata merging. */
+export const RSS_ALTERNATE_TYPES = { 'application/rss+xml': RSS_URL };
+
 export const AUTHOR_NAME = 'Bill Charles';
 export const AUTHOR_ORCID = 'https://orcid.org/0009-0000-4322-5195';
 export const AUTHOR_EMAIL = 'billcharles310012@gmail.com';

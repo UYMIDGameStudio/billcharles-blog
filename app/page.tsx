@@ -7,6 +7,7 @@ import {
   AUTHOR_EMAIL,
   AUTHOR_NAME,
   AUTHOR_ORCID,
+  RSS_ALTERNATE_TYPES,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   // `absolute` prevents the layout title template from doubling the site name.
   title: { absolute: 'BillCharles Blog — Philosophy, Post-Marxism & Cryptography' },
   description: SITE_DESCRIPTION,
-  alternates: { canonical: '/' },
+  alternates: { canonical: '/', types: RSS_ALTERNATE_TYPES },
   openGraph: {
     type: 'website',
     url: SITE_URL,

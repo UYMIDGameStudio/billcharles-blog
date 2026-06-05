@@ -4,14 +4,14 @@ import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
-import { SITE_NAME, SITE_URL } from '@/lib/site';
+import { RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
 
 const description = 'Essays and articles by Bill Charles';
 
 export const metadata: Metadata = {
   title: 'Articles',
   description,
-  alternates: { canonical: '/articles' },
+  alternates: { canonical: '/articles', types: RSS_ALTERNATE_TYPES },
   openGraph: {
     type: 'website',
     url: `${SITE_URL}/articles`,
