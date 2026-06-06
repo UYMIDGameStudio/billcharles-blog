@@ -20,24 +20,24 @@ export default function SiteFooter() {
           <span className="text-xs font-mono uppercase tracking-widest text-stone-400">
             Explore
           </span>
-          <Link href="/" className="hover:text-stone-900 transition-colors w-fit">
+          <Link href="/" className="hover:text-accent transition-colors w-fit">
             Home
           </Link>
           <Link
             href="/articles"
-            className="hover:text-stone-900 transition-colors w-fit"
+            className="hover:text-accent transition-colors w-fit"
           >
             Articles
           </Link>
           <Link
             href="/notes"
-            className="hover:text-stone-900 transition-colors w-fit"
+            className="hover:text-accent transition-colors w-fit"
           >
             Notes
           </Link>
           <Link
             href="/site-map"
-            className="hover:text-stone-900 transition-colors w-fit"
+            className="hover:text-accent transition-colors w-fit"
           >
             Site Map
           </Link>
@@ -49,7 +49,7 @@ export default function SiteFooter() {
           </span>
           <a
             href={`mailto:${AUTHOR_EMAIL}`}
-            className="hover:text-stone-900 transition-colors w-fit"
+            className="hover:text-accent transition-colors w-fit"
           >
             Email
           </a>
@@ -57,7 +57,7 @@ export default function SiteFooter() {
             href={AUTHOR_ORCID}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-stone-900 transition-colors w-fit"
+            className="hover:text-accent transition-colors w-fit"
           >
             ORCID
           </a>

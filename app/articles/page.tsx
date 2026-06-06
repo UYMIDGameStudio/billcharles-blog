@@ -65,9 +65,9 @@ export default function ArticlesPage() {
                   <div className="flex items-center gap-4 text-xs font-mono text-stone-400 uppercase tracking-widest">
                     <span>{formatDisplayDate(post.date)}</span>
                     <span className="text-stone-200">/</span>
-                    <span>{post.category}</span>
+                    <span className="text-accent">{post.category}</span>
                   </div>
-                  <h2 className="text-2xl font-bold font-sans group-hover:text-stone-500 transition-colors leading-snug">
+                  <h2 className="text-2xl font-bold font-sans group-hover:text-accent transition-colors leading-snug">
                     {post.title}
                   </h2>
                   {post.excerpt && (

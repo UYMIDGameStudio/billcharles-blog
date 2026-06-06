@@ -5,6 +5,10 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Restrained claret accent for interactive states and small marks. */
+  --color-accent: #8a2e38;
+  --color-accent-dark: #6d2530;
 }
 
 /* Smoother focus rings for keyboard users without removing them entirely. */

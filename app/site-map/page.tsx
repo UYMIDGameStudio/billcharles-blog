@@ -45,20 +45,20 @@ export default function SiteMapPage() {
             </h2>
             <ul className="space-y-2 text-stone-800">
               <li>
-                <Link href="/" className="hover:text-stone-500 transition-colors">
+                <Link href="/" className="hover:text-accent transition-colors">
                   Home
                 </Link>
               </li>
               <li>
                 <Link
                   href="/articles"
-                  className="hover:text-stone-500 transition-colors"
+                  className="hover:text-accent transition-colors"
                 >
                   Articles
                 </Link>
               </li>
               <li>
-                <Link href="/notes" className="hover:text-stone-500 transition-colors">
+                <Link href="/notes" className="hover:text-accent transition-colors">
                   Notes
                 </Link>
               </li>
@@ -82,7 +82,7 @@ export default function SiteMapPage() {
                       href={`/articles/${encodeURIComponent(post.slug)}`}
                       className="block group"
                     >
-                      <span className="font-medium text-stone-900 group-hover:text-stone-500 transition-colors">
+                      <span className="font-medium text-stone-900 group-hover:text-accent transition-colors">
                         {post.title}
                       </span>
                       {post.date && (

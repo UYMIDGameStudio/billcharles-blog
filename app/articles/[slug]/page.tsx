@@ -84,13 +84,13 @@ export default async function ArticlePage({
           <div className="pt-4 font-sans text-sm flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/articles"
-              className="text-stone-500 hover:text-stone-900 underline transition-colors"
+              className="text-stone-500 hover:text-accent underline transition-colors"
             >
               ← Back to articles
             </Link>
             <Link
               href="/"
-              className="text-stone-500 hover:text-stone-900 underline transition-colors"
+              className="text-stone-500 hover:text-accent underline transition-colors"
             >
               ← Back to home
             </Link>
@@ -124,8 +124,8 @@ export default async function ArticlePage({
         <header className="mb-16 space-y-6">
           <div className="flex items-center gap-4 text-sm font-sans text-stone-500 uppercase tracking-widest">
             <span>{formatDisplayDate(post.date)}</span>
-            <span className="w-1 h-1 bg-stone-300 rounded-full" />
-            <span>{post.category}</span>
+            <span className="w-1 h-1 bg-accent/50 rounded-full" />
+            <span className="text-accent">{post.category}</span>
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold font-sans text-stone-900 leading-[1.1] tracking-tight">
@@ -144,7 +144,7 @@ export default async function ArticlePage({
         <footer className="mt-20 pt-10 border-t border-stone-200 flex justify-between font-sans text-sm">
           <Link
             href="/articles"
-            className="text-stone-400 hover:text-stone-900 transition-colors"
+            className="text-stone-400 hover:text-accent transition-colors"
           >
             ← Back to Archive
           </Link>
