@@ -105,7 +105,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold font-sans text-stone-900 mb-6 border-b border-stone-300 pb-3 inline-block">
             Current Reading
           </h2>
-          <ul className="text-base space-y-2 text-stone-700 list-inside list-square marker:text-stone-400">
+          <ul className="text-base space-y-2 text-stone-700 list-inside list-square marker:text-accent">
             <li><i>Organs without Bodies :On Deleuze and Consequences</i> Slavoj Zizek</li>
             <li><i>Spinoza Philosophie Pratique</i> Gilles Deleuze</li>
             <li><i>The World as Will and Representation</i> Schopenhauer</li>
@@ -122,19 +122,19 @@ export default function Home() {
           </h2>
           <div className="grid md:grid-cols-2 gap-6 text-base text-stone-700">
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">COFFEE !</h3>
+              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">COFFEE !</h3>
               <p className="text-sm leading-relaxed">I&apos;m a loyal coffee enthusiast with a soft spot for oat milk lattes. While I frequent commercial shops like Starbucks, I also love the process of extracting my own shots from whole beans at home.</p>
             </div>
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">READING</h3>
+              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">READING</h3>
               <p className="text-sm leading-relaxed">As a long-term bibliophile, I find great fulfillment in the quiet hours spent with a book. Being engrossed in a story brings me a deep, authentic sense of happiness.</p>
             </div>
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">LANGUAGES</h3>
+              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">LANGUAGES</h3>
               <p className="text-sm leading-relaxed">As a multilingual learner, I&apos;ve been studying German since 8th grade and picked up Japanese in high school. For me, language is more than just a tool for communication—it is a vessel for diverse cultures.</p>
             </div>
             <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-blue-600 transition-colors">SOCIAL SCIENCE</h3>
+              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">SOCIAL SCIENCE</h3>
               <p className="text-sm leading-relaxed">My intellectual interest in social sciences and philosophy was sparked by Karl Marx&apos;s Das Kapital. Following middle school, I further refined my analytical framework at the National University of Singapore (NUS) Social Sciences Summer School. To me, social theory is more than an academic discipline; it is a vital lens through which I decode the inner workings of society and the intricate dynamics of power.</p>
             </div>
           </div>

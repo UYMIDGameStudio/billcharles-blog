@@ -34,8 +34,8 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
               aria-current={activeNav === key ? 'page' : undefined}
               className={
                 activeNav === key
-                  ? 'text-stone-900 border-b border-stone-900'
-                  : 'hover:text-stone-900 transition-colors'
+                  ? 'text-accent border-b border-accent'
+                  : 'hover:text-accent transition-colors'
               }
             >
               {label}

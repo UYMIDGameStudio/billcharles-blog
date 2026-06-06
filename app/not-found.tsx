@@ -25,7 +25,7 @@ export default function NotFound() {
         <div className="pt-4 font-sans text-sm">
           <Link
             href="/"
-            className="text-stone-500 hover:text-stone-900 underline transition-colors"
+            className="text-stone-500 hover:text-accent underline transition-colors"
           >
             ← Back to home
           </Link>
