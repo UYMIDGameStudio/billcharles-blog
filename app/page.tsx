@@ -3,6 +3,7 @@ import Image from 'next/image';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
+import SupportTip from '@/app/components/SupportTip';
 import {
   AUTHOR_EMAIL,
   AUTHOR_NAME,
@@ -195,6 +196,9 @@ export default function Home() {
             For Chinese E： <a href="mailto:billcharles310012@gmail.com" className="text-stone-800 hover:underline">billcharles310012@gmail.com</a>
           </p>
         </section>
+
+        {/* 6. Support */}
+        <SupportTip variant="section" />
 
       </div>
 
