@@ -103,6 +103,11 @@ export default async function ArticlePage({
 
   const canonicalUrl = `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`;
   const publishedTime = toIsoDate(post.date);
+  const inLanguage = /[一-鿿]/.test(post.title) ? 'zh-CN' : 'en-US';
+  const wordCount =
+    (post.content.match(/[一-鿿]/g)?.length ?? 0) +
+    (post.content.match(/[A-Za-z0-9]+/g)?.length ?? 0);
+
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -111,14 +116,26 @@ export default async function ArticlePage({
     url: canonicalUrl,
     mainEntityOfPage: canonicalUrl,
     articleSection: post.category,
+    inLanguage,
+    wordCount,
     ...(publishedTime ? { datePublished: publishedTime, dateModified: publishedTime } : {}),
-    author: { '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
-    publisher: { '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
+    author: { '@type': 'Person', name: AUTHOR_NAME, alternateName: 'Wang Xinhua', url: SITE_URL },
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Articles', item: `${SITE_URL}/articles` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: canonicalUrl },
+    ],
   };
 
   return (
     <main>
-      <JsonLd data={articleJsonLd} />
+      <JsonLd data={[articleJsonLd, breadcrumbJsonLd]} />
       <SiteHeader activeNav="articles" />
 
       <article className="max-w-2xl mx-auto px-6 py-20">

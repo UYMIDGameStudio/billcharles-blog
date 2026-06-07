@@ -2,7 +2,7 @@
 title: "The Epistemological Evolution of Modernity: From Foundationalism to the Transcendental Synthesis"
 date: "2026-02-03"
 category: "Philosophy"
-excerpt: ""
+excerpt: "Traces the epistemological arc of modernity from Bacon's empiricism through Descartes' foundationalist doubt to Kant's transcendental synthesis of rationalism and empiricism."
 ---
 
 The rise of modern philosophy marked an era of fundamental reshaping of the sources and certainty of knowledge in Western intellectual history. In the late Middle Ages, systems of knowledge—particularly Scholasticism—tightly intertwined philosophy with theology and relied excessively on Aristotelian authority and teleological explanations (attributing the cause of change to an ultimate purpose). Faced with increasing scientific discoveries, this framework lacked independence and a verifiable foundation.
