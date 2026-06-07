@@ -1,8 +1,9 @@
 // app/notes/page.tsx
 import type { Metadata } from 'next';
-import MarkdownContent from '@/app/components/MarkdownContent';
+import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
+import JsonLd from '@/app/components/JsonLd';
 import { formatDisplayDate, getNotes } from '@/lib/posts';
 import { RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
 
@@ -24,8 +25,26 @@ export const metadata: Metadata = {
 export default function NotesPage() {
   const notes = getNotes();
 
+  const listJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Research Notes',
+    url: `${SITE_URL}/notes`,
+    description,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: notes.map((note, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${SITE_URL}/notes/${note.slug}`,
+        name: note.title,
+      })),
+    },
+  };
+
   return (
     <main>
+      <JsonLd data={listJsonLd} />
       <SiteHeader activeNav="notes" />
 
       <section className="max-w-3xl mx-auto px-6 py-20">
@@ -36,26 +55,29 @@ export default function NotesPage() {
           Fragments, reading logs, and unrefined thoughts.
         </p>
 
-        <div className="space-y-10">
+        <div className="space-y-8">
           {notes.length === 0 ? (
             <p className="text-stone-500 italic">暂无笔记，敬请期待…</p>
           ) : (
             notes.map((note) => (
-              <article
+              <Link
                 key={note.slug}
-                className="bg-[#FCFAF6] border border-stone-200 p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+                href={`/notes/${note.slug}`}
+                className="block group bg-[#FCFAF6] border border-stone-200 p-8 rounded-2xl shadow-sm hover:shadow-md hover:border-stone-300 transition-all"
               >
-                <div className="text-xs font-mono text-stone-400 mb-4">
-                  {formatDisplayDate(note.date)}
+                <div className="flex items-center gap-3 text-xs font-mono text-stone-400 mb-3 uppercase tracking-widest">
+                  <span>{formatDisplayDate(note.date)}</span>
+                  <span className="text-stone-200">/</span>
+                  <span className="text-accent">{note.category}</span>
                 </div>
-                {note.title && (
-                  <h2 className="text-lg font-bold font-sans text-stone-900 mb-4">
-                    {note.title}
-                  </h2>
+                <h2 className="text-lg font-bold font-sans text-stone-900 mb-3 group-hover:text-accent transition-colors">
+                  {note.title}
+                </h2>
+                {note.excerpt && (
+                  <p className="text-stone-600 leading-relaxed mb-4 text-sm">
+                    {note.excerpt}
+                  </p>
                 )}
-                <MarkdownContent className="prose prose-stone prose-base max-w-none text-stone-800 leading-relaxed mb-6">
-                  {note.content}
-                </MarkdownContent>
                 {note.tags.length > 0 && (
                   <div className="flex flex-wrap gap-3">
                     {note.tags.map((tag) => (
@@ -68,7 +90,7 @@ export default function NotesPage() {
                     ))}
                   </div>
                 )}
-              </article>
+              </Link>
             ))
           )}
         </div>
