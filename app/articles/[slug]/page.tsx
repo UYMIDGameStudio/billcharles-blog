@@ -5,6 +5,7 @@ import MarkdownContent from '@/app/components/MarkdownContent';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
+import SupportTip from '@/app/components/SupportTip';
 import { formatDisplayDate, getArticles, getPostBySlug } from '@/lib/posts';
 import { AUTHOR_NAME, RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
 
@@ -140,6 +141,8 @@ export default async function ArticlePage({
         </header>
 
         <MarkdownContent>{post.content}</MarkdownContent>
+
+        <SupportTip variant="compact" />
 
         <footer className="mt-20 pt-10 border-t border-stone-200 flex justify-between font-sans text-sm">
           <Link
