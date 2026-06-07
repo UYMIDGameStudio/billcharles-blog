@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
 });
 
 import { SITE_URL } from '@/lib/site';
-import KofiWidget from '@/app/components/KofiWidget';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -70,7 +69,6 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {children}
-        <KofiWidget />
       </body>
     </html>
   );

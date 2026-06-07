@@ -17,3 +17,14 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Shrink the Ko-fi floating "Support me" button on small screens.
+   Ko-fi injects these containers into the body at runtime; anchoring the
+   scale to the bottom-right keeps the button tucked in the corner. */
+@media (max-width: 640px) {
+  .floatingchat-container-wrap,
+  .floatingchat-container-wrap-mobi {
+    transform: scale(0.72) !important;
+    transform-origin: bottom right !important;
+  }
+}
