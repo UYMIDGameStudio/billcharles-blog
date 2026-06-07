@@ -4,7 +4,6 @@ import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
-import KofiWidget from '@/app/components/KofiWidget';
 import {
   AUTHOR_EMAIL,
   AUTHOR_NAME,
@@ -61,7 +60,6 @@ export default function Home() {
   return (
     <main>
       <JsonLd data={homeJsonLd} />
-      <KofiWidget />
       <SiteHeader activeNav="home" />
 
       <div className="max-w-4xl mx-auto px-6 py-16 space-y-24 leading-relaxed">
