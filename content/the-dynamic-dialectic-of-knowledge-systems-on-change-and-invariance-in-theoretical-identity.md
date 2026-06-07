@@ -1,5 +1,6 @@
 ---
 title: 'The Dynamic Dialectic of the Evolution of Knowledge Systems On "Change" and "Invariance" in Theoretical Identity'
+shortTitle: "The Dynamic Dialectic of Knowledge Systems"
 slug: "knowledge-systems-change-and-invariance"
 date: "2026-05-31"
 category: "Philosophy of Science"

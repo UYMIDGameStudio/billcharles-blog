@@ -1,10 +1,11 @@
 // app/sitemap.ts — 自动生成 /sitemap.xml
 import type { MetadataRoute } from 'next';
-import { getArticles } from '@/lib/posts';
+import { getArticles, getNotes } from '@/lib/posts';
 import { SITE_URL, toSitemapLastModified } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const articles = getArticles();
+  const notes = getNotes();
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -40,5 +41,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
-  return [...staticPages, ...articlePages];
+  const notePages: MetadataRoute.Sitemap = notes.map((note) => {
+    const lastModified = toSitemapLastModified(note.date);
+    return {
+      url: `${SITE_URL}/notes/${note.slug}`,
+      ...(lastModified ? { lastModified } : {}),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    };
+  });
+
+  return [...staticPages, ...articlePages, ...notePages];
 }

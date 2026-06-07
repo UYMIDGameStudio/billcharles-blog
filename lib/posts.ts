@@ -18,6 +18,8 @@ export type Post = {
 
 export type PostWithContent = Post & {
   content: string;
+  /** Optional shorter title for the <title> tag (full title stays as headline). */
+  shortTitle?: string;
 };
 
 export type Note = Post & {
@@ -160,12 +162,20 @@ export const getPostBySlug = cache((slug: string): PostWithContent | null => {
   return {
     slug: decodedSlug,
     title: data.title || '未命名',
+    shortTitle: typeof data.shortTitle === 'string' ? data.shortTitle : undefined,
     date: data.date || new Date().toISOString().split('T')[0],
     category: data.category || 'Uncategorized',
     excerpt: data.excerpt,
     type: 'article',
     content,
   };
+});
+
+export const getNoteBySlug = cache((slug: string): Note | null => {
+  const decodedSlug = decodeURIComponent(slug).replace(/\.md$/, '');
+  const filePath = path.join(notesDir, `${decodedSlug}.md`);
+  if (!fs.existsSync(filePath)) return null;
+  return readNoteFile(filePath, decodedSlug);
 });
 
 export function formatDisplayDate(date: string): string {

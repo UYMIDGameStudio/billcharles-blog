@@ -41,6 +41,12 @@ export default function SiteFooter() {
           >
             Site Map
           </Link>
+          <Link
+            href="/privacy"
+            className="hover:text-accent transition-colors w-fit"
+          >
+            Privacy
+          </Link>
         </nav>
 
         <div className="flex flex-col gap-2">

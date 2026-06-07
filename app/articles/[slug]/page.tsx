@@ -37,7 +37,8 @@ export async function generateMetadata({
   const publishedTime = toIsoDate(post.date);
 
   return {
-    title: post.title,
+    // Shorter title for the <title> tag; the full title stays as og:title and <h1>.
+    title: post.shortTitle ?? post.title,
     description: post.excerpt,
     alternates: { canonical: canonicalPath, types: RSS_ALTERNATE_TYPES },
     openGraph: {

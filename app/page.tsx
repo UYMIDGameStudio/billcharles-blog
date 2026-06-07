@@ -149,7 +149,7 @@ export default function Home() {
           </h2>
           <div className="max-w-2xl mx-auto space-y-6 text-center">
             <h3 className="text-lg font-bold font-mono text-stone-800 bg-stone-100 px-4 py-2 rounded-md inline-block border border-stone-200">
-              Bill(B.)Charles(His/He)
+              Wang(W.)XinHua(His/He)
             </h3>
             <div className="text-base space-y-2.5 text-stone-700 font-sans border-t border-stone-200 pt-6">
               <p><strong>Title:</strong> Secretary-General</p>
