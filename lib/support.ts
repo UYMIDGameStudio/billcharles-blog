@@ -11,12 +11,7 @@ export type SupportLink = {
 export const SUPPORT_LINKS: SupportLink[] = [
   {
     label: 'Buy me a coffee',
-    href: 'https://www.buymeacoffee.com/your-handle', // TODO: replace with your real link
-    hint: 'Card · international',
-  },
-  {
-    label: 'Payoneer',
-    href: 'https://www.payoneer.com/', // TODO: replace with your Payoneer payment-request link
-    hint: 'Bank transfer',
+    href: 'https://ko-fi.com/billcharles/tip',
+    hint: 'via Ko-fi · card',
   },
 ];
