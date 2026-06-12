@@ -109,6 +109,10 @@ export default async function ArticlePage({
     (post.content.match(/[一-鿿]/g)?.length ?? 0) +
     (post.content.match(/[A-Za-z0-9]+/g)?.length ?? 0);
 
+  // Byline name must equal the schema author name exactly (audit C1).
+  const authorName = post.author ?? AUTHOR_NAME;
+  const authorAlt = authorName === AUTHOR_NAME ? 'Wang Xinhua' : AUTHOR_NAME;
+
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -120,7 +124,12 @@ export default async function ArticlePage({
     inLanguage,
     wordCount,
     ...(publishedTime ? { datePublished: publishedTime, dateModified: publishedTime } : {}),
-    author: { '@type': 'Person', name: AUTHOR_NAME, alternateName: 'Wang Xinhua', url: SITE_URL },
+    author: {
+      '@type': 'Person',
+      name: authorName,
+      alternateName: authorAlt,
+      url: `${SITE_URL}/#author`,
+    },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
   };
 
@@ -154,6 +163,24 @@ export default async function ArticlePage({
           {post.excerpt && (
             <p className="text-xl text-stone-500 italic font-serif leading-relaxed">
               {post.excerpt}
+            </p>
+          )}
+
+          <div className="font-sans text-sm text-stone-500">
+            By <span className="text-stone-700">{authorName}</span>
+            <span className="mx-2 text-stone-300">·</span>
+            <Link
+              href="/#author"
+              className="text-stone-400 hover:text-accent transition-colors"
+            >
+              About the author →
+            </Link>
+          </div>
+
+          {authorName !== AUTHOR_NAME && (
+            <p className="text-sm text-stone-500 italic font-serif border-l-2 border-accent/40 pl-4">
+              {authorName} (王鑫桦) is the author&apos;s legal and academic name.
+              Bill Charles is the pen name used on this site.
             </p>
           )}
         </header>

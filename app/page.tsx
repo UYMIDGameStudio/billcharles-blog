@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
@@ -39,13 +40,29 @@ const homeJsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': `${SITE_URL}/#author`,
     name: AUTHOR_NAME,
-    alternateName: 'Wang Xinhua',
+    alternateName: ['Wang Xinhua', 'Xinhua Wang', '王鑫桦'],
     url: SITE_URL,
+    image: `${SITE_URL}/image_0.png`,
     email: AUTHOR_EMAIL,
-    jobTitle: 'Secretary-General',
-    identifier: AUTHOR_ORCID,
-    sameAs: [AUTHOR_ORCID],
+    description:
+      'Student researcher in Western philosophy, post-Marxism, and psychoanalysis, based in Zhejiang, China; Secretary-General of the organizing committee of the Zhejiang Secondary School Philosophy Conference (SSPC).',
+    jobTitle: 'Secretary-General, Organizing Committee',
+    affiliation: {
+      '@type': 'Organization',
+      name: 'Zhejiang Secondary School Philosophy Conference (SSPC)',
+    },
+    identifier: {
+      '@type': 'PropertyValue',
+      propertyID: 'ORCID',
+      value: '0009-0000-4322-5195',
+    },
+    // Identity pages only. PhilPeople can be appended once its public URL exists.
+    sameAs: [
+      AUTHOR_ORCID,
+      'https://scholar.google.com/citations?user=9gI3scEAAAAJ',
+    ],
     knowsAbout: [
       'Western Philosophy',
       'Post-Marxism',
@@ -76,7 +93,14 @@ export default function Home() {
               </h1>
               <div className="text-sm md:text-base space-y-4 text-stone-700">
                 <p>
-                  Hello! I am Bill Charles. My research directions are Western Philosophy, Post-Marxism, and Psychoanalysis. I serve as the Secretary-General of the organizing committee for the 2nd and 3rd Zhejiang Secondary School Philosophy Conferences (SSPC), and am a co-founder of the Ateleios Diexodos project. I am also currently a high school student.
+                  Hello! I am Bill Charles — my legal and academic name is{' '}
+                  <strong>Wang Xinhua (王鑫桦)</strong>, under which I publish. My
+                  research directions are Western Philosophy, Post-Marxism, and
+                  Psychoanalysis. I serve as the Secretary-General of the
+                  organizing committee for the 2nd and 3rd Zhejiang Secondary
+                  School Philosophy Conferences (SSPC), and am a co-founder of the
+                  Ateleios Diexodos project. I am also currently a high school
+                  student.
                 </p>
                 <p>
                   My intellectual inquiries extend into the realms of Political Economy, Cryptography/DAO research, and Cryptocurrency Venture Capital. For me, these long-term interests are not pursuits of worldly success, but rather a means to seek truth, cultivate rational discipline, and harness the power of thought to shape the world.
@@ -142,32 +166,88 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 4. Professional Affiliations */}
-        <section className="px-4">
+        {/* 4. Author */}
+        <section className="px-4 scroll-mt-24" id="author">
           <h2 className="text-2xl font-bold font-sans text-stone-900 mb-8 text-center">
-            Professional Affiliations
+            Author
           </h2>
           <div className="max-w-2xl mx-auto space-y-6 text-center">
             <h3 className="text-lg font-bold font-mono text-stone-800 bg-stone-100 px-4 py-2 rounded-md inline-block border border-stone-200">
-              Wang(W.)XinHua(His/He)
+              Wang Xinhua (王鑫桦) — pen name Bill Charles (he/him)
             </h3>
-            <div className="text-base space-y-2.5 text-stone-700 font-sans border-t border-stone-200 pt-6">
-              <p><strong>Title:</strong> Secretary-General</p>
-              <p><strong>Field:</strong> Philosophy and Humanities · Western Philosophy</p>
-              <p><strong>Email:</strong> <a href="mailto:billcharles310012@gmail.com" className="hover:text-stone-900 transition-colors">billcharles310012@gmail.com</a></p>
-              <p><strong>Phone:</strong> +1 9096823066</p>
+            <div className="text-base space-y-2.5 text-stone-700 font-sans border-t border-stone-200 pt-6 text-left max-w-md mx-auto">
+              <p>
+                <strong>Role:</strong> Secretary-General, Organizing Committee,
+                2nd &amp; 3rd Zhejiang Secondary School Philosophy Conference
+                (SSPC)
+              </p>
+              <p>
+                <strong>Field:</strong> Western Philosophy · Philosophy of
+                Science · Post-Marxism
+              </p>
+              <p>
+                <strong>Email:</strong>{' '}
+                <a
+                  href="mailto:billcharles310012@gmail.com"
+                  className="hover:text-accent transition-colors"
+                >
+                  billcharles310012@gmail.com
+                </a>
+              </p>
               <p>
                 <strong>ORCID:</strong>{' '}
-                <a 
-                  href="https://orcid.org/0009-0000-4322-5195" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="underline text-stone-500 hover:text-stone-900 transition-colors"
+                <a
+                  href="https://orcid.org/0009-0000-4322-5195"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-stone-500 hover:text-accent transition-colors"
                 >
                   0009-0000-4322-5195
                 </a>
               </p>
+              <p>
+                <strong>Google Scholar:</strong>{' '}
+                <a
+                  href="https://scholar.google.com/citations?user=9gI3scEAAAAJ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-stone-500 hover:text-accent transition-colors"
+                >
+                  Profile
+                </a>
+              </p>
             </div>
+          </div>
+        </section>
+
+        {/* 5. Publications */}
+        <section className="px-4">
+          <h2 className="text-2xl font-bold font-sans text-stone-900 mb-8 text-center">
+            Publications
+          </h2>
+          <div className="max-w-2xl mx-auto font-sans text-sm text-stone-700 leading-relaxed border-t border-stone-200 pt-6">
+            <p>
+              Wang Xinhua (2026). “The Dynamic Dialectics of Knowledge System
+              Evolution: On ‘Change’ and ‘Constancy’ in Theoretical Identity.”
+              Presented at the 3rd Zhejiang Secondary School Philosophy
+              Conference.
+            </p>
+            <p className="mt-3 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest">
+              <a
+                href="https://philpapers.org/rec/WANTDD-2"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:text-accent-dark transition-colors"
+              >
+                PhilPapers record →
+              </a>
+              <Link
+                href="/articles/knowledge-systems-change-and-invariance"
+                className="text-stone-500 hover:text-accent transition-colors"
+              >
+                Read on this site →
+              </Link>
+            </p>
           </div>
         </section>
 
