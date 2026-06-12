@@ -30,16 +30,26 @@ export type OgFont = {
   style: 'normal';
 };
 
-/** Load regular + bold Noto Sans SC subsets covering exactly `text`. */
+/**
+ * Load regular + bold Noto Sans SC subsets covering exactly `text`.
+ * Returns an empty array if the fonts can't be fetched (e.g. no network during
+ * build) so OG image generation falls back to the default font instead of
+ * failing the whole build.
+ */
 export async function loadOgFonts(text: string): Promise<OgFont[]> {
-  const [regular, bold] = await Promise.all([
-    loadGoogleFont(text, 400),
-    loadGoogleFont(text, 700),
-  ]);
-  return [
-    { name: 'Noto Sans SC', data: regular, weight: 400, style: 'normal' },
-    { name: 'Noto Sans SC', data: bold, weight: 700, style: 'normal' },
-  ];
+  try {
+    const [regular, bold] = await Promise.all([
+      loadGoogleFont(text, 400),
+      loadGoogleFont(text, 700),
+    ]);
+    return [
+      { name: 'Noto Sans SC', data: regular, weight: 400, style: 'normal' },
+      { name: 'Noto Sans SC', data: bold, weight: 700, style: 'normal' },
+    ];
+  } catch (err) {
+    console.warn('[og] font load failed, using default font:', err);
+    return [];
+  }
 }
 
 export const OG_SIZE = { width: 1200, height: 630 };
