@@ -20,6 +20,8 @@ export type PostWithContent = Post & {
   content: string;
   /** Optional shorter title for the <title> tag (full title stays as headline). */
   shortTitle?: string;
+  /** Optional byline override (e.g. the academic name on a published paper). */
+  author?: string;
 };
 
 export type Note = Post & {
@@ -163,6 +165,7 @@ export const getPostBySlug = cache((slug: string): PostWithContent | null => {
     slug: decodedSlug,
     title: data.title || '未命名',
     shortTitle: typeof data.shortTitle === 'string' ? data.shortTitle : undefined,
+    author: typeof data.author === 'string' ? data.author : undefined,
     date: data.date || new Date().toISOString().split('T')[0],
     category: data.category || 'Uncategorized',
     excerpt: data.excerpt,
