@@ -58,9 +58,11 @@ const homeJsonLd = [
       propertyID: 'ORCID',
       value: '0009-0000-4322-5195',
     },
-    // Identity pages only. Append Google Scholar / PhilPeople once their public
-    // URLs are confirmed — never ship placeholder or private links here.
-    sameAs: [AUTHOR_ORCID],
+    // Identity pages only. PhilPeople can be appended once its public URL exists.
+    sameAs: [
+      AUTHOR_ORCID,
+      'https://scholar.google.com/citations?user=9gI3scEAAAAJ',
+    ],
     knowsAbout: [
       'Western Philosophy',
       'Post-Marxism',
@@ -201,6 +203,17 @@ export default function Home() {
                   className="underline text-stone-500 hover:text-accent transition-colors"
                 >
                   0009-0000-4322-5195
+                </a>
+              </p>
+              <p>
+                <strong>Google Scholar:</strong>{' '}
+                <a
+                  href="https://scholar.google.com/citations?user=9gI3scEAAAAJ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-stone-500 hover:text-accent transition-colors"
+                >
+                  Profile
                 </a>
               </p>
             </div>
