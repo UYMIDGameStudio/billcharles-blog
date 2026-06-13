@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
-import { formatDisplayDate, getArticles, getNotes } from '@/lib/posts';
+import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 export default function SiteMapPage() {
   const articles = getArticles();
-  const notes = getNotes();
 
   return (
     <main>
@@ -59,11 +58,6 @@ export default function SiteMapPage() {
                 </Link>
               </li>
               <li>
-                <Link href="/notes" className="hover:text-accent transition-colors">
-                  Notes
-                </Link>
-              </li>
-              <li>
                 <Link href="/privacy" className="hover:text-accent transition-colors">
                   Privacy Policy
                 </Link>
@@ -94,35 +88,6 @@ export default function SiteMapPage() {
                       {post.date && (
                         <span className="ml-2 text-xs font-mono text-stone-400">
                           {formatDisplayDate(post.date)}
-                        </span>
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          <section aria-labelledby="notes-heading">
-            <h2
-              id="notes-heading"
-              className="text-sm font-mono uppercase tracking-widest text-stone-400 mb-4"
-            >
-              Notes ({notes.length})
-            </h2>
-            {notes.length === 0 ? (
-              <p className="text-stone-500 italic font-serif">暂无笔记</p>
-            ) : (
-              <ul className="space-y-4">
-                {notes.map((note) => (
-                  <li key={note.slug}>
-                    <Link href={`/notes/${note.slug}`} className="block group">
-                      <span className="font-medium text-stone-900 group-hover:text-accent transition-colors">
-                        {note.title}
-                      </span>
-                      {note.date && (
-                        <span className="ml-2 text-xs font-mono text-stone-400">
-                          {formatDisplayDate(note.date)}
                         </span>
                       )}
                     </Link>

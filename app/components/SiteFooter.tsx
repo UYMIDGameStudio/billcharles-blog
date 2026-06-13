@@ -30,12 +30,6 @@ export default function SiteFooter() {
             Articles
           </Link>
           <Link
-            href="/notes"
-            className="hover:text-accent transition-colors w-fit"
-          >
-            Notes
-          </Link>
-          <Link
             href="/site-map"
             className="hover:text-accent transition-colors w-fit"
           >
