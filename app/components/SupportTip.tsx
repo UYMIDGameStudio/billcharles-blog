@@ -26,12 +26,12 @@ export default function SupportTip({
 
   if (variant === 'compact') {
     return (
-      <aside className="mt-16 rounded-2xl border border-stone-200 bg-[#FCFAF6] p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+      <aside className="mt-16 rounded-2xl border border-line bg-surface p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
         <div className="space-y-1">
-          <p className="font-sans font-bold text-stone-900 flex items-center gap-2">
+          <p className="font-sans font-bold text-ink flex items-center gap-2">
             <span aria-hidden>☕</span> Enjoyed this piece?
           </p>
-          <p className="text-sm text-stone-600 font-serif">
+          <p className="text-sm text-ink2 font-serif">
             A small tip helps me keep writing and sharing.
           </p>
         </div>
@@ -46,14 +46,14 @@ export default function SupportTip({
 
   return (
     <section className="px-4">
-      <div className="max-w-2xl mx-auto text-center bg-[#FCFAF6] border border-stone-200 rounded-3xl p-10 md:p-12 shadow-sm">
+      <div className="max-w-2xl mx-auto text-center bg-surface border border-line rounded-3xl p-10 md:p-12 shadow-sm">
         <div className="text-3xl mb-4" aria-hidden>
           ☕
         </div>
-        <h2 className="text-2xl font-bold font-sans text-stone-900 mb-3 tracking-tight">
+        <h2 className="text-2xl font-bold font-sans text-ink mb-3 tracking-tight">
           Support my work
         </h2>
-        <p className="text-stone-600 text-sm md:text-base leading-relaxed mb-8 max-w-md mx-auto font-serif">
+        <p className="text-ink2 text-sm md:text-base leading-relaxed mb-8 max-w-md mx-auto font-serif">
           If my essays and notes have been valuable to you, consider buying me a
           coffee. Your support helps me keep thinking, writing, and sharing
           freely.
@@ -63,7 +63,7 @@ export default function SupportTip({
             <div key={link.href} className="flex flex-col items-center gap-1.5">
               <TipButton link={link} />
               {link.hint && (
-                <span className="text-xs font-mono text-stone-400">
+                <span className="text-xs font-mono text-ink3">
                   {link.hint}
                 </span>
               )}

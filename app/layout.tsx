@@ -1,19 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
 import { SITE_URL } from '@/lib/site';
 import KofiWidget from '@/app/components/KofiWidget';
 
@@ -55,18 +41,19 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// Applies the saved theme before first paint to avoid a light/dark flash.
+const themeScript = `try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}`;
+
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
-        className="min-h-screen bg-[#F1EFEA] text-stone-900 font-serif selection:bg-stone-200"
+        className="min-h-screen bg-paper text-ink font-serif antialiased selection:bg-accent/15"
         suppressHydrationWarning
       >
         {children}

@@ -2,25 +2,80 @@
 @plugin "@tailwindcss/typography";
 @import "highlight.js/styles/github.min.css";
 
+/* Dark mode is driven by a `data-theme="dark"` attribute on <html>,
+   set by app/components/ThemeToggle.tsx (and the anti-FOUC script in layout.tsx). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Raw palette. Swapping these under [data-theme="dark"] re-themes every
+   token-based utility (bg-paper, text-ink, border-line, ...) at once. */
+:root {
+  --c-bg: #f1efea;
+  --c-surface: #fcfaf6;
+  --c-panel: #ffffff;
+  --c-ink: #1c1917;
+  --c-ink2: #57514a;
+  --c-ink3: #8c857b;
+  --c-line: #e3ddd1;
+  --c-line2: #d6cec0;
+  --c-accent: #8a2e38;       /* restrained claret */
+  --c-accent-dark: #6d2530;
+}
+
+[data-theme="dark"] {
+  --c-bg: #16130f;
+  --c-surface: #1d1915;
+  --c-panel: #221d18;
+  --c-ink: #f3eee5;
+  --c-ink2: #c9c1b4;
+  --c-ink3: #8f867a;
+  --c-line: #332c24;
+  --c-line2: #41382e;
+  --c-accent: #cf7079;       /* lifted claret for dark surfaces */
+  --c-accent-dark: #b85a63;
+}
+
+/* `inline` so utilities emit `var(--c-*)` and follow the runtime swap above. */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-panel: var(--c-panel);
+  --color-ink: var(--c-ink);
+  --color-ink2: var(--c-ink2);
+  --color-ink3: var(--c-ink3);
+  --color-line: var(--c-line);
+  --color-line2: var(--c-line2);
+  --color-accent: var(--c-accent);
+  --color-accent-dark: var(--c-accent-dark);
 
-  /* Restrained claret accent for interactive states and small marks. */
-  --color-accent: #8a2e38;
-  --color-accent-dark: #6d2530;
+  /* Chinese 宋体 · English Times New Roman. Latin glyphs resolve to Times,
+     CJK glyphs fall through to a Song/Songti family. Both `font-serif` and
+     `font-sans` map here so any leftover `font-sans` utility stays consistent. */
+  --font-serif: "Times New Roman", "Songti SC", "STSong", "SimSun", "宋体", serif;
+  --font-sans: "Times New Roman", "Songti SC", "STSong", "SimSun", "宋体", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
-/* Smoother focus rings for keyboard users without removing them entirely. */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--c-accent) 18%, transparent);
+}
+
 :focus-visible {
-  outline: 2px solid theme(colors.stone.500);
+  outline: 2px solid var(--c-accent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
-/* Shrink the Ko-fi floating "Support me" button on small screens.
-   Ko-fi injects these containers into the body at runtime; anchoring the
-   scale to the bottom-right keeps the button tucked in the corner. */
+/* Ko-fi floating button stays tucked into the corner on small screens. */
 @media (max-width: 640px) {
   .floatingchat-container-wrap,
   .floatingchat-container-wrap-mobi {

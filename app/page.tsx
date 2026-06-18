@@ -5,6 +5,7 @@ import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
+import { formatDisplayDate, getArticles } from '@/lib/posts';
 import {
   AUTHOR_EMAIL,
   AUTHOR_NAME,
@@ -16,7 +17,6 @@ import {
 } from '@/lib/site';
 
 export const metadata: Metadata = {
-  // `absolute` prevents the layout title template from doubling the site name.
   title: { absolute: 'BillCharles Blog — Philosophy, Post-Marxism & Cryptography' },
   description: SITE_DESCRIPTION,
   alternates: { canonical: '/', types: RSS_ALTERNATE_TYPES },
@@ -58,11 +58,7 @@ const homeJsonLd = [
       propertyID: 'ORCID',
       value: '0009-0000-4322-5195',
     },
-    // Identity pages only. PhilPeople can be appended once its public URL exists.
-    sameAs: [
-      AUTHOR_ORCID,
-      'https://scholar.google.com/citations?user=9gI3scEAAAAJ',
-    ],
+    sameAs: [AUTHOR_ORCID, 'https://scholar.google.com/citations?user=9gI3scEAAAAJ'],
     knowsAbout: [
       'Western Philosophy',
       'Post-Marxism',
@@ -74,213 +70,315 @@ const homeJsonLd = [
   },
 ];
 
+const FIELDS = [
+  'Western Philosophy',
+  'Post-Marxism',
+  'Psychoanalysis',
+  'Political Economy',
+  'Cryptography',
+  'DAO',
+];
+
+const CRYPTO_TOPICS = [
+  { k: '01', label: 'Web3' },
+  { k: '02', label: 'DAO' },
+  { k: '03', label: 'ZK Rollups' },
+];
+
+const HUMANITIES_TOPICS = [
+  { k: '01', label: 'Philosophy' },
+  { k: '02', label: 'Psychology' },
+  { k: '03', label: 'Psychoanalysis' },
+  { k: '04', label: 'Literature' },
+];
+
+const READING = [
+  { title: 'Organs without Bodies: On Deleuze and Consequences', author: 'Slavoj Žižek' },
+  { title: 'Spinoza: Philosophie Pratique', author: 'Gilles Deleuze' },
+  { title: 'The World as Will and Representation', author: 'Arthur Schopenhauer' },
+  { title: 'Street Corner Society', author: 'William Foote Whyte' },
+  { title: 'Objectivity', author: 'Lorraine J. Daston' },
+];
+
+const CONNECT = [
+  { k: 'Email', href: `mailto:${AUTHOR_EMAIL}`, label: AUTHOR_EMAIL },
+  { k: 'ORCID', href: AUTHOR_ORCID, label: '0009-0000-4322-5195' },
+  {
+    k: 'Scholar',
+    href: 'https://scholar.google.com/citations?user=9gI3scEAAAAJ',
+    label: 'Google Scholar profile',
+  },
+  {
+    k: 'GitHub',
+    href: 'https://github.com/UYMIDGameStudio/billcharles-blog',
+    label: 'UYMIDGameStudio/billcharles-blog',
+  },
+];
+
 export default function Home() {
+  // The writing index is generated from content/*.md — add a markdown file and it appears here.
+  const posts = getArticles().slice(0, 6);
+
   return (
     <main>
       <JsonLd data={homeJsonLd} />
       <SiteHeader activeNav="home" />
 
-      <div className="max-w-4xl mx-auto px-6 py-16 space-y-24 leading-relaxed">
-        
-        {/* 1. About me */}
-        <section className="relative pt-4">
-          <div className="absolute inset-0 bg-stone-200/60 rounded-3xl transform translate-y-4 translate-x-4"></div>
-          
-          <div className="relative bg-[#FCFAF6] border border-stone-200 p-8 md:p-12 rounded-3xl shadow-sm grid md:grid-cols-[1fr_240px] gap-10 items-start">
-            <div className="flex flex-col space-y-5">
-              <h1 className="text-3xl font-bold font-sans text-stone-900 tracking-tight mb-2">
-                About me
-              </h1>
-              <div className="text-sm md:text-base space-y-4 text-stone-700">
-                <p>
-                  Hello! I am Bill Charles — my legal and academic name is{' '}
-                  <strong>Wang Xinhua (王鑫桦)</strong>, under which I publish. My
-                  research directions are Western Philosophy, Post-Marxism, and
-                  Psychoanalysis. I serve as the Secretary-General of the
-                  organizing committee for the 2nd and 3rd Zhejiang Secondary
-                  School Philosophy Conferences (SSPC), and am a co-founder of the
-                  Ateleios Diexodos project. I am also currently a high school
-                  student.
-                </p>
-                <p>
-                  My intellectual inquiries extend into the realms of Political Economy, Cryptography/DAO research, and Cryptocurrency Venture Capital. For me, these long-term interests are not pursuits of worldly success, but rather a means to seek truth, cultivate rational discipline, and harness the power of thought to shape the world.
-                </p>
-                <p>
-                  This personal blog serves as a platform for the synthesis of information and reflection. Here, I share my articles, essays, and research notes, aiming to provide a space where rigorous thinking meets diverse insights.
-                </p>
-              </div>
-            </div>
-
-            <div className="relative w-full max-w-[240px] mx-auto md:mx-0 rounded-2xl overflow-hidden border-2 border-white shadow-md bg-white">
-              <div className="p-2 flex justify-center items-center">
-                <Image 
-                  src="/image_0.png" 
-                  alt="BillCharles geometric abstract avatar" 
-                  width={240} 
-                  height={240} 
-                  priority
-                  className="object-contain hover:scale-105 transition-transform duration-700 ease-out"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 2. Current Reading */}
-        <section className="px-4" id="notes">
-          <h2 className="text-2xl font-bold font-sans text-stone-900 mb-6 border-b border-stone-300 pb-3 inline-block">
-            Current Reading
-          </h2>
-          <ul className="text-base space-y-2 text-stone-700 list-inside list-square marker:text-accent">
-            <li><i>Organs without Bodies :On Deleuze and Consequences</i> Slavoj Zizek</li>
-            <li><i>Spinoza Philosophie Pratique</i> Gilles Deleuze</li>
-            <li><i>The World as Will and Representation</i> Schopenhauer</li>
-            <li><i>Street Corner Society</i> William Foote Whyte</li>
-            <li><i>Objectivity</i> Lorraine J. Daston</li>
-            <li><span className="font-mono text-xs tracking-widest text-stone-400">.........</span></li>
-          </ul>
-        </section>
-
-        {/* 3. My happy list */}
-        <section>
-          <h2 className="text-2xl font-bold font-sans text-stone-900 mb-8 text-center tracking-tight">
-            My happy list
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6 text-base text-stone-700">
-            <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">COFFEE !</h3>
-              <p className="text-sm leading-relaxed">I&apos;m a loyal coffee enthusiast with a soft spot for oat milk lattes. While I frequent commercial shops like Starbucks, I also love the process of extracting my own shots from whole beans at home.</p>
-            </div>
-            <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">READING</h3>
-              <p className="text-sm leading-relaxed">As a long-term bibliophile, I find great fulfillment in the quiet hours spent with a book. Being engrossed in a story brings me a deep, authentic sense of happiness.</p>
-            </div>
-            <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">LANGUAGES</h3>
-              <p className="text-sm leading-relaxed">As a multilingual learner, I&apos;ve been studying German since 8th grade and picked up Japanese in high school. For me, language is more than just a tool for communication—it is a vessel for diverse cultures.</p>
-            </div>
-            <div className="group bg-white border border-stone-200 rounded-2xl p-8 shadow-sm hover:-translate-y-1.5 hover:shadow-xl hover:border-stone-300 transition-all duration-300 ease-out">
-              <h3 className="font-bold uppercase font-sans text-stone-900 text-lg mb-3 tracking-wider group-hover:text-accent transition-colors">SOCIAL SCIENCE</h3>
-              <p className="text-sm leading-relaxed">My intellectual interest in social sciences and philosophy was sparked by Karl Marx&apos;s Das Kapital. Following middle school, I further refined my analytical framework at the National University of Singapore (NUS) Social Sciences Summer School. To me, social theory is more than an academic discipline; it is a vital lens through which I decode the inner workings of society and the intricate dynamics of power.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. Author */}
-        <section className="px-4 scroll-mt-24" id="author">
-          <h2 className="text-2xl font-bold font-sans text-stone-900 mb-8 text-center">
-            Author
-          </h2>
-          <div className="max-w-2xl mx-auto space-y-6 text-center">
-            <h3 className="text-lg font-bold font-mono text-stone-800 bg-stone-100 px-4 py-2 rounded-md inline-block border border-stone-200">
-              Wang Xinhua (王鑫桦) — pen name Bill Charles (he/him)
-            </h3>
-            <div className="text-base space-y-2.5 text-stone-700 font-sans border-t border-stone-200 pt-6 text-left max-w-md mx-auto">
-              <p>
-                <strong>Role:</strong> Secretary-General, Organizing Committee,
-                2nd &amp; 3rd Zhejiang Secondary School Philosophy Conference
-                (SSPC)
-              </p>
-              <p>
-                <strong>Field:</strong> Western Philosophy · Philosophy of
-                Science · Post-Marxism
-              </p>
-              <p>
-                <strong>Email:</strong>{' '}
-                <a
-                  href="mailto:billcharles310012@gmail.com"
-                  className="hover:text-accent transition-colors"
-                >
-                  billcharles310012@gmail.com
-                </a>
-              </p>
-              <p>
-                <strong>ORCID:</strong>{' '}
-                <a
-                  href="https://orcid.org/0009-0000-4322-5195"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline text-stone-500 hover:text-accent transition-colors"
-                >
-                  0009-0000-4322-5195
-                </a>
-              </p>
-              <p>
-                <strong>Google Scholar:</strong>{' '}
-                <a
-                  href="https://scholar.google.com/citations?user=9gI3scEAAAAJ"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline text-stone-500 hover:text-accent transition-colors"
-                >
-                  Profile
-                </a>
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Publications */}
-        <section className="px-4">
-          <h2 className="text-2xl font-bold font-sans text-stone-900 mb-8 text-center">
-            Publications
-          </h2>
-          <div className="max-w-2xl mx-auto font-sans text-sm text-stone-700 leading-relaxed border-t border-stone-200 pt-6">
-            <p>
-              Wang Xinhua (2026). “The Dynamic Dialectics of Knowledge System
-              Evolution: On ‘Change’ and ‘Constancy’ in Theoretical Identity.”
-              Presented at the 3rd Zhejiang Secondary School Philosophy
-              Conference.
+      <div className="mx-auto max-w-[1080px] px-6 md:px-8">
+        {/* HERO */}
+        <section
+          id="author"
+          className="scroll-mt-24 grid items-center gap-14 py-16 md:grid-cols-[1fr_280px] md:py-20"
+        >
+          <div>
+            <p className="mb-6 text-xs uppercase tracking-[0.18em] text-accent">
+              Personal Academic Journal
             </p>
-            <p className="mt-3 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest">
-              <a
-                href="https://philpapers.org/rec/WANTDD-2"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent hover:text-accent-dark transition-colors"
-              >
-                PhilPapers record →
-              </a>
-              <Link
-                href="/articles/knowledge-systems-change-and-invariance"
-                className="text-stone-500 hover:text-accent transition-colors"
-              >
-                Read on this site →
-              </Link>
+            <h1 className="text-[clamp(2.6rem,6vw,3.9rem)] font-normal leading-[1.02] tracking-tight text-ink">
+              Bill Charles
+            </h1>
+            <p className="mt-2 text-[1.7rem] font-light italic text-ink2">
+              王鑫桦 &nbsp;·&nbsp; Wang Xinhua
+            </p>
+            <p className="mt-7 max-w-[36em] text-lg leading-relaxed text-ink2">
+              A space where rigorous thinking meets diverse insight. I write on{' '}
+              <em className="not-italic text-ink underline decoration-accent/40 underline-offset-4">
+                Western philosophy
+              </em>
+              , post-Marxism, and psychoanalysis — and chase the same questions
+              through cryptography and decentralized systems.
+            </p>
+            <p className="mt-4 max-w-[34em] text-[15px] leading-relaxed text-ink3">
+              Secretary-General of the organizing committee for the 2nd &amp; 3rd
+              Zhejiang Secondary School Philosophy Conference (SSPC). Co-founder,
+              Ateleios Diexodos.
             </p>
           </div>
-        </section>
-
-        {/* 5. Column */}
-        <section className="px-4" id="articles">
-          <h2 className="text-2xl font-bold font-sans text-stone-900 mb-10 text-center">Column</h2>
-          <div className="grid md:grid-cols-2 gap-10 max-w-2xl mx-auto mb-12 font-sans">
-            <div className="space-y-4">
-              <h3 className="text-base font-bold font-mono uppercase tracking-widest text-stone-800 border-b border-stone-200 pb-2">Cryptography Column</h3>
-              <ul className="list-disc list-inside space-y-2 text-sm text-stone-600 font-mono">
-                <li>Web3</li>
-                <li>DAO</li>
-                <li>ZK Rollups</li>
-              </ul>
-            </div>
-            <div className="space-y-4 md:mt-0 mt-4">
-              <h3 className="text-base font-bold font-mono uppercase tracking-widest text-stone-800 border-b border-stone-200 pb-2">Humanities Column</h3>
-              <ul className="list-disc list-inside space-y-2 text-sm text-stone-600 font-mono">
-                <li>Philosophy</li>
-                <li>Psychology</li>
-                <li>Psychoanalysis</li>
-                <li>Literature</li>
-              </ul>
+          <div className="relative">
+            <div className="absolute -bottom-3.5 -right-3.5 left-3.5 top-3.5 rounded-sm border border-line2" />
+            <div className="relative rounded-sm border border-line bg-panel p-2.5 shadow-[0_18px_40px_-28px_rgba(28,25,23,0.5)]">
+              <Image
+                src="/image_0.png"
+                alt="Abstract geometric portrait"
+                width={280}
+                height={280}
+                priority
+                className="aspect-square w-full rounded-[2px] object-cover"
+              />
             </div>
           </div>
-          <p className="text-base text-stone-500 font-mono text-center text-sm pt-8 border-t border-stone-200">
-            For Chinese E： <a href="mailto:billcharles310012@gmail.com" className="text-stone-800 hover:underline">billcharles310012@gmail.com</a>
+        </section>
+
+        {/* FIELDS */}
+        <section className="flex flex-wrap items-center gap-4 border-y border-line py-5">
+          <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
+            Fields
+          </span>
+          <div className="flex flex-wrap gap-2.5">
+            {FIELDS.map((f) => (
+              <span
+                key={f}
+                className="rounded-full border border-line2 px-3 py-1 text-[13px] text-ink2"
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        {/* FEATURED PAPER */}
+        <section className="pt-16">
+          <p className="mb-6 text-xs uppercase tracking-[0.16em] text-ink3">
+            Featured Paper
           </p>
+          <div className="grid items-start gap-10 md:grid-cols-[120px_1fr]">
+            <div className="pt-1.5 text-[13px] leading-loose text-ink3">
+              <div className="font-medium text-accent">2026</div>
+              <div>3rd SSPC</div>
+              <div>Philosophy</div>
+            </div>
+            <div>
+              <h2 className="text-[clamp(1.6rem,3.4vw,2.05rem)] font-normal leading-snug tracking-tight text-ink">
+                The Dynamic Dialectic of Knowledge Systems: On{' '}
+                <span className="italic">Change</span> and{' '}
+                <span className="italic">Invariance</span> in Theoretical Identity
+              </h2>
+              <p className="mt-4 max-w-[42em] text-[17px] leading-relaxed text-ink2">
+                A study of how systems of knowledge evolve — what persists as a
+                theory&apos;s identity through transformation, and what must change
+                for it to remain true. Presented at the 3rd Zhejiang Secondary
+                School Philosophy Conference.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-6 text-[13px]">
+                <a
+                  href="https://philpapers.org/rec/WANTDD-2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-b border-accent/40 pb-0.5 text-accent transition-colors hover:border-accent"
+                >
+                  PhilPapers record →
+                </a>
+                <Link
+                  href="/articles/knowledge-systems-change-and-invariance"
+                  className="border-b border-line2 pb-0.5 text-ink3 transition-colors hover:text-accent"
+                >
+                  Read on this site →
+                </Link>
+              </div>
+            </div>
+          </div>
         </section>
 
-        {/* 6. Support */}
-        <SupportTip variant="section" />
+        {/* WRITING INDEX (dynamic from content/*.md) */}
+        <section id="writing" className="scroll-mt-20 pt-20">
+          <div className="mb-2 flex items-baseline justify-between border-b border-ink pb-3.5">
+            <h2 className="text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
+              Writing
+            </h2>
+            <span className="text-xs text-ink3">Essays &amp; notes</span>
+          </div>
+          {posts.map((post, i) => (
+            <Link
+              key={post.slug}
+              href={`/articles/${encodeURIComponent(post.slug)}`}
+              className="grid grid-cols-[54px_140px_1fr] items-baseline gap-6 border-b border-line py-6 pr-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-4"
+            >
+              <span className="text-[13px] italic text-ink3">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="text-[12px] leading-relaxed text-ink3">
+                <span className="block">{formatDisplayDate(post.date)}</span>
+                <span className="block uppercase tracking-[0.08em] text-accent">
+                  {post.category}
+                </span>
+              </span>
+              <span>
+                <span className="mb-1.5 block text-[1.45rem] font-normal leading-snug text-ink">
+                  {post.title}
+                </span>
+                {post.excerpt && (
+                  <span className="block max-w-[46em] text-[15px] leading-relaxed text-ink2">
+                    {post.excerpt}
+                  </span>
+                )}
+              </span>
+            </Link>
+          ))}
+          <div className="pt-6 text-center">
+            <Link
+              href="/articles"
+              className="text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+            >
+              View all articles →
+            </Link>
+          </div>
+        </section>
 
+        {/* COLUMNS */}
+        <section id="columns" className="scroll-mt-20 pt-20">
+          <div className="grid overflow-hidden rounded-sm border border-line md:grid-cols-2">
+            <div className="border-line p-9 md:border-r">
+              <p className="mb-4 text-[11px] uppercase tracking-[0.16em] text-accent">
+                Cryptography Column
+              </p>
+              <h3 className="mb-4 text-[1.55rem] font-normal tracking-tight text-ink">
+                Decentralized systems &amp; trust
+              </h3>
+              <ul className="flex flex-col gap-3">
+                {CRYPTO_TOPICS.map((t) => (
+                  <li key={t.k} className="flex items-baseline gap-3 text-base text-ink2">
+                    <span className="font-mono text-[11px] text-ink3">{t.k}</span>
+                    {t.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="border-t border-line p-9 md:border-t-0">
+              <p className="mb-4 text-[11px] uppercase tracking-[0.16em] text-accent">
+                Humanities Column
+              </p>
+              <h3 className="mb-4 text-[1.55rem] font-normal tracking-tight text-ink">
+                Thought, mind &amp; meaning
+              </h3>
+              <ul className="flex flex-col gap-3">
+                {HUMANITIES_TOPICS.map((t) => (
+                  <li key={t.k} className="flex items-baseline gap-3 text-base text-ink2">
+                    <span className="font-mono text-[11px] text-ink3">{t.k}</span>
+                    {t.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* READING + CONNECT */}
+        <section className="grid gap-16 pt-20 md:grid-cols-2">
+          <div>
+            <h2 className="mb-6 border-b border-ink pb-3.5 text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
+              Currently Reading
+            </h2>
+            <ul className="flex flex-col">
+              {READING.map((r) => (
+                <li key={r.title} className="border-b border-line py-3.5">
+                  <span className="text-[18px] italic text-ink">{r.title}</span>
+                  <span className="mt-1 block text-[12px] tracking-[0.02em] text-ink3">
+                    {r.author}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div id="connect" className="scroll-mt-20">
+            <h2 className="mb-6 border-b border-ink pb-3.5 text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
+              Connect
+            </h2>
+            <dl className="text-[13px]">
+              {CONNECT.map((c) => (
+                <div
+                  key={c.k}
+                  className="grid grid-cols-[96px_1fr] items-baseline gap-4 border-b border-line py-3"
+                >
+                  <dt className="text-[10.5px] uppercase tracking-[0.12em] text-ink3">
+                    {c.k}
+                  </dt>
+                  <dd className="m-0">
+                    <a
+                      href={c.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="break-words border-b border-transparent text-ink transition-colors hover:border-accent hover:text-accent"
+                    >
+                      {c.label}
+                    </a>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-5 text-sm leading-relaxed text-ink3">
+              中文交流请发邮件至上方邮箱。Open to correspondence on philosophy,
+              post-Marxism, and DAO research.
+            </p>
+          </div>
+        </section>
+
+        {/* QUOTE */}
+        <section className="py-20">
+          <figure className="rounded-sm border border-line bg-surface px-12 py-14 text-center">
+            <blockquote className="mx-auto max-w-[30em] text-[1.55rem] font-light italic leading-relaxed text-ink">
+              “These long-term interests are not pursuits of worldly success, but a
+              means to seek truth, cultivate rational discipline, and harness the
+              power of thought to shape the world.”
+            </blockquote>
+            <figcaption className="mt-4 text-[11.5px] uppercase tracking-[0.14em] text-ink3">
+              — Bill Charles
+            </figcaption>
+          </figure>
+        </section>
+
+        {/* SUPPORT */}
+        <SupportTip variant="section" />
+        <div className="h-12" />
       </div>
 
       <SiteFooter />
