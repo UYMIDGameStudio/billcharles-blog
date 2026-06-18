@@ -1,4 +1,3 @@
-// app/components/SiteFooter.tsx
 import Link from 'next/link';
 import { AUTHOR_EMAIL, AUTHOR_NAME, AUTHOR_ORCID } from '@/lib/site';
 
@@ -6,50 +5,43 @@ export default function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-stone-200 mt-24 bg-[#F1EFEA]/60">
-      <div className="max-w-5xl mx-auto px-6 py-12 font-sans text-sm text-stone-500 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
-        <div className="space-y-1.5">
-          <p className="font-bold text-stone-800 tracking-tight">{AUTHOR_NAME}</p>
-          <p className="max-w-xs leading-relaxed text-stone-500">
+    <footer className="mt-24 border-t border-line bg-paper/60">
+      <div className="mx-auto flex max-w-[1080px] flex-col gap-8 px-6 py-12 md:px-8 sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-xs space-y-2">
+          <p className="text-lg font-bold tracking-tight text-ink">
+            BillCharles Blog
+          </p>
+          <p className="text-sm leading-relaxed text-ink3">
             Essays and notes on Western philosophy, post-Marxism, psychoanalysis,
             and cryptography.
           </p>
         </div>
 
-        <nav aria-label="Footer" className="flex flex-col gap-2">
-          <span className="text-xs font-mono uppercase tracking-widest text-stone-400">
+        <nav aria-label="Footer" className="flex flex-col gap-2.5 text-sm">
+          <span className="text-[11px] uppercase tracking-widest text-ink3">
             Explore
           </span>
-          <Link href="/" className="hover:text-accent transition-colors w-fit">
+          <Link href="/" className="w-fit text-ink2 transition-colors hover:text-accent">
             Home
           </Link>
-          <Link
-            href="/articles"
-            className="hover:text-accent transition-colors w-fit"
-          >
+          <Link href="/articles" className="w-fit text-ink2 transition-colors hover:text-accent">
             Articles
           </Link>
-          <Link
-            href="/site-map"
-            className="hover:text-accent transition-colors w-fit"
-          >
+          <Link href="/site-map" className="w-fit text-ink2 transition-colors hover:text-accent">
             Site Map
           </Link>
-          <Link
-            href="/privacy"
-            className="hover:text-accent transition-colors w-fit"
-          >
+          <Link href="/privacy" className="w-fit text-ink2 transition-colors hover:text-accent">
             Privacy
           </Link>
         </nav>
 
-        <div className="flex flex-col gap-2">
-          <span className="text-xs font-mono uppercase tracking-widest text-stone-400">
+        <div className="flex flex-col gap-2.5 text-sm">
+          <span className="text-[11px] uppercase tracking-widest text-ink3">
             Contact
           </span>
           <a
             href={`mailto:${AUTHOR_EMAIL}`}
-            className="hover:text-accent transition-colors w-fit"
+            className="w-fit text-ink2 transition-colors hover:text-accent"
           >
             Email
           </a>
@@ -57,16 +49,24 @@ export default function SiteFooter() {
             href={AUTHOR_ORCID}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-accent transition-colors w-fit"
+            className="w-fit text-ink2 transition-colors hover:text-accent"
           >
             ORCID
+          </a>
+          <a
+            href="https://github.com/UYMIDGameStudio/billcharles-blog"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-fit text-ink2 transition-colors hover:text-accent"
+          >
+            GitHub
           </a>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 pb-10">
-        <p className="text-xs font-mono text-stone-400">
-          © {year} {AUTHOR_NAME}. All rights reserved.
+      <div className="mx-auto max-w-[1080px] px-6 pb-10 md:px-8">
+        <p className="text-xs text-ink3">
+          © {year} {AUTHOR_NAME} (王鑫桦). All rights reserved.
         </p>
       </div>
     </footer>

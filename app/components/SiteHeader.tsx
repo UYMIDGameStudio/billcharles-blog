@@ -1,6 +1,6 @@
-// app/components/SiteHeader.tsx
 import Image from 'next/image';
 import Link from 'next/link';
+import ThemeToggle from './ThemeToggle';
 
 type NavKey = 'home' | 'articles';
 
@@ -11,21 +11,18 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#F1EFEA]/85 border-b border-stone-200">
-      <div className="max-w-5xl mx-auto px-5 md:px-6 h-16 relative flex items-center justify-between font-sans">
-        <div className="flex items-center gap-3 relative z-10">
-          <div className="relative w-8 h-8 rounded-full overflow-hidden border border-stone-300 flex-shrink-0">
-            <Image src="/image_0.png" alt="Avatar" fill className="object-cover" />
-          </div>
-          <Link
-            href="/"
-            className="hidden sm:block text-lg font-bold tracking-tight text-stone-800 hover:opacity-70 transition-opacity"
-          >
-            BillCharles Blog
-          </Link>
-        </div>
+    <header className="sticky top-0 z-50 w-full border-b border-line bg-paper/85 backdrop-blur-md">
+      <div className="mx-auto flex h-[66px] max-w-[1080px] items-center justify-between px-6 md:px-8">
+        <Link href="/" className="flex items-center gap-3">
+          <span className="relative block h-[34px] w-[34px] flex-none overflow-hidden rounded-full border border-line2">
+            <Image src="/image_0.png" alt="Bill Charles" fill className="object-cover" />
+          </span>
+          <span className="text-base font-bold tracking-tight text-ink">
+            BillCharles
+          </span>
+        </Link>
 
-        <nav className="flex items-center gap-5 sm:gap-8 text-sm font-medium tracking-wide text-stone-500 md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+        <nav className="flex items-center gap-7 text-sm uppercase tracking-wider">
           {navItems.map(({ href, label, key }) => (
             <Link
               key={key}
@@ -33,16 +30,15 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
               aria-current={activeNav === key ? 'page' : undefined}
               className={
                 activeNav === key
-                  ? 'text-accent border-b border-accent'
-                  : 'hover:text-accent transition-colors'
+                  ? 'border-b border-accent pb-0.5 text-accent'
+                  : 'text-ink2 transition-colors hover:text-accent'
               }
             >
               {label}
             </Link>
           ))}
+          <ThemeToggle />
         </nav>
-
-        <div className="w-32 hidden md:block" />
       </div>
     </header>
   );

@@ -1,29 +1,28 @@
 // app/articles/[slug]/page.tsx
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import MarkdownContent from '@/app/components/MarkdownContent';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
+import ReadingProgress from '@/app/components/ReadingProgress';
 import { formatDisplayDate, getArticles, getPostBySlug } from '@/lib/posts';
 import { AUTHOR_NAME, RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
 
 type RouteParams = { slug: string };
 
-/** Convert a frontmatter date to an ISO string, or undefined if unparseable. */
 function toIsoDate(date: string): string | undefined {
   const parsed = new Date(date);
   return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
 }
 
-// SSG: 预渲染所有文章路由
 export async function generateStaticParams(): Promise<RouteParams[]> {
   const posts = getArticles();
   return posts.map((post) => ({ slug: encodeURIComponent(post.slug) }));
 }
 
-// 动态 <title> / OG meta
 export async function generateMetadata({
   params,
 }: {
@@ -37,7 +36,6 @@ export async function generateMetadata({
   const publishedTime = toIsoDate(post.date);
 
   return {
-    // Shorter title for the <title> tag; the full title stays as og:title and <h1>.
     title: post.shortTitle ?? post.title,
     description: post.excerpt,
     alternates: { canonical: canonicalPath, types: RSS_ALTERNATE_TYPES },
@@ -70,30 +68,20 @@ export default async function ArticlePage({
     return (
       <main>
         <SiteHeader activeNav="articles" />
-        <section className="max-w-2xl mx-auto px-6 py-32 text-center space-y-6">
-          <p className="font-mono text-xs uppercase tracking-widest text-stone-400">
-            404
-          </p>
-          <h1 className="text-3xl md:text-4xl font-bold font-sans tracking-tight text-stone-900">
+        <section className="mx-auto max-w-2xl space-y-6 px-6 py-32 text-center">
+          <p className="text-xs uppercase tracking-widest text-ink3">404</p>
+          <h1 className="text-3xl font-normal tracking-tight text-ink md:text-4xl">
             Article not found
           </h1>
-          <p className="text-stone-600 font-serif leading-relaxed">
+          <p className="leading-relaxed text-ink2">
             Looking for:{' '}
-            <span className="font-mono text-stone-800">
-              {decodeURIComponent(slug)}.md
-            </span>
+            <span className="font-mono text-ink">{decodeURIComponent(slug)}.md</span>
           </p>
-          <div className="pt-4 font-sans text-sm flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/articles"
-              className="text-stone-500 hover:text-accent underline transition-colors"
-            >
+          <div className="flex flex-col justify-center gap-4 pt-4 text-sm sm:flex-row">
+            <Link href="/articles" className="text-ink3 underline transition-colors hover:text-accent">
               ← Back to articles
             </Link>
-            <Link
-              href="/"
-              className="text-stone-500 hover:text-accent underline transition-colors"
-            >
+            <Link href="/" className="text-ink3 underline transition-colors hover:text-accent">
               ← Back to home
             </Link>
           </div>
@@ -105,13 +93,20 @@ export default async function ArticlePage({
   const canonicalUrl = `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`;
   const publishedTime = toIsoDate(post.date);
   const inLanguage = /[一-鿿]/.test(post.title) ? 'zh-CN' : 'en-US';
-  const wordCount =
-    (post.content.match(/[一-鿿]/g)?.length ?? 0) +
-    (post.content.match(/[A-Za-z0-9]+/g)?.length ?? 0);
+  const cjkCount = post.content.match(/[一-鿿]/g)?.length ?? 0;
+  const enCount = post.content.match(/[A-Za-z0-9]+/g)?.length ?? 0;
+  const wordCount = cjkCount + enCount;
+  const readMinutes = Math.max(1, Math.round(cjkCount / 400 + enCount / 220));
+  const readLabel = inLanguage === 'zh-CN' ? `约 ${readMinutes} 分钟` : `${readMinutes} min read`;
 
-  // Byline name must equal the schema author name exactly (audit C1).
   const authorName = post.author ?? AUTHOR_NAME;
   const authorAlt = authorName === AUTHOR_NAME ? 'Wang Xinhua' : AUTHOR_NAME;
+
+  // Adjacent articles for prev/next navigation (sorted newest-first).
+  const all = getArticles();
+  const idx = all.findIndex((p) => p.slug === post.slug);
+  const newer = idx > 0 ? all[idx - 1] : null;
+  const older = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -147,54 +142,108 @@ export default async function ArticlePage({
     <main>
       <JsonLd data={[articleJsonLd, breadcrumbJsonLd]} />
       <SiteHeader activeNav="articles" />
+      <ReadingProgress />
 
-      <article className="max-w-2xl mx-auto px-6 py-20">
-        <header className="mb-16 space-y-6">
-          <div className="flex items-center gap-4 text-sm font-sans text-stone-500 uppercase tracking-widest">
-            <span>{formatDisplayDate(post.date)}</span>
-            <span className="w-1 h-1 bg-accent/50 rounded-full" />
+      <article className="mx-auto max-w-[720px] px-6">
+        <header className="pt-16">
+          <Link
+            href="/articles"
+            className="mb-9 inline-block text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+          >
+            ← All articles
+          </Link>
+
+          <div className="mb-5 flex items-center gap-4 text-[13px] uppercase tracking-[0.06em] text-ink3">
             <span className="text-accent">{post.category}</span>
+            <span className="h-px w-4 bg-line2" />
+            <span>{formatDisplayDate(post.date)}</span>
+            <span className="h-px w-4 bg-line2" />
+            <span>{readLabel}</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold font-sans text-stone-900 leading-[1.1] tracking-tight">
+          <h1 className="text-[clamp(2.1rem,5vw,3.2rem)] font-normal leading-[1.12] tracking-[0.005em] text-ink">
             {post.title}
           </h1>
 
           {post.excerpt && (
-            <p className="text-xl text-stone-500 italic font-serif leading-relaxed">
+            <p className="mt-6 text-[1.2rem] italic leading-relaxed text-ink2">
               {post.excerpt}
             </p>
           )}
 
-          <div className="font-sans text-sm text-stone-500">
-            By <span className="text-stone-700">{authorName}</span>
-            <span className="mx-2 text-stone-300">·</span>
-            <Link
-              href="/#author"
-              className="text-stone-400 hover:text-accent transition-colors"
-            >
-              About the author →
-            </Link>
+          <div className="mt-9 flex items-center gap-3.5 border-b border-ink pb-10">
+            <span className="relative block h-[42px] w-[42px] flex-none overflow-hidden rounded-full border border-line2">
+              <Image src="/image_0.png" alt={authorName} fill className="object-cover" />
+            </span>
+            <span>
+              <span className="block text-base font-bold text-ink">
+                {authorName} 王鑫桦
+              </span>
+              <Link
+                href="/#author"
+                className="block text-[13px] tracking-[0.02em] text-ink3 transition-colors hover:text-accent"
+              >
+                pen name Bill Charles · About the author →
+              </Link>
+            </span>
           </div>
 
           {authorName !== AUTHOR_NAME && (
-            <p className="text-sm text-stone-500 italic font-serif border-l-2 border-accent/40 pl-4">
+            <p className="mt-6 border-l-[3px] border-accent/40 pl-4 text-sm italic text-ink3">
               {authorName} (王鑫桦) is the author&apos;s legal and academic name.
               Bill Charles is the pen name used on this site.
             </p>
           )}
         </header>
 
-        <MarkdownContent>{post.content}</MarkdownContent>
+        <div className="pt-10">
+          <MarkdownContent>{post.content}</MarkdownContent>
+        </div>
 
         <SupportTip variant="compact" />
 
-        <footer className="mt-20 pt-10 border-t border-stone-200 flex justify-between font-sans text-sm">
-          <Link
-            href="/articles"
-            className="text-stone-400 hover:text-accent transition-colors"
-          >
+        {/* PREV / NEXT */}
+        <nav className="mt-16 grid gap-4 sm:grid-cols-2">
+          {newer ? (
+            <Link
+              href={`/articles/${encodeURIComponent(newer.slug)}`}
+              className="block rounded-sm border border-line p-6 transition-colors hover:border-line2 hover:bg-surface"
+            >
+              <span className="mb-2.5 block text-xs uppercase tracking-[0.12em] text-ink3">
+                ← Newer
+              </span>
+              <span className="block text-[18px] leading-snug text-ink">{newer.title}</span>
+            </Link>
+          ) : (
+            <Link
+              href="/articles"
+              className="block rounded-sm border border-line p-6 transition-colors hover:border-line2 hover:bg-surface"
+            >
+              <span className="mb-2.5 block text-xs uppercase tracking-[0.12em] text-ink3">
+                ← Index
+              </span>
+              <span className="block text-[18px] text-ink">All articles</span>
+            </Link>
+          )}
+          {older && (
+            <Link
+              href={`/articles/${encodeURIComponent(older.slug)}`}
+              className="block rounded-sm border border-line p-6 text-right transition-colors hover:border-line2 hover:bg-surface"
+            >
+              <span className="mb-2.5 block text-xs uppercase tracking-[0.12em] text-ink3">
+                Older →
+              </span>
+              <span className="block text-[18px] leading-snug text-ink">{older.title}</span>
+            </Link>
+          )}
+        </nav>
+
+        <footer className="mt-12 flex justify-between border-t border-line pt-8 text-sm">
+          <Link href="/articles" className="text-ink3 transition-colors hover:text-accent">
             ← Back to Archive
+          </Link>
+          <Link href="/" className="text-ink3 transition-colors hover:text-accent">
+            Home →
           </Link>
         </footer>
       </article>
