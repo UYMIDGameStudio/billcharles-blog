@@ -344,20 +344,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* QUOTE */}
-        <section className="py-20">
-          <figure className="rounded-sm border border-line bg-surface px-12 py-14 text-center">
-            <blockquote className="mx-auto max-w-[30em] text-[1.55rem] font-light italic leading-relaxed text-ink">
-              “These long-term interests are not pursuits of worldly success, but a
-              means to seek truth, cultivate rational discipline, and harness the
-              power of thought to shape the world.”
-            </blockquote>
-            <figcaption className="mt-4 text-[11.5px] uppercase tracking-[0.14em] text-ink3">
-              — Bill Charles
-            </figcaption>
-          </figure>
-        </section>
-
         {/* SUPPORT */}
         <SupportTip variant="section" />
         <div className="h-12" />
