@@ -9,7 +9,14 @@ import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
 import ReadingProgress from '@/app/components/ReadingProgress';
 import { formatDisplayDate, getArticles, getPostBySlug } from '@/lib/posts';
-import { AUTHOR_NAME, RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
+import {
+  AUTHOR_ACADEMIC_NAME,
+  AUTHOR_NAME,
+  AUTHOR_NAME_HANZI,
+  RSS_ALTERNATE_TYPES,
+  SITE_NAME,
+  SITE_URL,
+} from '@/lib/site';
 
 type RouteParams = { slug: string };
 
@@ -100,7 +107,8 @@ export default async function ArticlePage({
   const readLabel = inLanguage === 'zh-CN' ? `约 ${readMinutes} 分钟` : `${readMinutes} min read`;
 
   const authorName = post.author ?? AUTHOR_NAME;
-  const authorAlt = authorName === AUTHOR_NAME ? 'Wang Xinhua' : AUTHOR_NAME;
+  const isAcademicByline = authorName !== AUTHOR_NAME; // only the flagship paper sets a custom author
+  const authorAlt = isAcademicByline ? AUTHOR_NAME : AUTHOR_ACADEMIC_NAME;
 
   // Adjacent articles for prev/next navigation (sorted newest-first).
   const all = getArticles();
@@ -177,21 +185,21 @@ export default async function ArticlePage({
             </span>
             <span>
               <span className="block text-base font-bold text-ink">
-                {authorName} 王鑫桦
+                {isAcademicByline ? `${authorName} (${AUTHOR_NAME_HANZI})` : authorName}
               </span>
               <Link
-                href="/#author"
+                href="/about"
                 className="block text-[13px] tracking-[0.02em] text-ink3 transition-colors hover:text-accent"
               >
-                pen name Bill Charles · About the author →
+                {isAcademicByline ? `pen name ${AUTHOR_NAME} · About the author →` : 'About the author →'}
               </Link>
             </span>
           </div>
 
-          {authorName !== AUTHOR_NAME && (
+          {isAcademicByline && (
             <p className="mt-6 border-l-[3px] border-accent/40 pl-4 text-sm italic text-ink3">
-              {authorName} (王鑫桦) is the author&apos;s legal and academic name.
-              Bill Charles is the pen name used on this site.
+              {authorName} ({AUTHOR_NAME_HANZI}) is the author&apos;s legal and academic name.{' '}
+              {AUTHOR_NAME} is the pen name used on this site.
             </p>
           )}
         </header>

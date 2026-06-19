@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AUTHOR_EMAIL, AUTHOR_NAME, AUTHOR_ORCID } from '@/lib/site';
+import { AUTHOR_EMAIL, AUTHOR_NAME, AUTHOR_NAME_HANZI, AUTHOR_ORCID } from '@/lib/site';
 
 export default function SiteFooter() {
   const year = new Date().getFullYear();
@@ -26,6 +26,12 @@ export default function SiteFooter() {
           </Link>
           <Link href="/articles" className="w-fit text-ink2 transition-colors hover:text-accent">
             Articles
+          </Link>
+          <Link href="/publications" className="w-fit text-ink2 transition-colors hover:text-accent">
+            Publications
+          </Link>
+          <Link href="/about" className="w-fit text-ink2 transition-colors hover:text-accent">
+            About
           </Link>
           <Link href="/site-map" className="w-fit text-ink2 transition-colors hover:text-accent">
             Site Map
@@ -66,7 +72,7 @@ export default function SiteFooter() {
 
       <div className="mx-auto max-w-[1080px] px-6 pb-10 md:px-8">
         <p className="text-xs text-ink3">
-          © {year} {AUTHOR_NAME} (王鑫桦). All rights reserved.
+          © {year} {AUTHOR_NAME} ({AUTHOR_NAME_HANZI}). All rights reserved.
         </p>
       </div>
     </footer>

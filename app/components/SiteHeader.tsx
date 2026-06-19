@@ -2,12 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 
-type NavKey = 'home' | 'articles';
+type NavKey = 'home' | 'articles' | 'publications' | 'about';
 
 export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
   const navItems: { href: string; label: string; key: NavKey }[] = [
     { href: '/', label: 'Home', key: 'home' },
     { href: '/articles', label: 'Articles', key: 'articles' },
+    { href: '/about', label: 'About', key: 'about' },
   ];
 
   return (
