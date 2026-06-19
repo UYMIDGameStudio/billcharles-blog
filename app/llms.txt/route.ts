@@ -22,6 +22,8 @@ export function GET() {
     `## About`,
     ``,
     `- [Homepage](${SITE_URL}/): Author bio, research interests, ORCID 0009-0000-4322-5195.`,
+    `- [About](${SITE_URL}/about): Biography, research interests, name/identity, profiles.`,
+    `- [Publications](${SITE_URL}/publications): Academic papers with archived records.`,
     ``,
     `## Optional`,
     ``,

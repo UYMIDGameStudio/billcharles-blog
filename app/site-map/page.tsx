@@ -58,6 +58,16 @@ export default function SiteMapPage() {
                 </Link>
               </li>
               <li>
+                <Link href="/about" className="hover:text-accent transition-colors">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link href="/publications" className="hover:text-accent transition-colors">
+                  Publications
+                </Link>
+              </li>
+              <li>
                 <Link href="/privacy" className="hover:text-accent transition-colors">
                   Privacy Policy
                 </Link>

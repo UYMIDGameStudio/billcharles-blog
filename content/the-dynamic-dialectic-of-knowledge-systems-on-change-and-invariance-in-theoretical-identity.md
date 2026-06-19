@@ -1,5 +1,5 @@
 ---
-title: 'The Dynamic Dialectic of the Evolution of Knowledge Systems On "Change" and "Invariance" in Theoretical Identity'
+title: 'The Dynamic Dialectic of Knowledge System Evolution: On "Change" and "Invariance" in Theoretical Identity'
 shortTitle: "The Dynamic Dialectic of Knowledge Systems"
 slug: "knowledge-systems-change-and-invariance"
 date: "2026-05-31"
@@ -7,15 +7,6 @@ category: "Philosophy of Science"
 author: "Wang Xinhua"
 excerpt: "Integrating analytic philosophy, sociology of science, and Marxist theory, this paper argues that mature knowledge systems maintain their identity through defeasible cognitive dispositions rather than frozen propositions."
 ---
-Wang Xinhua
-
-Secondary School Philosophy Conference of Zhejiang
-
-Hangzhou, China
-
-2026
-
-# The Dynamic Dialectic of the Evolution of Knowledge Systems: On "Change" and "Invariance" in Theoretical Identity
 
 ## Abstract
 

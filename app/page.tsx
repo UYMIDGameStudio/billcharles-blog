@@ -6,10 +6,12 @@ import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
+import { PUBLICATIONS } from '@/lib/publications';
 import {
   AUTHOR_EMAIL,
-  AUTHOR_NAME,
   AUTHOR_ORCID,
+  AUTHOR_SCHOLAR,
+  PERSON_SCHEMA,
   RSS_ALTERNATE_TYPES,
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -37,37 +39,7 @@ const homeJsonLd = [
     url: SITE_URL,
     description: SITE_DESCRIPTION,
   },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    '@id': `${SITE_URL}/#author`,
-    name: AUTHOR_NAME,
-    alternateName: ['Wang Xinhua', 'Xinhua Wang', '王鑫桦'],
-    url: SITE_URL,
-    image: `${SITE_URL}/image_0.png`,
-    email: AUTHOR_EMAIL,
-    description:
-      'Student researcher in Western philosophy, post-Marxism, and psychoanalysis, based in Zhejiang, China; Secretary-General of the organizing committee of the Zhejiang Secondary School Philosophy Conference (SSPC).',
-    jobTitle: 'Secretary-General, Organizing Committee',
-    affiliation: {
-      '@type': 'Organization',
-      name: 'Zhejiang Secondary School Philosophy Conference (SSPC)',
-    },
-    identifier: {
-      '@type': 'PropertyValue',
-      propertyID: 'ORCID',
-      value: '0009-0000-4322-5195',
-    },
-    sameAs: [AUTHOR_ORCID, 'https://scholar.google.com/citations?user=9gI3scEAAAAJ'],
-    knowsAbout: [
-      'Western Philosophy',
-      'Post-Marxism',
-      'Psychoanalysis',
-      'Political Economy',
-      'Cryptography',
-      'DAO',
-    ],
-  },
+  PERSON_SCHEMA,
 ];
 
 const FIELDS = [
@@ -103,11 +75,7 @@ const READING = [
 const CONNECT = [
   { k: 'Email', href: `mailto:${AUTHOR_EMAIL}`, label: AUTHOR_EMAIL },
   { k: 'ORCID', href: AUTHOR_ORCID, label: '0009-0000-4322-5195' },
-  {
-    k: 'Scholar',
-    href: 'https://scholar.google.com/citations?user=9gI3scEAAAAJ',
-    label: 'Google Scholar profile',
-  },
+  { k: 'Scholar', href: AUTHOR_SCHOLAR, label: 'Google Scholar profile' },
   {
     k: 'GitHub',
     href: 'https://github.com/UYMIDGameStudio/billcharles-blog',
@@ -118,6 +86,7 @@ const CONNECT = [
 export default function Home() {
   // The writing index is generated from content/*.md — add a markdown file and it appears here.
   const posts = getArticles().slice(0, 6);
+  const featured = PUBLICATIONS[0];
 
   return (
     <main>
@@ -153,6 +122,12 @@ export default function Home() {
               Zhejiang Secondary School Philosophy Conference (SSPC). Co-founder,
               Ateleios Diexodos.
             </p>
+            <Link
+              href="/about"
+              className="mt-5 inline-block text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+            >
+              More about me →
+            </Link>
           </div>
           <div className="relative">
             <div className="absolute -bottom-3.5 -right-3.5 left-3.5 top-3.5 rounded-sm border border-line2" />
@@ -188,42 +163,49 @@ export default function Home() {
 
         {/* FEATURED PAPER */}
         <section className="pt-16">
-          <p className="mb-6 text-xs uppercase tracking-[0.16em] text-ink3">
-            Featured Paper
-          </p>
+          <div className="mb-6 flex items-baseline justify-between">
+            <p className="text-xs uppercase tracking-[0.16em] text-ink3">Featured Paper</p>
+            <Link
+              href="/publications"
+              className="text-xs uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+            >
+              All publications →
+            </Link>
+          </div>
           <div className="grid items-start gap-10 md:grid-cols-[120px_1fr]">
             <div className="pt-1.5 text-[13px] leading-loose text-ink3">
-              <div className="font-medium text-accent">2026</div>
-              <div>3rd SSPC</div>
-              <div>Philosophy</div>
+              <div className="font-medium text-accent">{featured.year}</div>
+              <div>{featured.venue}</div>
             </div>
             <div>
               <h2 className="text-[clamp(1.6rem,3.4vw,2.05rem)] font-normal leading-snug tracking-tight text-ink">
-                The Dynamic Dialectic of Knowledge Systems: On{' '}
-                <span className="italic">Change</span> and{' '}
-                <span className="italic">Invariance</span> in Theoretical Identity
+                {featured.title}
               </h2>
               <p className="mt-4 max-w-[42em] text-[17px] leading-relaxed text-ink2">
                 A study of how systems of knowledge evolve — what persists as a
                 theory&apos;s identity through transformation, and what must change
-                for it to remain true. Presented at the 3rd Zhejiang Secondary
-                School Philosophy Conference.
+                for it to remain true.
               </p>
               <div className="mt-5 flex flex-wrap gap-6 text-[13px]">
-                <a
-                  href="https://philpapers.org/rec/WANTDD-2"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-b border-accent/40 pb-0.5 text-accent transition-colors hover:border-accent"
-                >
-                  PhilPapers record →
-                </a>
-                <Link
-                  href="/articles/knowledge-systems-change-and-invariance"
-                  className="border-b border-line2 pb-0.5 text-ink3 transition-colors hover:text-accent"
-                >
-                  Read on this site →
-                </Link>
+                {featured.links.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border-b border-accent/40 pb-0.5 text-accent transition-colors hover:border-accent"
+                  >
+                    {l.label} →
+                  </a>
+                ))}
+                {featured.articleSlug && (
+                  <Link
+                    href={`/articles/${encodeURIComponent(featured.articleSlug)}`}
+                    className="border-b border-line2 pb-0.5 text-ink3 transition-colors hover:text-accent"
+                  >
+                    Read on this site →
+                  </Link>
+                )}
               </div>
             </div>
           </div>
