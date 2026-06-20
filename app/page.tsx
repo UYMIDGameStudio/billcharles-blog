@@ -223,14 +223,14 @@ export default function Home() {
             <Link
               key={post.slug}
               href={`/articles/${encodeURIComponent(post.slug)}`}
-              className="grid grid-cols-[54px_140px_1fr] items-baseline gap-6 border-b border-line py-6 pr-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-4"
+              className="grid grid-cols-1 gap-2 border-b border-line py-6 pr-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-4 sm:grid-cols-[54px_140px_1fr] sm:items-baseline sm:gap-6"
             >
-              <span className="text-[13px] italic text-ink3">
+              <span className="hidden text-[13px] italic text-ink3 sm:block">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <span className="text-[12px] leading-relaxed text-ink3">
-                <span className="block">{formatDisplayDate(post.date)}</span>
-                <span className="block uppercase tracking-[0.08em] text-accent">
+              <span className="flex gap-2.5 text-[12px] leading-relaxed text-ink3 sm:block">
+                <span className="sm:block">{formatDisplayDate(post.date)}</span>
+                <span className="uppercase tracking-[0.08em] text-accent sm:block">
                   {post.category}
                 </span>
               </span>

@@ -53,14 +53,14 @@ export default function ArticleFilter({ posts }: { posts: ArticleListItem[] }) {
           <Link
             key={post.slug}
             href={`/articles/${encodeURIComponent(post.slug)}`}
-            className="group grid grid-cols-[64px_150px_1fr_30px] items-baseline gap-7 border-b border-line py-8 pr-3 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3.5"
+            className="group grid grid-cols-1 gap-2 border-b border-line py-8 pr-3 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3.5 sm:grid-cols-[64px_150px_1fr_30px] sm:items-baseline sm:gap-7"
           >
-            <span className="text-[15px] italic text-ink3">
+            <span className="hidden text-[15px] italic text-ink3 sm:block">
               {String(i + 1).padStart(2, '0')}
             </span>
-            <span className="text-[12.5px] leading-relaxed tracking-[0.03em] text-ink3">
-              <span className="block">{post.date}</span>
-              <span className="block uppercase tracking-[0.1em] text-accent">
+            <span className="flex gap-2.5 text-[12.5px] leading-relaxed tracking-[0.03em] text-ink3 sm:block">
+              <span className="sm:block">{post.date}</span>
+              <span className="uppercase tracking-[0.1em] text-accent sm:block">
                 {post.category}
               </span>
             </span>
@@ -74,7 +74,7 @@ export default function ArticleFilter({ posts }: { posts: ArticleListItem[] }) {
                 </span>
               )}
             </span>
-            <span className="text-right text-xl text-ink3 transition-colors group-hover:text-accent">
+            <span className="hidden text-right text-xl text-ink3 transition-colors group-hover:text-accent sm:block">
               →
             </span>
           </Link>
