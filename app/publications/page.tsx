@@ -27,6 +27,7 @@ const publicationsJsonLd = {
   name: 'Publications',
   url: `${SITE_URL}/publications`,
   description,
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   about: { '@id': `${SITE_URL}/#author` },
   mainEntity: {
     '@type': 'ItemList',

@@ -33,6 +33,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.3,
     },
+    {
+      url: `${SITE_URL}/privacy`,
+      changeFrequency: 'yearly',
+      priority: 0.2,
+    },
   ];
 
   const articlePages: MetadataRoute.Sitemap = articles.map((post) => {

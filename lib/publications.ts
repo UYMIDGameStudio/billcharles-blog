@@ -18,7 +18,10 @@ export const PUBLICATIONS: Publication[] = [
     title:
       'The Dynamic Dialectic of Knowledge System Evolution: On "Change" and "Invariance" in Theoretical Identity',
     venue: '3rd Zhejiang Secondary School Philosophy Conference',
-    links: [{ label: 'PhilPapers record', href: 'https://philpapers.org/rec/WANTDD-2' }],
+    links: [
+      { label: 'PhilPapers record', href: 'https://philpapers.org/rec/WANTDD-2' },
+      { label: 'Zenodo (DOI)', href: 'https://doi.org/10.5281/zenodo.20586216' },
+    ],
     articleSlug: 'knowledge-systems-change-and-invariance',
   },
 ];

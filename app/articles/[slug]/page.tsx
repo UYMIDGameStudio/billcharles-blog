@@ -9,6 +9,7 @@ import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
 import ReadingProgress from '@/app/components/ReadingProgress';
 import { formatDisplayDate, getArticles, getPostBySlug } from '@/lib/posts';
+import { PUBLICATIONS } from '@/lib/publications';
 import {
   AUTHOR_ACADEMIC_NAME,
   AUTHOR_NAME,
@@ -110,6 +111,9 @@ export default async function ArticlePage({
   const isAcademicByline = authorName !== AUTHOR_NAME; // only the flagship paper sets a custom author
   const authorAlt = isAcademicByline ? AUTHOR_NAME : AUTHOR_ACADEMIC_NAME;
 
+  const publication = PUBLICATIONS.find((p) => p.articleSlug === post.slug);
+  const isScholarly = Boolean(publication);
+
   // Adjacent articles for prev/next navigation (sorted newest-first).
   const all = getArticles();
   const idx = all.findIndex((p) => p.slug === post.slug);
@@ -118,7 +122,7 @@ export default async function ArticlePage({
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': isScholarly ? 'ScholarlyArticle' : 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
     url: canonicalUrl,
@@ -126,14 +130,25 @@ export default async function ArticlePage({
     articleSection: post.category,
     inLanguage,
     wordCount,
+    image: {
+      '@type': 'ImageObject',
+      url: `${canonicalUrl}/opengraph-image`,
+      width: 1200,
+      height: 630,
+    },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     ...(publishedTime ? { datePublished: publishedTime, dateModified: publishedTime } : {}),
+    ...(isScholarly && post.excerpt ? { abstract: post.excerpt } : {}),
+    ...(publication && publication.links.length
+      ? { sameAs: publication.links.map((l) => l.href) }
+      : {}),
     author: {
       '@type': 'Person',
+      '@id': `${SITE_URL}/#author`,
       name: authorName,
       alternateName: authorAlt,
-      url: `${SITE_URL}/#author`,
     },
-    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+    publisher: { '@id': `${SITE_URL}/#organization` },
   };
 
   const breadcrumbJsonLd = {
@@ -152,7 +167,7 @@ export default async function ArticlePage({
       <SiteHeader activeNav="articles" />
       <ReadingProgress />
 
-      <article className="mx-auto max-w-[720px] px-6">
+      <article className="mx-auto max-w-[720px] px-6" lang={inLanguage}>
         <header className="pt-16">
           <Link
             href="/articles"

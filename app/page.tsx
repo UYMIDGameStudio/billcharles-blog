@@ -11,11 +11,13 @@ import {
   AUTHOR_EMAIL,
   AUTHOR_ORCID,
   AUTHOR_SCHOLAR,
+  ORGANIZATION_SCHEMA,
   PERSON_SCHEMA,
   RSS_ALTERNATE_TYPES,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
+  WEBSITE_SCHEMA,
 } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -31,16 +33,7 @@ export const metadata: Metadata = {
   },
 };
 
-const homeJsonLd = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: SITE_NAME,
-    url: SITE_URL,
-    description: SITE_DESCRIPTION,
-  },
-  PERSON_SCHEMA,
-];
+const homeJsonLd = [WEBSITE_SCHEMA, ORGANIZATION_SCHEMA, PERSON_SCHEMA];
 
 const FIELDS = [
   'Western Philosophy',
