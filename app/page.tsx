@@ -11,11 +11,13 @@ import {
   AUTHOR_EMAIL,
   AUTHOR_ORCID,
   AUTHOR_SCHOLAR,
+  ORGANIZATION_SCHEMA,
   PERSON_SCHEMA,
   RSS_ALTERNATE_TYPES,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
+  WEBSITE_SCHEMA,
 } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -31,16 +33,7 @@ export const metadata: Metadata = {
   },
 };
 
-const homeJsonLd = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: SITE_NAME,
-    url: SITE_URL,
-    description: SITE_DESCRIPTION,
-  },
-  PERSON_SCHEMA,
-];
+const homeJsonLd = [WEBSITE_SCHEMA, ORGANIZATION_SCHEMA, PERSON_SCHEMA];
 
 const FIELDS = [
   'Western Philosophy',
@@ -223,14 +216,14 @@ export default function Home() {
             <Link
               key={post.slug}
               href={`/articles/${encodeURIComponent(post.slug)}`}
-              className="grid grid-cols-[54px_140px_1fr] items-baseline gap-6 border-b border-line py-6 pr-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-4"
+              className="grid grid-cols-1 gap-2 border-b border-line py-6 pr-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-4 sm:grid-cols-[54px_140px_1fr] sm:items-baseline sm:gap-6"
             >
-              <span className="text-[13px] italic text-ink3">
+              <span className="hidden text-[13px] italic text-ink3 sm:block">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <span className="text-[12px] leading-relaxed text-ink3">
-                <span className="block">{formatDisplayDate(post.date)}</span>
-                <span className="block uppercase tracking-[0.08em] text-accent">
+              <span className="flex gap-2.5 text-[12px] leading-relaxed text-ink3 sm:block">
+                <span className="sm:block">{formatDisplayDate(post.date)}</span>
+                <span className="uppercase tracking-[0.08em] text-accent sm:block">
                   {post.category}
                 </span>
               </span>

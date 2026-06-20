@@ -48,6 +48,7 @@ const aboutJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
   url: `${SITE_URL}/about`,
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   mainEntity: { '@id': `${SITE_URL}/#author` },
 };
 

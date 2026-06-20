@@ -45,6 +45,29 @@ export const PERSON_SCHEMA = {
   ],
 };
 
+// Canonical WebSite + Organization nodes (one @id each) so articles can reference
+// them via isPartOf / publisher and processors merge the entity graph.
+export const WEBSITE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  inLanguage: 'en',
+  publisher: { '@id': `${SITE_URL}/#organization` },
+};
+
+export const ORGANIZATION_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/image_0.png`,
+  founder: { '@id': `${SITE_URL}/#author` },
+};
+
 /** 将 frontmatter 日期转为 sitemap 可用的 Date；无效则返回 undefined */
 export function toSitemapLastModified(date: string): Date | undefined {
   if (!date) return undefined;
