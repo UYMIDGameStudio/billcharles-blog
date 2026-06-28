@@ -11,6 +11,7 @@ import {
   AUTHOR_NAME_HANZI,
   AUTHOR_ORCID,
   AUTHOR_ORCID_ID,
+  AUTHOR_PHILPEOPLE,
   AUTHOR_SCHOLAR,
   PERSON_SCHEMA,
   SITE_NAME,
@@ -36,6 +37,7 @@ const PROFILES = [
   { k: 'Email', href: `mailto:${AUTHOR_EMAIL}`, label: AUTHOR_EMAIL },
   { k: 'ORCID', href: AUTHOR_ORCID, label: AUTHOR_ORCID_ID },
   { k: 'Scholar', href: AUTHOR_SCHOLAR, label: 'Google Scholar profile' },
+  { k: 'PhilPeople', href: AUTHOR_PHILPEOPLE, label: 'PhilPeople profile' },
   { k: 'PhilPapers', href: 'https://philpapers.org/rec/WANTDD-2', label: 'PhilPapers record' },
   {
     k: 'GitHub',

@@ -15,6 +15,7 @@ export const AUTHOR_ACADEMIC_NAME = 'Wang Xinhua'; // matches the PhilPapers rec
 export const AUTHOR_NAME_HANZI = '王鑫桦';          // legal Chinese name (NOT 王欣华)
 export const AUTHOR_ORCID_ID = '0009-0000-4322-5195';
 export const AUTHOR_SCHOLAR = 'https://scholar.google.com/citations?user=9gI3scEAAAAJ';
+export const AUTHOR_PHILPEOPLE = 'https://philpeople.org/profiles/wang-xinhua';
 
 // Canonical Person node — reused on the home page and /about (same @id = one entity).
 export const PERSON_SCHEMA = {
@@ -34,7 +35,7 @@ export const PERSON_SCHEMA = {
     name: 'Zhejiang Secondary School Philosophy Conference (SSPC)',
   },
   identifier: { '@type': 'PropertyValue', propertyID: 'ORCID', value: AUTHOR_ORCID_ID },
-  sameAs: [AUTHOR_ORCID, AUTHOR_SCHOLAR],
+  sameAs: [AUTHOR_ORCID, AUTHOR_SCHOLAR, AUTHOR_PHILPEOPLE],
   knowsAbout: [
     'Western Philosophy',
     'Post-Marxism',
