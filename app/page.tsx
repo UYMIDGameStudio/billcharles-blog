@@ -5,6 +5,7 @@ import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
+import WritingPager, { type WritingPage } from '@/app/components/WritingPager';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { PUBLICATIONS } from '@/lib/publications';
 import {
@@ -77,9 +78,17 @@ const CONNECT = [
 ];
 
 export default function Home() {
-  // The writing index is generated from content/*.md — add a markdown file and it appears here.
-  const posts = getArticles().slice(0, 6);
-  const featured = PUBLICATIONS[0];
+  // The writing pager is generated from content/*.md — add a markdown file and it appears here.
+  const pages: WritingPage[] = getArticles()
+    .slice(0, 5)
+    .map((post, i) => ({
+      num: String(i + 1).padStart(2, '0'),
+      kicker: post.category,
+      date: formatDisplayDate(post.date),
+      title: post.title,
+      excerpt: post.excerpt ?? '',
+      href: `/articles/${encodeURIComponent(post.slug)}`,
+    }));
 
   return (
     <main>
@@ -154,10 +163,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FEATURED PAPER */}
-        <section className="pt-16">
-          <div className="mb-6 flex items-baseline justify-between">
-            <p className="text-xs uppercase tracking-[0.16em] text-ink3">Featured Paper</p>
+        {/* PUBLICATIONS (dynamic from lib/publications) */}
+        <section id="publications" className="scroll-mt-20 pt-16">
+          <div className="flex items-baseline justify-between border-b border-ink pb-3.5">
+            <h2 className="text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
+              Publications
+            </h2>
             <Link
               href="/publications"
               className="text-xs uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
@@ -165,89 +176,52 @@ export default function Home() {
               All publications →
             </Link>
           </div>
-          <div className="grid items-start gap-10 md:grid-cols-[120px_1fr]">
-            <div className="pt-1.5 text-[13px] leading-loose text-ink3">
-              <div className="font-medium text-accent">{featured.year}</div>
-              <div>{featured.venue}</div>
-            </div>
-            <div>
-              <h2 className="text-[clamp(1.6rem,3.4vw,2.05rem)] font-normal leading-snug tracking-tight text-ink">
-                {featured.title}
-              </h2>
-              <p className="mt-4 max-w-[42em] text-[17px] leading-relaxed text-ink2">
-                A study of how systems of knowledge evolve — what persists as a
-                theory&apos;s identity through transformation, and what must change
-                for it to remain true.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-6 text-[13px]">
-                {featured.links.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="border-b border-accent/40 pb-0.5 text-accent transition-colors hover:border-accent"
-                  >
-                    {l.label} →
-                  </a>
-                ))}
-                {featured.articleSlug && (
-                  <Link
-                    href={`/articles/${encodeURIComponent(featured.articleSlug)}`}
-                    className="border-b border-line2 pb-0.5 text-ink3 transition-colors hover:text-accent"
-                  >
-                    Read on this site →
-                  </Link>
+          {PUBLICATIONS.map((pub) => (
+            <div
+              key={pub.title}
+              className="grid items-baseline gap-3 border-b border-line py-7 pr-3 md:grid-cols-[120px_1fr] md:gap-10"
+            >
+              <div className="text-xs leading-relaxed text-ink3">
+                <div className="font-medium text-accent">{pub.year}</div>
+                <div>{pub.venue}</div>
+              </div>
+              <div>
+                <h3 className="mb-2 text-[clamp(1.25rem,3vw,1.6rem)] font-normal leading-snug tracking-tight text-ink">
+                  {pub.title}
+                </h3>
+                {pub.abstract && (
+                  <p className="mb-3 max-w-[46em] text-[15px] leading-relaxed text-ink2">
+                    {pub.abstract}
+                  </p>
                 )}
+                <div className="flex flex-wrap gap-6 text-[13px]">
+                  {pub.links.map((l) => (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-b border-accent/40 pb-0.5 text-accent transition-colors hover:border-accent"
+                    >
+                      {l.label} →
+                    </a>
+                  ))}
+                  {pub.articleSlug && (
+                    <Link
+                      href={`/articles/${encodeURIComponent(pub.articleSlug)}`}
+                      className="border-b border-line2 pb-0.5 text-ink3 transition-colors hover:text-accent"
+                    >
+                      Read on this site →
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </section>
 
-        {/* WRITING INDEX (dynamic from content/*.md) */}
-        <section id="writing" className="scroll-mt-20 pt-20">
-          <div className="mb-2 flex items-baseline justify-between border-b border-ink pb-3.5">
-            <h2 className="text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
-              Writing
-            </h2>
-            <span className="text-xs text-ink3">Essays &amp; notes</span>
-          </div>
-          {posts.map((post, i) => (
-            <Link
-              key={post.slug}
-              href={`/articles/${encodeURIComponent(post.slug)}`}
-              className="grid grid-cols-1 gap-2 border-b border-line py-6 pr-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-4 sm:grid-cols-[54px_140px_1fr] sm:items-baseline sm:gap-6"
-            >
-              <span className="hidden text-[13px] italic text-ink3 sm:block">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span className="flex gap-2.5 text-[12px] leading-relaxed text-ink3 sm:block">
-                <span className="sm:block">{formatDisplayDate(post.date)}</span>
-                <span className="uppercase tracking-[0.08em] text-accent sm:block">
-                  {post.category}
-                </span>
-              </span>
-              <span>
-                <span className="mb-1.5 block text-[1.45rem] font-normal leading-snug text-ink">
-                  {post.title}
-                </span>
-                {post.excerpt && (
-                  <span className="block max-w-[46em] text-[15px] leading-relaxed text-ink2">
-                    {post.excerpt}
-                  </span>
-                )}
-              </span>
-            </Link>
-          ))}
-          <div className="pt-6 text-center">
-            <Link
-              href="/articles"
-              className="text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
-            >
-              View all articles →
-            </Link>
-          </div>
-        </section>
+        {/* WRITING — wheel/touch-paged reader (dynamic from content/*.md) */}
+        <WritingPager pages={pages} />
 
         {/* COLUMNS */}
         <section id="columns" className="scroll-mt-20 pt-20">
