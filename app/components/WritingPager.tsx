@@ -28,11 +28,12 @@ export default function WritingPager({ pages }: { pages: WritingPage[] }) {
   const lockRef = useRef(0);
   const touchY = useRef<number | null>(null);
   const touchDone = useRef(false);
-  pageRef.current = page;
 
   const go = (i: number) => {
+    const next = Math.max(0, Math.min(pages.length - 1, i));
     lockRef.current = Date.now();
-    setPage(Math.max(0, Math.min(pages.length - 1, i)));
+    pageRef.current = next;
+    setPage(next);
   };
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function WritingPager({ pages }: { pages: WritingPage[] }) {
       const now = Date.now();
       if (now - lockRef.current < 700) return;
       lockRef.current = now;
+      pageRef.current = target;
       setPage(target);
     };
 
@@ -67,6 +69,7 @@ export default function WritingPager({ pages }: { pages: WritingPage[] }) {
       e.preventDefault();
       touchDone.current = true;
       lockRef.current = Date.now();
+      pageRef.current = target;
       setPage(target);
     };
 
@@ -104,9 +107,11 @@ export default function WritingPager({ pages }: { pages: WritingPage[] }) {
           className="h-full will-change-transform transition-transform duration-[650ms] ease-[cubic-bezier(.22,.61,.36,1)]"
           style={{ transform: `translateY(-${page * 100}%)` }}
         >
-          {pages.map((pg) => (
+          {pages.map((pg, i) => (
             <article
               key={pg.num}
+              aria-hidden={i !== page}
+              inert={i !== page}
               className="grid h-full content-center gap-4 pr-14 md:grid-cols-[120px_1fr] md:gap-10 md:pr-24"
             >
               <div className="text-xs leading-relaxed text-ink3">

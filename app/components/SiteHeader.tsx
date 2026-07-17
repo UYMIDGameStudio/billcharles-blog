@@ -5,9 +5,20 @@ import ThemeToggle from './ThemeToggle';
 type NavKey = 'home' | 'articles' | 'publications' | 'about';
 
 export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
-  const navItems: { href: string; label: string; key: NavKey }[] = [
+  const navItems: {
+    href: string;
+    label: string;
+    shortLabel?: string;
+    key: NavKey;
+  }[] = [
     { href: '/', label: 'Home', key: 'home' },
     { href: '/articles', label: 'Articles', key: 'articles' },
+    {
+      href: '/publications',
+      label: 'Publications',
+      shortLabel: 'Pubs',
+      key: 'publications',
+    },
     { href: '/about', label: 'About', key: 'about' },
   ];
 
@@ -23,11 +34,12 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-3.5 text-[13px] uppercase tracking-wide sm:gap-7 sm:text-sm sm:tracking-wider">
-          {navItems.map(({ href, label, key }) => (
+        <nav className="flex items-center gap-2.5 text-[12px] uppercase tracking-wide sm:gap-6 sm:text-sm sm:tracking-wider">
+          {navItems.map(({ href, label, shortLabel, key }) => (
             <Link
               key={key}
               href={href}
+              aria-label={label}
               aria-current={activeNav === key ? 'page' : undefined}
               className={
                 activeNav === key
@@ -35,7 +47,14 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
                   : 'text-ink2 transition-colors hover:text-accent'
               }
             >
-              {label}
+              {shortLabel ? (
+                <>
+                  <span className="sm:hidden">{shortLabel}</span>
+                  <span className="hidden sm:inline">{label}</span>
+                </>
+              ) : (
+                label
+              )}
             </Link>
           ))}
           <ThemeToggle />

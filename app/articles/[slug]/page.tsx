@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import MarkdownContent from '@/app/components/MarkdownContent';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
@@ -28,7 +29,7 @@ function toIsoDate(date: string): string | undefined {
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
   const posts = getArticles();
-  return posts.map((post) => ({ slug: encodeURIComponent(post.slug) }));
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -73,29 +74,7 @@ export default async function ArticlePage({
   const post = getPostBySlug(slug);
 
   if (!post) {
-    return (
-      <main>
-        <SiteHeader activeNav="articles" />
-        <section className="mx-auto max-w-2xl space-y-6 px-6 py-32 text-center">
-          <p className="text-xs uppercase tracking-widest text-ink3">404</p>
-          <h1 className="text-3xl font-normal tracking-tight text-ink md:text-4xl">
-            Article not found
-          </h1>
-          <p className="leading-relaxed text-ink2">
-            Looking for:{' '}
-            <span className="font-mono text-ink">{decodeURIComponent(slug)}.md</span>
-          </p>
-          <div className="flex flex-col justify-center gap-4 pt-4 text-sm sm:flex-row">
-            <Link href="/articles" className="text-ink3 underline transition-colors hover:text-accent">
-              ← Back to articles
-            </Link>
-            <Link href="/" className="text-ink3 underline transition-colors hover:text-accent">
-              ← Back to home
-            </Link>
-          </div>
-        </section>
-      </main>
-    );
+    notFound();
   }
 
   const canonicalUrl = `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`;

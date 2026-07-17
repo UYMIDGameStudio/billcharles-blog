@@ -4,7 +4,13 @@ import path from 'path';
 import { cache } from 'react';
 import matter from 'gray-matter';
 
-const contentDir = path.join(process.cwd(), 'content');
+const ARTICLE_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+type ArticleEntry = {
+  slug: string;
+  filePath: string;
+  raw: string;
+};
 
 export type Post = {
   slug: string;
@@ -23,8 +29,7 @@ export type PostWithContent = Post & {
   author?: string;
 };
 
-function readMarkdownMeta(filePath: string, slug: string): Post {
-  const raw = fs.readFileSync(filePath, 'utf8');
+function readMarkdownMeta(raw: string, slug: string): Post {
   const { data } = matter(raw);
   return {
     slug,
@@ -42,35 +47,75 @@ function effectiveSlug(data: Record<string, unknown>, fileName: string): string 
   return fileName.replace(/\.md$/, '');
 }
 
-/** Articles: `content/*.md` (root) and `content/articles/*.md` */
-const getArticleEntries = cache((): { slug: string; filePath: string }[] => {
-  const results: { slug: string; filePath: string }[] = [];
+export function isValidArticleSlug(slug: string): boolean {
+  return ARTICLE_SLUG_PATTERN.test(slug);
+}
 
-  const collect = (dir: string) => {
-    if (!fs.existsSync(dir)) return;
-    for (const file of fs.readdirSync(dir)) {
-      if (!file.endsWith('.md')) continue;
-      const filePath = path.join(dir, file);
-      if (!fs.statSync(filePath).isFile()) continue;
-      const { data } = matter(fs.readFileSync(filePath, 'utf8'));
-      results.push({ slug: effectiveSlug(data, file), filePath });
+/** Articles: `content/*.md` (root) and `content/articles/*.md` */
+const getArticleEntries = cache((): ArticleEntry[] => {
+  const results: ArticleEntry[] = [];
+  const seenSlugs = new Map<string, string>();
+
+  const register = (filePath: string, fileName: string, raw: string) => {
+    const { data } = matter(raw);
+    const slug = effectiveSlug(data, fileName);
+    if (!isValidArticleSlug(slug)) {
+      throw new Error(
+        `Invalid article slug "${slug}" in ${path.relative(process.cwd(), filePath)}. ` +
+          'Use lowercase letters, numbers, and single hyphens only.'
+      );
     }
+    const existing = seenSlugs.get(slug);
+    if (existing) {
+      throw new Error(
+        `Duplicate article slug "${slug}" in ${path.relative(process.cwd(), existing)} ` +
+          `and ${path.relative(process.cwd(), filePath)}.`
+      );
+    }
+    seenSlugs.set(slug, filePath);
+    results.push({ slug, filePath, raw });
   };
 
-  collect(contentDir);
-  collect(path.join(contentDir, 'articles'));
+  for (const entry of fs.readdirSync(path.join(process.cwd(), 'content'), {
+    withFileTypes: true,
+  })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    const filePath = path.join(process.cwd(), 'content', entry.name);
+    const raw = fs.readFileSync(
+      path.join(process.cwd(), 'content', entry.name),
+      'utf8'
+    );
+    register(filePath, entry.name, raw);
+  }
+
+  const nestedDir = path.join(process.cwd(), 'content', 'articles');
+  if (fs.existsSync(nestedDir)) {
+    for (const entry of fs.readdirSync(
+      path.join(process.cwd(), 'content', 'articles'),
+      { withFileTypes: true }
+    )) {
+      if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+      const filePath = path.join(process.cwd(), 'content', 'articles', entry.name);
+      const raw = fs.readFileSync(
+        path.join(process.cwd(), 'content', 'articles', entry.name),
+        'utf8'
+      );
+      register(filePath, entry.name, raw);
+    }
+  }
 
   return results;
 });
 
-function resolveArticlePath(slug: string): string | null {
+function resolveArticleEntry(slug: string): ArticleEntry | null {
+  if (!isValidArticleSlug(slug)) return null;
   const entry = getArticleEntries().find((e) => e.slug === slug);
-  return entry ? entry.filePath : null;
+  return entry ?? null;
 }
 
 export const getArticles = cache((): Post[] => {
-  const articles = getArticleEntries().map(({ slug, filePath }) =>
-    readMarkdownMeta(filePath, slug)
+  const articles = getArticleEntries().map(({ slug, raw }) =>
+    readMarkdownMeta(raw, slug)
   );
   return articles.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -78,15 +123,16 @@ export const getArticles = cache((): Post[] => {
 });
 
 export const getPostBySlug = cache((slug: string): PostWithContent | null => {
-  const decodedSlug = decodeURIComponent(slug).replace(/\.md$/, '');
-  const filePath = resolveArticlePath(decodedSlug);
-  if (!filePath) return null;
+  // Next.js route params are already decoded; decoding again can turn valid
+  // percent literals into malformed input.
+  const normalizedSlug = slug.replace(/\.md$/, '');
+  const entry = resolveArticleEntry(normalizedSlug);
+  if (!entry) return null;
 
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(fileContents);
+  const { data, content } = matter(entry.raw);
 
   return {
-    slug: decodedSlug,
+    slug: normalizedSlug,
     title: data.title || '未命名',
     shortTitle: typeof data.shortTitle === 'string' ? data.shortTitle : undefined,
     author: typeof data.author === 'string' ? data.author : undefined,

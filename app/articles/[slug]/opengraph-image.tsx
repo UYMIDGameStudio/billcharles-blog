@@ -10,7 +10,7 @@ export const alt = `${SITE_NAME} article`;
 
 // Prerender one image per article at build time.
 export function generateStaticParams() {
-  return getArticles().map((post) => ({ slug: encodeURIComponent(post.slug) }));
+  return getArticles().map((post) => ({ slug: post.slug }));
 }
 
 const domain = new URL(SITE_URL).host;
@@ -29,10 +29,17 @@ export default async function Image({
 }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
-  const title = post?.title ?? SITE_NAME;
-  const meta = post
-    ? [post.category, formatDisplayDate(post.date)].filter(Boolean).join('  ·  ')
-    : '';
+  if (!post) {
+    return new Response('Not Found', {
+      status: 404,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
+  }
+
+  const title = post.title;
+  const meta = [post.category, formatDisplayDate(post.date)]
+    .filter(Boolean)
+    .join('  ·  ');
 
   const fonts = await loadOgFonts(`${title}${meta}${SITE_NAME}${domain}`);
 
