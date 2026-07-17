@@ -5,12 +5,16 @@ type JsonLdProps = {
   data: Record<string, unknown> | Record<string, unknown>[];
 };
 
+export function serializeJsonLd(data: JsonLdProps['data']): string {
+  // Prevent author-controlled strings from closing the surrounding script tag.
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
 export default function JsonLd({ data }: JsonLdProps) {
   return (
     <script
       type="application/ld+json"
-      // Structured data is static and author-controlled; safe to inline.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }}
     />
   );
 }

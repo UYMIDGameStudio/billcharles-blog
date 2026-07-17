@@ -74,12 +74,3 @@ body {
   outline-offset: 2px;
   border-radius: 3px;
 }
-
-/* Ko-fi floating button stays tucked into the corner on small screens. */
-@media (max-width: 640px) {
-  .floatingchat-container-wrap,
-  .floatingchat-container-wrap-mobi {
-    transform: scale(0.72) !important;
-    transform-origin: bottom right !important;
-  }
-}

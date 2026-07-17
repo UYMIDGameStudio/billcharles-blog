@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BillCharles Blog
 
-## Getting Started
+Personal academic blog for Bill Charles, built with Next.js 16, React 19,
+TypeScript, Tailwind CSS, and Markdown.
 
-First, run the development server:
+## Local development
+
+Use Node.js 22 or newer:
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Articles live in `content/*.md` or `content/articles/*.md`. Each file uses
+frontmatter:
 
-## Learn More
+```yaml
+---
+title: "Article title"
+slug: "lowercase-url-slug"
+date: "2026-07-17"
+category: "Essay"
+excerpt: "A short summary."
+---
+```
 
-To learn more about Next.js, take a look at the following resources:
+Slugs must contain lowercase letters, numbers, and single hyphens. Duplicate or
+invalid slugs fail the build instead of silently shadowing another article.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Quality checks
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
 
-## Deploy on Vercel
+Run all checks together with `npm run check`. GitHub Actions runs the same
+checks and audits production dependencies on every pull request and main-branch
+push.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## AI demo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The optional streaming demo uses the AI Gateway:
+
+```bash
+export AI_GATEWAY_API_KEY="your-key"
+npm run ai:demo
+```
+
+The blog itself does not use this key or call an AI model at runtime.
+
+## Deployment and privacy
+
+The site is designed for Vercel and statically generates its pages, RSS feed,
+sitemap, and Open Graph images. Security headers are configured in
+`next.config.ts`. The Ko-fi support control is a normal external link; it does
+not load third-party scripts or contact Ko-fi until a visitor clicks it.

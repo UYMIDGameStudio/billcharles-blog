@@ -6,6 +6,7 @@ import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
 import WritingPager, { type WritingPage } from '@/app/components/WritingPager';
+import KofiButton from '@/app/components/KofiButton';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { PUBLICATIONS } from '@/lib/publications';
 import {
@@ -317,6 +318,7 @@ export default function Home() {
       </div>
 
       <SiteFooter />
+      <KofiButton />
     </main>
   );
 }

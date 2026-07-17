@@ -15,10 +15,10 @@ export default function PrivacyPage() {
     <main>
       <SiteHeader />
 
-      <section className="max-w-2xl mx-auto px-6 py-20 prose prose-stone prose-lg prose-a:text-accent prose-a:font-medium">
+      <section className="max-w-2xl mx-auto px-6 py-20 prose prose-lg max-w-none prose-headings:text-ink prose-p:text-ink2 prose-a:text-accent prose-a:font-medium prose-strong:text-ink">
         <h1 className="font-sans tracking-tight">Privacy Policy</h1>
-        <p className="text-stone-500 text-sm font-sans not-prose mb-10">
-          Last updated: June 7, 2026
+        <p className="text-ink3 text-sm font-sans not-prose mb-10">
+          Last updated: July 17, 2026
         </p>
 
         <p>
@@ -40,19 +40,18 @@ export default function PrivacyPage() {
         <h2 className="font-sans">Cookies and analytics</h2>
         <p>
           This blog itself does not set advertising or analytics cookies and
-          does not run any cross-site tracking. The only third-party component
-          is the optional “Support me” (Ko-fi) button described below.
+          does not run any cross-site tracking. The “Support me” button is a
+          normal link and does not load third-party code.
         </p>
 
         <h2 className="font-sans">Third-party services</h2>
         <p>
-          The home page embeds a{' '}
+          The home page includes a link to{' '}
           <a href="https://ko-fi.com" target="_blank" rel="noopener noreferrer">
             Ko-fi
-          </a>{' '}
-          tip widget. When that widget loads, your browser contacts Ko-fi’s
-          servers, and Ko-fi may set its own cookies and process data under its
-          own{' '}
+          </a>
+          . Your browser contacts Ko-fi only after you choose to follow that
+          link. Ko-fi may then set its own cookies and process data under its own{' '}
           <a
             href="https://more.ko-fi.com/privacy"
             target="_blank"

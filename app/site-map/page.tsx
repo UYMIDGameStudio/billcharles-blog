@@ -20,14 +20,14 @@ export default function SiteMapPage() {
 
       <section className="max-w-2xl mx-auto px-6 py-20 space-y-12">
         <header className="space-y-3">
-          <h1 className="text-4xl font-bold font-sans tracking-tight text-stone-900">
+          <h1 className="text-4xl font-bold font-sans tracking-tight text-ink">
             Site Map
           </h1>
-          <p className="text-stone-600 font-serif leading-relaxed">
+          <p className="text-ink2 font-serif leading-relaxed">
             A complete index of this site. Search engines use{' '}
             <a
               href="/sitemap.xml"
-              className="text-stone-800 underline hover:text-stone-600 transition-colors"
+              className="text-ink underline hover:text-accent transition-colors"
             >
               sitemap.xml
             </a>
@@ -39,11 +39,11 @@ export default function SiteMapPage() {
           <section aria-labelledby="pages-heading">
             <h2
               id="pages-heading"
-              className="text-sm font-mono uppercase tracking-widest text-stone-400 mb-4"
+              className="text-sm font-mono uppercase tracking-widest text-ink3 mb-4"
             >
               Pages
             </h2>
-            <ul className="space-y-2 text-stone-800">
+            <ul className="space-y-2 text-ink2">
               <li>
                 <Link href="/" className="hover:text-accent transition-colors">
                   Home
@@ -72,18 +72,23 @@ export default function SiteMapPage() {
                   Privacy Policy
                 </Link>
               </li>
+              <li>
+                <Link href="/site-map" className="hover:text-accent transition-colors">
+                  Site Map
+                </Link>
+              </li>
             </ul>
           </section>
 
           <section aria-labelledby="articles-heading">
             <h2
               id="articles-heading"
-              className="text-sm font-mono uppercase tracking-widest text-stone-400 mb-4"
+              className="text-sm font-mono uppercase tracking-widest text-ink3 mb-4"
             >
               Articles ({articles.length})
             </h2>
             {articles.length === 0 ? (
-              <p className="text-stone-500 italic font-serif">暂无文章</p>
+              <p className="text-ink3 italic font-serif">暂无文章</p>
             ) : (
               <ul className="space-y-4">
                 {articles.map((post) => (
@@ -92,11 +97,11 @@ export default function SiteMapPage() {
                       href={`/articles/${encodeURIComponent(post.slug)}`}
                       className="block group"
                     >
-                      <span className="font-medium text-stone-900 group-hover:text-accent transition-colors">
+                      <span className="font-medium text-ink group-hover:text-accent transition-colors">
                         {post.title}
                       </span>
                       {post.date && (
-                        <span className="ml-2 text-xs font-mono text-stone-400">
+                        <span className="ml-2 text-xs font-mono text-ink3">
                           {formatDisplayDate(post.date)}
                         </span>
                       )}
@@ -108,7 +113,7 @@ export default function SiteMapPage() {
           </section>
         </div>
 
-        <p className="text-xs font-mono text-stone-400 pt-8 border-t border-stone-200">
+        <p className="text-xs font-mono text-ink3 pt-8 border-t border-line">
           Canonical: {SITE_URL}
         </p>
       </section>
