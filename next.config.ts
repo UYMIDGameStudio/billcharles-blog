@@ -30,6 +30,18 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  // Retired article URLs. Keep these forever: they preserve inbound links and
+  // any ranking the old URL earned.
+  async redirects() {
+    return [
+      {
+        // The slug said "psychoanalysis"; the article is epistemology (Bacon→Kant).
+        source: '/articles/psychoanalysis-intro',
+        destination: '/articles/modernity-epistemology-bacon-to-kant',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

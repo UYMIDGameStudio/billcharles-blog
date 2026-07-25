@@ -3,6 +3,7 @@ title: "別君去兮何時還"
 slug: "farewell-and-time"
 date: "2026-06-14"
 category: "Essay"
+lang: "zh-Hant"
 excerpt: "卖弄一些文笔罢了"
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: "The Epistemological Evolution of Modernity: From Foundationalism to the Transcendental Synthesis"
 shortTitle: "The Epistemological Evolution of Modernity"
+slug: "modernity-epistemology-bacon-to-kant"
 date: "2026-02-03"
 category: "Philosophy"
 excerpt: "Traces the epistemological arc of modernity from Bacon's empiricism through Descartes' foundationalist doubt to Kant's transcendental synthesis of rationalism and empiricism."

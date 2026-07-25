@@ -18,8 +18,32 @@ export type Post = {
   date: string;
   category: string;
   excerpt?: string;
+  /** BCP-47 tag, e.g. 'en', 'zh-Hant', 'zh-Hans'. */
+  lang: string;
   type: 'article';
 };
+
+const CJK = /[一-鿿]/;
+
+/**
+ * Language of a post. A frontmatter `lang` always wins — the script of a
+ * Chinese post (Traditional vs Simplified) cannot be inferred from the title
+ * alone, so it must be declared. The heuristic is only a fallback.
+ */
+export function resolveLang(data: Record<string, unknown>, title: string): string {
+  if (typeof data.lang === 'string' && data.lang.trim()) return data.lang.trim();
+  return CJK.test(title) ? 'zh-Hans' : 'en';
+}
+
+/** Open Graph wants `zh_HK`-style locales, not BCP-47 tags. */
+export function ogLocale(lang: string): string {
+  const map: Record<string, string> = {
+    'zh-Hant': 'zh_HK',
+    'zh-Hans': 'zh_CN',
+    en: 'en_US',
+  };
+  return map[lang] ?? lang.replace('-', '_');
+}
 
 export type PostWithContent = Post & {
   content: string;
@@ -31,12 +55,14 @@ export type PostWithContent = Post & {
 
 function readMarkdownMeta(raw: string, slug: string): Post {
   const { data } = matter(raw);
+  const title = data.title || '未命名';
   return {
     slug,
-    title: data.title || '未命名',
+    title,
     date: data.date || '',
     category: data.category || 'Uncategorized',
     excerpt: data.excerpt,
+    lang: resolveLang(data, title),
     type: 'article',
   };
 }
@@ -130,15 +156,17 @@ export const getPostBySlug = cache((slug: string): PostWithContent | null => {
   if (!entry) return null;
 
   const { data, content } = matter(entry.raw);
+  const title = data.title || '未命名';
 
   return {
     slug: normalizedSlug,
-    title: data.title || '未命名',
+    title,
     shortTitle: typeof data.shortTitle === 'string' ? data.shortTitle : undefined,
     author: typeof data.author === 'string' ? data.author : undefined,
     date: data.date || new Date().toISOString().split('T')[0],
     category: data.category || 'Uncategorized',
     excerpt: data.excerpt,
+    lang: resolveLang(data, title),
     type: 'article',
     content,
   };

@@ -3,6 +3,7 @@ title: "結構的替身"
 slug: "the-structural-stand-in"
 date: "2026-06-20"
 category: "Essay"
+lang: "zh-Hant"
 excerpt: "公共討論如何為一個不可言說的結構，找一具可以被攻擊的身體。"
 ---
 

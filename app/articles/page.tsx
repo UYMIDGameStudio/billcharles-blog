@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import ArticleFilter, { type ArticleListItem } from '@/app/components/ArticleFilter';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
+import { getTopics } from '@/lib/topics';
 import { RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
 
 const description = 'Essays and articles by Bill Charles';
@@ -23,6 +25,7 @@ export const metadata: Metadata = {
 
 export default function ArticlesPage() {
   const posts = getArticles();
+  const topics = getTopics();
 
   const items: ArticleListItem[] = posts.map((post) => ({
     slug: post.slug,
@@ -67,6 +70,24 @@ export default function ArticlesPage() {
             Long-form essays, philosophical notes, and research on cryptography —
             collected and dated. <span className="italic">凡所记述，皆为求真。</span>
           </p>
+
+          {/* Real links to the topic pages. The filter below is client-side,
+              so on its own it leaves the category views uncrawlable. */}
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
+              Topics
+            </span>
+            {topics.map((topic) => (
+              <Link
+                key={topic.slug}
+                href={`/topics/${topic.slug}`}
+                className="rounded-full border border-line2 px-3.5 py-1 text-[13px] text-ink2 transition-colors hover:border-accent hover:text-accent"
+              >
+                {topic.name}
+                <span className="ml-1.5 text-ink3">{topic.posts.length}</span>
+              </Link>
+            ))}
+          </div>
         </section>
 
         {posts.length === 0 ? (
