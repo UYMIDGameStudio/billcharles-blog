@@ -3,6 +3,7 @@ title: "回到粗糙的地面"
 slug: "back-to-the-rough-ground"
 date: "2026-06-19"
 category: "Essay"
+lang: "zh-Hant"
 excerpt: "——嚴謹救活了，還是殺死了你最初熱愛的東西。"
 ---
 

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
+import { getTopics } from '@/lib/topics';
 import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 
 export default function SiteMapPage() {
   const articles = getArticles();
+  const topics = getTopics();
 
   return (
     <main>
@@ -58,6 +60,11 @@ export default function SiteMapPage() {
                 </Link>
               </li>
               <li>
+                <Link href="/topics" className="hover:text-accent transition-colors">
+                  Topics
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" className="hover:text-accent transition-colors">
                   About
                 </Link>
@@ -77,6 +84,30 @@ export default function SiteMapPage() {
                   Site Map
                 </Link>
               </li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="topics-heading">
+            <h2
+              id="topics-heading"
+              className="text-sm font-mono uppercase tracking-widest text-ink3 mb-4"
+            >
+              Topics ({topics.length})
+            </h2>
+            <ul className="space-y-2 text-ink2">
+              {topics.map((topic) => (
+                <li key={topic.slug}>
+                  <Link
+                    href={`/topics/${topic.slug}`}
+                    className="hover:text-accent transition-colors"
+                  >
+                    {topic.name}
+                  </Link>
+                  <span className="ml-2 text-xs font-mono text-ink3">
+                    {topic.posts.length}
+                  </span>
+                </li>
+              ))}
             </ul>
           </section>
 

@@ -27,6 +27,9 @@ export default function SiteFooter() {
           <Link href="/articles" className="w-fit text-ink2 transition-colors hover:text-accent">
             Articles
           </Link>
+          <Link href="/topics" className="w-fit text-ink2 transition-colors hover:text-accent">
+            Topics
+          </Link>
           <Link href="/publications" className="w-fit text-ink2 transition-colors hover:text-accent">
             Publications
           </Link>

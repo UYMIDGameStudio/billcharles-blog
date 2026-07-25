@@ -9,6 +9,7 @@ import WritingPager, { type WritingPage } from '@/app/components/WritingPager';
 import KofiButton from '@/app/components/KofiButton';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { PUBLICATIONS } from '@/lib/publications';
+import { getTopics } from '@/lib/topics';
 import {
   AUTHOR_EMAIL,
   AUTHOR_ORCID,
@@ -80,6 +81,7 @@ const CONNECT = [
 
 export default function Home() {
   // The writing pager is generated from content/*.md — add a markdown file and it appears here.
+  const topics = getTopics();
   const pages: WritingPage[] = getArticles()
     .slice(0, 5)
     .map((post, i) => ({
@@ -223,6 +225,23 @@ export default function Home() {
 
         {/* WRITING — wheel/touch-paged reader (dynamic from content/*.md) */}
         <WritingPager pages={pages} />
+
+        {/* TOPICS — crawlable entry points into each subject */}
+        <section className="flex flex-wrap items-center gap-3 border-t border-line pt-8">
+          <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
+            Topics
+          </span>
+          {topics.map((topic) => (
+            <Link
+              key={topic.slug}
+              href={`/topics/${topic.slug}`}
+              className="rounded-full border border-line2 px-3.5 py-1 text-[13px] text-ink2 transition-colors hover:border-accent hover:text-accent"
+            >
+              {topic.name}
+              <span className="ml-1.5 text-ink3">{topic.posts.length}</span>
+            </Link>
+          ))}
+        </section>
 
         {/* COLUMNS */}
         <section id="columns" className="scroll-mt-20 pt-20">

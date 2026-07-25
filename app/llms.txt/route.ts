@@ -1,11 +1,13 @@
 // app/llms.txt/route.ts — structured site map for AI agents (llms.txt standard).
 import { getArticles } from '@/lib/posts';
+import { getTopics } from '@/lib/topics';
 import { AUTHOR_NAME, SITE_URL } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
 export function GET() {
   const articles = getArticles();
+  const topics = getTopics();
 
   const lines = [
     `# ${AUTHOR_NAME}`,
@@ -18,6 +20,13 @@ export function GET() {
       const url = `${SITE_URL}/articles/${encodeURIComponent(a.slug)}`;
       return `- [${a.title}](${url})${a.excerpt ? `: ${a.excerpt}` : ''}`;
     }),
+    ``,
+    `## Topics`,
+    ``,
+    ...topics.map(
+      (t) =>
+        `- [${t.name}](${SITE_URL}/topics/${t.slug}) (${t.posts.length}): ${t.description}`
+    ),
     ``,
     `## About`,
     ``,

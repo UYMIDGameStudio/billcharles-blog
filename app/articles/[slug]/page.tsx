@@ -9,8 +9,9 @@ import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import SupportTip from '@/app/components/SupportTip';
 import ReadingProgress from '@/app/components/ReadingProgress';
-import { formatDisplayDate, getArticles, getPostBySlug } from '@/lib/posts';
+import { formatDisplayDate, getArticles, getPostBySlug, ogLocale } from '@/lib/posts';
 import { PUBLICATIONS } from '@/lib/publications';
+import { topicSlug } from '@/lib/topics';
 import {
   AUTHOR_ACADEMIC_NAME,
   AUTHOR_NAME,
@@ -55,6 +56,8 @@ export async function generateMetadata({
       title: post.title,
       description: post.excerpt,
       authors: [AUTHOR_NAME],
+      locale: ogLocale(post.lang),
+      section: post.category,
       ...(publishedTime ? { publishedTime } : {}),
     },
     twitter: {
@@ -79,12 +82,17 @@ export default async function ArticlePage({
 
   const canonicalUrl = `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`;
   const publishedTime = toIsoDate(post.date);
-  const inLanguage = /[一-鿿]/.test(post.title) ? 'zh-CN' : 'en-US';
+  const inLanguage = post.lang;
+  const isChinese = inLanguage.startsWith('zh');
   const cjkCount = post.content.match(/[一-鿿]/g)?.length ?? 0;
   const enCount = post.content.match(/[A-Za-z0-9]+/g)?.length ?? 0;
   const wordCount = cjkCount + enCount;
   const readMinutes = Math.max(1, Math.round(cjkCount / 400 + enCount / 220));
-  const readLabel = inLanguage === 'zh-CN' ? `约 ${readMinutes} 分钟` : `${readMinutes} min read`;
+  const readLabel = isChinese
+    ? inLanguage === 'zh-Hant'
+      ? `約 ${readMinutes} 分鐘`
+      : `约 ${readMinutes} 分钟`
+    : `${readMinutes} min read`;
 
   const authorName = post.author ?? AUTHOR_NAME;
   const isAcademicByline = authorName !== AUTHOR_NAME; // only the flagship paper sets a custom author
@@ -98,6 +106,13 @@ export default async function ArticlePage({
   const idx = all.findIndex((p) => p.slug === post.slug);
   const newer = idx > 0 ? all[idx - 1] : null;
   const older = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
+
+  // Same-topic reading, skipping whatever prev/next already links to.
+  const adjacent = new Set([newer?.slug, older?.slug, post.slug]);
+  const related = all
+    .filter((p) => p.category === post.category && !adjacent.has(p.slug))
+    .slice(0, 3);
+  const topicHref = `/topics/${topicSlug(post.category)}`;
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -156,7 +171,12 @@ export default async function ArticlePage({
           </Link>
 
           <div className="mb-5 flex items-center gap-4 text-[13px] uppercase tracking-[0.06em] text-ink3">
-            <span className="text-accent">{post.category}</span>
+            <Link
+              href={`/topics/${topicSlug(post.category)}`}
+              className="text-accent transition-colors hover:text-ink"
+            >
+              {post.category}
+            </Link>
             <span className="h-px w-4 bg-line2" />
             <span>{formatDisplayDate(post.date)}</span>
             <span className="h-px w-4 bg-line2" />
@@ -203,6 +223,41 @@ export default async function ArticlePage({
         </div>
 
         <SupportTip variant="compact" />
+
+        {/* RELATED — same topic, so readers (and crawlers) move sideways
+            through the archive instead of only backwards in time. */}
+        {related.length > 0 && (
+          <section className="mt-16 border-t border-line pt-8">
+            <div className="mb-4 flex items-baseline justify-between">
+              <h2 className="text-[11px] uppercase tracking-[0.16em] text-ink3">
+                More in {post.category}
+              </h2>
+              <Link
+                href={topicHref}
+                className="text-xs uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+              >
+                All {post.category} →
+              </Link>
+            </div>
+            <ul>
+              {related.map((r) => (
+                <li key={r.slug}>
+                  <Link
+                    href={`/articles/${encodeURIComponent(r.slug)}`}
+                    className="block border-b border-line py-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3"
+                  >
+                    <span className="block text-[17px] leading-snug text-ink">
+                      {r.title}
+                    </span>
+                    <span className="mt-1 block text-[12px] text-ink3">
+                      {formatDisplayDate(r.date)}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* PREV / NEXT */}
         <nav className="mt-16 grid gap-4 sm:grid-cols-2">
