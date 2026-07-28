@@ -1,7 +1,7 @@
 ---
 title: "Tokenized Gold: From Niche RWA to On-Chain Collateral Layer"
 slug: "tokenized-gold-collateral-layer"
-date: "2026-06-21"
+date: "2026-07-07"
 category: "Cryptography"
 excerpt: "The record trading numbers are real. They're also the wrong thing to watch."
 ---
