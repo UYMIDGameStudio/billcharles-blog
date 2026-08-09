@@ -17,6 +17,20 @@ export const PUBLICATIONS: Publication[] = [
     authors: 'Wang Xinhua',
     year: 2026,
     title:
+      'Diachronic Continuity and Argumentative Responsibility in Knowledge Migration: The Migration of mathlib from Lean 3 to Lean 4',
+    venue: 'Zhejiang Secondary School Philosophy Conferences',
+    abstract:
+      'A study of migration-based epistemic succession through mathlib\'s transition from Lean 3 to Lean 4, distinguishing technical porting from the renewed epistemic standing of mathematical results.',
+    links: [
+      { label: 'PhilPapers record', href: 'https://philpapers.org/rec/WANDCA-4' },
+      { label: 'Zenodo (DOI)', href: 'https://doi.org/10.5281/zenodo.21863023' },
+    ],
+    articleSlug: 'diachronic-continuity-knowledge-migration',
+  },
+  {
+    authors: 'Wang Xinhua',
+    year: 2026,
+    title:
       'The Dynamic Dialectic of Knowledge System Evolution: On "Change" and "Invariance" in Theoretical Identity',
     venue: '3rd Zhejiang Secondary School Philosophy Conference',
     abstract:
