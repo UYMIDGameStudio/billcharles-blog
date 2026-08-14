@@ -9,7 +9,7 @@ describe('GEO crawl foundations', () => {
     expect(urls).not.toContain(
       'https://www.billcharles.net/articles/psychoanalysis-intro'
     );
-    expect(urls).toContain('https://www.billcharles.net/notes');
+    expect(urls.some((url) => url.includes('/notes'))).toBe(false);
     expect(urls).toContain('https://www.billcharles.net/editorial');
     expect(new Set(urls).size).toBe(urls.length);
   });

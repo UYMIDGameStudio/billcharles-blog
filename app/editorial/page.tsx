@@ -58,7 +58,7 @@ export default function EditorialPage() {
             Editorial Standards &amp; Corrections
           </h1>
           <p className="mt-5 max-w-[42em] text-lg leading-relaxed text-ink2">
-            These standards apply to essays, research articles, and notes published on BillCharles Blog.
+            These standards apply to essays and research articles published on BillCharles Blog.
           </p>
           <p className="mt-4 text-sm text-ink3">Last updated: August 14, 2026</p>
         </header>
