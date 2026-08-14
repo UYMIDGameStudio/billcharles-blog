@@ -150,11 +150,11 @@ export default function WritingPager({ pages }: { pages: WritingPage[] }) {
             onClick={() => go(page - 1)}
             disabled={page === 0}
             aria-label="Previous article"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line2 text-sm text-ink2 transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-35"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-line2 text-sm text-ink2 transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-35"
           >
             ↑
           </button>
-          <div className="flex flex-col gap-2.5 py-1.5">
+          <div className="flex flex-col py-1">
             {pages.map((pg, i) => (
               <button
                 key={pg.num}
@@ -162,11 +162,15 @@ export default function WritingPager({ pages }: { pages: WritingPage[] }) {
                 onClick={() => go(i)}
                 aria-label={`Go to ${pg.title}`}
                 aria-current={i === page ? 'true' : undefined}
-                className={
-                  'h-2 w-2 rounded-full transition-all ' +
-                  (i === page ? 'scale-[1.35] bg-accent' : 'bg-line2 hover:bg-ink3')
-                }
-              />
+                className="group flex h-11 w-11 items-center justify-center rounded-full"
+              >
+                <span
+                  className={
+                    'block h-2 w-2 rounded-full transition-all ' +
+                    (i === page ? 'scale-[1.35] bg-accent' : 'bg-line2 group-hover:bg-ink3')
+                  }
+                />
+              </button>
             ))}
           </div>
           <button
@@ -174,7 +178,7 @@ export default function WritingPager({ pages }: { pages: WritingPage[] }) {
             onClick={() => go(page + 1)}
             disabled={page === pages.length - 1}
             aria-label="Next article"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line2 text-sm text-ink2 transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-35"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-line2 text-sm text-ink2 transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-35"
           >
             ↓
           </button>
