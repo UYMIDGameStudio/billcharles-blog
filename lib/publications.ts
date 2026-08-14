@@ -9,6 +9,8 @@ export type Publication = {
   venue: string;
   abstract?: string; // one-paragraph summary shown on the home Publications list
   links: { label: string; href: string }[];
+  doi: string;
+  version: string;
   articleSlug?: string; // present if there is an on-site copy
 };
 
@@ -25,6 +27,8 @@ export const PUBLICATIONS: Publication[] = [
       { label: 'PhilPapers record', href: 'https://philpapers.org/rec/WANDCA-4' },
       { label: 'Zenodo (DOI)', href: 'https://doi.org/10.5281/zenodo.21863023' },
     ],
+    doi: '10.5281/zenodo.21863023',
+    version: '1.0',
     articleSlug: 'diachronic-continuity-knowledge-migration',
   },
   {
@@ -39,6 +43,8 @@ export const PUBLICATIONS: Publication[] = [
       { label: 'PhilPapers record', href: 'https://philpapers.org/rec/WANTDD-2' },
       { label: 'Zenodo (DOI)', href: 'https://doi.org/10.5281/zenodo.20586216' },
     ],
+    doi: '10.5281/zenodo.20586216',
+    version: '1.0',
     articleSlug: 'knowledge-systems-change-and-invariance',
   },
 ];

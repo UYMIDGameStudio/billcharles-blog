@@ -16,9 +16,12 @@ import {
   AUTHOR_ACADEMIC_NAME,
   AUTHOR_NAME,
   AUTHOR_NAME_HANZI,
+  ORGANIZATION_SCHEMA,
+  PERSON_SCHEMA,
   RSS_ALTERNATE_TYPES,
   SITE_NAME,
   SITE_URL,
+  WEBSITE_SCHEMA,
 } from '@/lib/site';
 
 type RouteParams = { slug: string };
@@ -26,6 +29,19 @@ type RouteParams = { slug: string };
 function toIsoDate(date: string): string | undefined {
   const parsed = new Date(date);
   return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
+}
+
+function withoutContext(document: Record<string, unknown>): Record<string, unknown> {
+  const node = { ...document };
+  delete node['@context'];
+  return node;
+}
+
+function worksCitedUrls(content: string): string[] {
+  const worksCited = content.split(/## Works Cited\s*/i)[1];
+  if (!worksCited) return [];
+  const urls = worksCited.match(/https?:\/\/[^\s)]+/g) ?? [];
+  return [...new Set(urls.map((url) => url.replace(/[.,;]+$/, '')))];
 }
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
@@ -44,6 +60,7 @@ export async function generateMetadata({
 
   const canonicalPath = `/articles/${encodeURIComponent(post.slug)}`;
   const publishedTime = toIsoDate(post.date);
+  const modifiedTime = post.updated ? toIsoDate(post.updated) : undefined;
 
   return {
     title: post.shortTitle ?? post.title,
@@ -59,6 +76,7 @@ export async function generateMetadata({
       locale: ogLocale(post.lang),
       section: post.category,
       ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
     },
     twitter: {
       card: 'summary_large_image',
@@ -82,6 +100,7 @@ export default async function ArticlePage({
 
   const canonicalUrl = `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`;
   const publishedTime = toIsoDate(post.date);
+  const modifiedTime = post.updated ? toIsoDate(post.updated) : undefined;
   const inLanguage = post.lang;
   const isChinese = inLanguage.startsWith('zh');
   const cjkCount = post.content.match(/[一-鿿]/g)?.length ?? 0;
@@ -100,6 +119,7 @@ export default async function ArticlePage({
 
   const publication = PUBLICATIONS.find((p) => p.articleSlug === post.slug);
   const isScholarly = Boolean(publication);
+  const citations = isScholarly ? worksCitedUrls(post.content) : [];
 
   // Adjacent articles for prev/next navigation (sorted newest-first).
   const all = getArticles();
@@ -115,8 +135,8 @@ export default async function ArticlePage({
   const topicHref = `/topics/${topicSlug(post.category)}`;
 
   const articleJsonLd = {
-    '@context': 'https://schema.org',
     '@type': isScholarly ? 'ScholarlyArticle' : 'BlogPosting',
+    '@id': `${canonicalUrl}#article`,
     headline: post.title,
     description: post.excerpt,
     url: canonicalUrl,
@@ -130,9 +150,26 @@ export default async function ArticlePage({
       width: 1200,
       height: 630,
     },
-    isPartOf: { '@id': `${SITE_URL}/#website` },
-    ...(publishedTime ? { datePublished: publishedTime, dateModified: publishedTime } : {}),
+    isPartOf: publication
+      ? [
+          { '@id': `${SITE_URL}/#website` },
+          { '@type': 'CreativeWorkSeries', name: publication.venue },
+        ]
+      : { '@id': `${SITE_URL}/#website` },
+    ...(publishedTime ? { datePublished: publishedTime } : {}),
+    ...(modifiedTime ? { dateModified: modifiedTime } : {}),
     ...(isScholarly && post.excerpt ? { abstract: post.excerpt } : {}),
+    ...(publication
+      ? {
+          identifier: {
+            '@type': 'PropertyValue',
+            propertyID: 'DOI',
+            value: publication.doi,
+          },
+          version: publication.version,
+        }
+      : {}),
+    ...(citations.length ? { citation: citations } : {}),
     ...(publication && publication.links.length
       ? { sameAs: publication.links.map((l) => l.href) }
       : {}),
@@ -146,8 +183,8 @@ export default async function ArticlePage({
   };
 
   const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    '@id': `${canonicalUrl}#breadcrumb`,
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
       { '@type': 'ListItem', position: 2, name: 'Articles', item: `${SITE_URL}/articles` },
@@ -155,9 +192,20 @@ export default async function ArticlePage({
     ],
   };
 
+  const pageJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      articleJsonLd,
+      breadcrumbJsonLd,
+      withoutContext(WEBSITE_SCHEMA),
+      withoutContext(ORGANIZATION_SCHEMA),
+      withoutContext(PERSON_SCHEMA),
+    ],
+  };
+
   return (
     <main>
-      <JsonLd data={[articleJsonLd, breadcrumbJsonLd]} />
+      <JsonLd data={pageJsonLd} />
       <SiteHeader activeNav="articles" />
       <ReadingProgress />
 
@@ -179,6 +227,12 @@ export default async function ArticlePage({
             </Link>
             <span className="h-px w-4 bg-line2" />
             <span>{formatDisplayDate(post.date)}</span>
+            {post.updated && (
+              <>
+                <span className="h-px w-4 bg-line2" />
+                <span>Updated {formatDisplayDate(post.updated)}</span>
+              </>
+            )}
             <span className="h-px w-4 bg-line2" />
             <span>{readLabel}</span>
           </div>

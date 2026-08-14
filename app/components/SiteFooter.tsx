@@ -27,6 +27,9 @@ export default function SiteFooter() {
           <Link href="/articles" className="w-fit text-ink2 transition-colors hover:text-accent">
             Articles
           </Link>
+          <Link href="/notes" className="w-fit text-ink2 transition-colors hover:text-accent">
+            Notes
+          </Link>
           <Link href="/topics" className="w-fit text-ink2 transition-colors hover:text-accent">
             Topics
           </Link>
@@ -41,6 +44,12 @@ export default function SiteFooter() {
           </Link>
           <Link href="/privacy" className="w-fit text-ink2 transition-colors hover:text-accent">
             Privacy
+          </Link>
+          <Link href="/editorial" className="w-fit text-ink2 transition-colors hover:text-accent">
+            Editorial &amp; Corrections
+          </Link>
+          <Link href="/terms" className="w-fit text-ink2 transition-colors hover:text-accent">
+            Terms
           </Link>
         </nav>
 

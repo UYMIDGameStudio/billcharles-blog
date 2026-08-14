@@ -22,6 +22,10 @@ function toRfc822(date: string): string | undefined {
 export function GET() {
   const articles = getArticles();
   const feedUrl = `${SITE_URL}/feed.xml`;
+  const latestContentDate = articles
+    .map((post) => new Date(post.updated ?? post.date))
+    .filter((date) => !Number.isNaN(date.getTime()))
+    .sort((a, b) => b.getTime() - a.getTime())[0];
 
   const items = articles
     .map((post) => {
@@ -52,7 +56,7 @@ export function GET() {
     <description>${escapeXml(SITE_DESCRIPTION)}</description>
     <language>en</language>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    ${latestContentDate ? `<lastBuildDate>${latestContentDate.toUTCString()}</lastBuildDate>` : ''}
 ${items}
   </channel>
 </rss>

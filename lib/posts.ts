@@ -5,6 +5,8 @@ import { cache } from 'react';
 import matter from 'gray-matter';
 
 const ARTICLE_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+export const RETIRED_ARTICLE_SLUGS = ['psychoanalysis-intro'] as const;
+const retiredArticleSlugs = new Set<string>(RETIRED_ARTICLE_SLUGS);
 
 type ArticleEntry = {
   slug: string;
@@ -16,11 +18,24 @@ export type Post = {
   slug: string;
   title: string;
   date: string;
+  updated?: string;
   category: string;
   excerpt?: string;
   /** BCP-47 tag, e.g. 'en', 'zh-Hant', 'zh-Hans'. */
   lang: string;
   type: 'article';
+};
+
+export type Note = {
+  slug: string;
+  title: string;
+  date: string;
+  updated?: string;
+  category: string;
+  excerpt?: string;
+  tags: string[];
+  lang: string;
+  type: 'note';
 };
 
 const CJK = /[一-鿿]/;
@@ -53,13 +68,21 @@ export type PostWithContent = Post & {
   author?: string;
 };
 
+export type NoteWithContent = Note & { content: string };
+
+function frontmatterDate(value: unknown): string {
+  if (value instanceof Date) return value.toISOString().split('T')[0];
+  return typeof value === 'string' ? value : '';
+}
+
 function readMarkdownMeta(raw: string, slug: string): Post {
   const { data } = matter(raw);
   const title = data.title || '未命名';
   return {
     slug,
     title,
-    date: data.date || '',
+    date: frontmatterDate(data.date),
+    updated: frontmatterDate(data.updated) || undefined,
     category: data.category || 'Uncategorized',
     excerpt: data.excerpt,
     lang: resolveLang(data, title),
@@ -85,6 +108,9 @@ const getArticleEntries = cache((): ArticleEntry[] => {
   const register = (filePath: string, fileName: string, raw: string) => {
     const { data } = matter(raw);
     const slug = effectiveSlug(data, fileName);
+    // Keep retired source files available for reference while ensuring they
+    // never re-enter archives, static params, feeds, or the sitemap.
+    if (retiredArticleSlugs.has(slug)) return;
     if (!isValidArticleSlug(slug)) {
       throw new Error(
         `Invalid article slug "${slug}" in ${path.relative(process.cwd(), filePath)}. ` +
@@ -163,13 +189,89 @@ export const getPostBySlug = cache((slug: string): PostWithContent | null => {
     title,
     shortTitle: typeof data.shortTitle === 'string' ? data.shortTitle : undefined,
     author: typeof data.author === 'string' ? data.author : undefined,
-    date: data.date || new Date().toISOString().split('T')[0],
+    date: frontmatterDate(data.date),
+    updated: frontmatterDate(data.updated) || undefined,
     category: data.category || 'Uncategorized',
     excerpt: data.excerpt,
     lang: resolveLang(data, title),
     type: 'article',
     content,
   };
+});
+
+type NoteEntry = {
+  slug: string;
+  raw: string;
+};
+
+const getNoteEntries = cache((): NoteEntry[] => {
+  const notesDir = path.join(process.cwd(), 'app', 'content', 'notes');
+  if (!fs.existsSync(notesDir)) return [];
+
+  const seenSlugs = new Set<string>();
+  return fs
+    .readdirSync(notesDir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
+    .map((entry) => {
+      const raw = fs.readFileSync(path.join(notesDir, entry.name), 'utf8');
+      const { data } = matter(raw);
+      const slug = effectiveSlug(data, entry.name);
+      if (!isValidArticleSlug(slug)) {
+        throw new Error(`Invalid note slug "${slug}" in app/content/notes/${entry.name}.`);
+      }
+      if (seenSlugs.has(slug)) {
+        throw new Error(`Duplicate note slug "${slug}" in app/content/notes.`);
+      }
+      seenSlugs.add(slug);
+      return { slug, raw };
+    });
+});
+
+function readNote(entry: NoteEntry): NoteWithContent {
+  const { data, content } = matter(entry.raw);
+  const title = typeof data.title === 'string' ? data.title : 'Untitled note';
+  const tags = Array.isArray(data.tags)
+    ? data.tags.filter((tag): tag is string => typeof tag === 'string')
+    : [];
+
+  return {
+    slug: entry.slug,
+    title,
+    date: frontmatterDate(data.date),
+    updated: frontmatterDate(data.updated) || undefined,
+    category: typeof data.category === 'string' ? data.category : 'Notes',
+    excerpt: typeof data.excerpt === 'string' ? data.excerpt : undefined,
+    tags,
+    lang: resolveLang(data, title),
+    type: 'note',
+    content,
+  };
+}
+
+export const getNotes = cache((): Note[] =>
+  getNoteEntries()
+    .map((entry) => {
+      const note = readNote(entry);
+      return {
+        slug: note.slug,
+        title: note.title,
+        date: note.date,
+        updated: note.updated,
+        category: note.category,
+        excerpt: note.excerpt,
+        tags: note.tags,
+        lang: note.lang,
+        type: note.type,
+      };
+    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+);
+
+export const getNoteBySlug = cache((slug: string): NoteWithContent | null => {
+  const normalizedSlug = slug.replace(/\.md$/, '');
+  if (!isValidArticleSlug(normalizedSlug)) return null;
+  const entry = getNoteEntries().find((note) => note.slug === normalizedSlug);
+  return entry ? readNote(entry) : null;
 });
 
 export function formatDisplayDate(date: string): string {
