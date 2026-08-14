@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
@@ -139,18 +138,19 @@ export default function AboutPage() {
 
         {/* LINKS OUT */}
         <section className="flex flex-col gap-4 pb-20 text-sm sm:flex-row sm:gap-8">
-          <Link
+          <a
             href="/publications"
             className="text-ink3 underline decoration-accent/40 underline-offset-4 transition-colors hover:text-accent"
           >
             View publications →
-          </Link>
-          <Link
+          </a>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Hard navigation avoids exposing an RSC payload when a client router is stale. */}
+          <a
             href="/articles"
             className="text-ink3 underline decoration-accent/40 underline-offset-4 transition-colors hover:text-accent"
           >
             Read essays &amp; articles →
-          </Link>
+          </a>
         </section>
       </div>
 
