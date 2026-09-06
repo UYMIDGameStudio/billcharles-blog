@@ -26,4 +26,5 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      - run: npm audit --omit=dev --audit-level=moderate
+      - run: npm run test:smoke
+      - run: npm audit --audit-level=moderate

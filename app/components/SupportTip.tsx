@@ -10,7 +10,7 @@ function TipButton({ link }: { link: SupportLink }) {
       href={link.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-sans font-medium text-white shadow-sm hover:bg-accent-dark transition-colors"
+      className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-sans font-medium text-on-accent shadow-sm hover:bg-accent-dark transition-colors"
     >
       {link.label}
     </a>

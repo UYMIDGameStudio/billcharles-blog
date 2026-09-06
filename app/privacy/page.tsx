@@ -2,12 +2,18 @@
 import type { Metadata } from 'next';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
-import { AUTHOR_EMAIL, SITE_NAME, SITE_URL } from '@/lib/site';
+import { RSS_ALTERNATE_TYPES, AUTHOR_EMAIL, SITE_NAME, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
+  openGraph: {
+    type: 'website',
+    url: `${SITE_URL}/privacy`,
+    title: 'Privacy Policy',
+    description: `How ${SITE_NAME} handles data and third-party services.`,
+  },
   title: 'Privacy Policy',
   description: `How ${SITE_NAME} handles data and third-party services.`,
-  alternates: { canonical: '/privacy' },
+  alternates: { canonical: '/privacy', types: RSS_ALTERNATE_TYPES },
 };
 
 export default function PrivacyPage() {
@@ -15,7 +21,7 @@ export default function PrivacyPage() {
     <main>
       <SiteHeader />
 
-      <section className="max-w-2xl mx-auto px-6 py-20 prose prose-lg max-w-none prose-headings:text-ink prose-p:text-ink2 prose-a:text-accent prose-a:font-medium prose-strong:text-ink">
+      <section className="max-w-2xl mx-auto px-6 py-20 prose prose-lg prose-headings:text-ink prose-p:text-ink2 prose-a:text-accent prose-a:font-medium prose-strong:text-ink">
         <h1 className="font-sans tracking-tight">Privacy Policy</h1>
         <p className="text-ink3 text-sm font-sans not-prose mb-10">
           Last updated: July 17, 2026

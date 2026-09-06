@@ -51,30 +51,30 @@ export default function NotesPage() {
         <h1 className="text-4xl font-bold font-sans tracking-tight mb-4">
           Research Notes
         </h1>
-        <p className="text-stone-500 font-sans mb-16 text-sm tracking-wide">
+        <p className="text-ink3 font-sans mb-16 text-sm tracking-wide">
           Fragments, reading logs, and unrefined thoughts.
         </p>
 
         <div className="space-y-8">
           {notes.length === 0 ? (
-            <p className="text-stone-500 italic">暂无笔记，敬请期待…</p>
+            <p className="text-ink3 italic">暂无笔记，敬请期待…</p>
           ) : (
             notes.map((note) => (
               <Link
                 key={note.slug}
                 href={`/notes/${note.slug}`}
-                className="block group bg-[#FCFAF6] border border-stone-200 p-8 rounded-2xl shadow-sm hover:shadow-md hover:border-stone-300 transition-all"
+                className="block group bg-surface border border-line p-8 rounded-2xl shadow-sm hover:shadow-md hover:border-line2 transition-all"
               >
-                <div className="flex items-center gap-3 text-xs font-mono text-stone-400 mb-3 uppercase tracking-widest">
+                <div className="flex items-center gap-3 text-xs font-mono text-ink3 mb-3 uppercase tracking-widest">
                   <span>{formatDisplayDate(note.date)}</span>
-                  <span className="text-stone-200">/</span>
+                  <span className="text-line2">/</span>
                   <span className="text-accent">{note.category}</span>
                 </div>
-                <h2 className="text-lg font-bold font-sans text-stone-900 mb-3 group-hover:text-accent transition-colors">
+                <h2 className="text-lg font-bold font-sans text-ink mb-3 group-hover:text-accent transition-colors">
                   {note.title}
                 </h2>
                 {note.excerpt && (
-                  <p className="text-stone-600 leading-relaxed mb-4 text-sm">
+                  <p className="text-ink2 leading-relaxed mb-4 text-sm">
                     {note.excerpt}
                   </p>
                 )}
@@ -83,7 +83,7 @@ export default function NotesPage() {
                     {note.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs font-mono bg-stone-100 text-stone-500 px-2 py-1 rounded-md border border-stone-200"
+                        className="text-xs font-mono bg-paper text-ink3 px-2 py-1 rounded-md border border-line"
                       >
                         #{tag}
                       </span>

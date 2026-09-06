@@ -5,6 +5,7 @@ import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import {
+  RSS_ALTERNATE_TYPES,
   AUTHOR_ACADEMIC_NAME,
   AUTHOR_EMAIL,
   AUTHOR_NAME,
@@ -23,7 +24,7 @@ const description = `About ${AUTHOR_NAME} (${AUTHOR_ACADEMIC_NAME} / ${AUTHOR_NA
 export const metadata: Metadata = {
   title: 'About',
   description,
-  alternates: { canonical: '/about' },
+  alternates: { canonical: '/about', types: RSS_ALTERNATE_TYPES },
   openGraph: {
     type: 'profile',
     url: `${SITE_URL}/about`,
@@ -74,7 +75,7 @@ export default function AboutPage() {
           </div>
           <div className="hidden sm:block">
             <span className="relative block aspect-square w-full overflow-hidden rounded-sm border border-line2">
-              <Image src="/image_0.png" alt={AUTHOR_NAME} fill className="object-cover" />
+              <Image src="/image_0.png" alt={AUTHOR_NAME} fill sizes="140px" className="object-cover" />
             </span>
           </div>
         </section>
@@ -122,7 +123,7 @@ export default function AboutPage() {
                 className="grid grid-cols-[110px_1fr] items-baseline gap-4 border-b border-line py-3"
               >
                 <dt className="text-[10.5px] uppercase tracking-[0.12em] text-ink3">{p.k}</dt>
-                <dd className="m-0">
+                <dd className="m-0 min-w-0">
                   <a
                     href={p.href}
                     target="_blank"

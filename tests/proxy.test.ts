@@ -30,3 +30,15 @@ describe('article path proxy', () => {
     expect(response.status).toBe(404);
   });
 });
+
+// Exercise every guarded namespace, including archive and image endpoints.
+describe.each(['articles', 'notes', 'topics'])('%s path validation', (section) => {
+  it.each(['', '/', '/example', '/opengraph-image', '/example/opengraph-image'])('allows %s', (suffix) => {
+    const response = proxy(new NextRequest(`https://www.billcharles.net/${section}${suffix}`));
+    expect(response.headers.get('x-middleware-next')).toBe('1');
+  });
+  it.each(['/%', '/%E0%A4%A', '/%25', '/has%20space', '/example/extra'])('rejects %s before route decoding', (suffix) => {
+    const response = proxy(new NextRequest(`https://www.billcharles.net/${section}${suffix}`));
+    expect(response.status).toBe(404);
+  });
+});

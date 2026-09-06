@@ -14,11 +14,12 @@
   --c-panel: #ffffff;
   --c-ink: #1c1917;
   --c-ink2: #57514a;
-  --c-ink3: #8c857b;
+  --c-ink3: #746c62;
   --c-line: #e3ddd1;
   --c-line2: #d6cec0;
   --c-accent: #8a2e38;       /* restrained claret */
   --c-accent-dark: #6d2530;
+  --c-on-accent: #ffffff;
 }
 
 [data-theme="dark"] {
@@ -32,6 +33,7 @@
   --c-line2: #41382e;
   --c-accent: #cf7079;       /* lifted claret for dark surfaces */
   --c-accent-dark: #b85a63;
+  --c-on-accent: #16130f;
 }
 
 /* `inline` so utilities emit `var(--c-*)` and follow the runtime swap above. */
@@ -46,6 +48,7 @@
   --color-line2: var(--c-line2);
   --color-accent: var(--c-accent);
   --color-accent-dark: var(--c-accent-dark);
+  --color-on-accent: var(--c-on-accent);
 
   /* Chinese 宋体 · English Times New Roman. Latin glyphs resolve to Times,
      CJK glyphs fall through to a Song/Songti family. Both `font-serif` and
@@ -73,4 +76,14 @@ body {
   outline: 2px solid var(--c-accent);
   outline-offset: 2px;
   border-radius: 3px;
+}
+
+/* Respect readers who disable motion in their system preferences. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

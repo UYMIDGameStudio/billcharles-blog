@@ -4,12 +4,18 @@ import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import { formatDisplayDate, getArticles, getNotes } from '@/lib/posts';
 import { getTopics } from '@/lib/topics';
-import { SITE_URL } from '@/lib/site';
+import { RSS_ALTERNATE_TYPES, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
+  openGraph: {
+    type: 'website',
+    url: `${SITE_URL}/site-map`,
+    title: 'Site Map',
+    description: 'All pages and articles on BillCharles Blog',
+  },
   title: 'Site Map',
   description: 'All pages and articles on BillCharles Blog',
-  alternates: { canonical: '/site-map' },
+  alternates: { canonical: '/site-map', types: RSS_ALTERNATE_TYPES },
 };
 
 export default function SiteMapPage() {

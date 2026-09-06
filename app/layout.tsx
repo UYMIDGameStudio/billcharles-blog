@@ -33,9 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BillCharles Blog',
-    description:
-      'Essays and notes on Western philosophy, post-Marxism, psychoanalysis, and cryptography.',
+    // Use the current page's Open Graph title and description for sharing.
   },
   robots: { index: true, follow: true },
 };

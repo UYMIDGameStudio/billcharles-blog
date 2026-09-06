@@ -3,7 +3,7 @@ import Link from 'next/link';
 import JsonLd from '@/app/components/JsonLd';
 import SiteFooter from '@/app/components/SiteFooter';
 import SiteHeader from '@/app/components/SiteHeader';
-import { AUTHOR_EMAIL, SITE_NAME, SITE_URL } from '@/lib/site';
+import { RSS_ALTERNATE_TYPES, AUTHOR_EMAIL, SITE_NAME, SITE_URL } from '@/lib/site';
 
 const title = 'Editorial Standards & Corrections';
 const description =
@@ -14,7 +14,7 @@ const socialImage = `${SITE_URL}/opengraph-image`;
 export const metadata: Metadata = {
   title,
   description,
-  alternates: { canonical: '/editorial' },
+  alternates: { canonical: '/editorial', types: RSS_ALTERNATE_TYPES },
   openGraph: {
     type: 'website',
     url: canonicalUrl,

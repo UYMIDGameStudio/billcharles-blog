@@ -4,14 +4,14 @@ import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import { PUBLICATIONS } from '@/lib/publications';
-import { AUTHOR_ACADEMIC_NAME, AUTHOR_NAME, SITE_NAME, SITE_URL } from '@/lib/site';
+import { RSS_ALTERNATE_TYPES, AUTHOR_ACADEMIC_NAME, AUTHOR_NAME, SITE_NAME, SITE_URL } from '@/lib/site';
 
 const description = `Academic publications and papers by ${AUTHOR_ACADEMIC_NAME} (${AUTHOR_NAME}).`;
 
 export const metadata: Metadata = {
   title: 'Publications',
   description,
-  alternates: { canonical: '/publications' },
+  alternates: { canonical: '/publications', types: RSS_ALTERNATE_TYPES },
   openGraph: {
     type: 'website',
     url: `${SITE_URL}/publications`,

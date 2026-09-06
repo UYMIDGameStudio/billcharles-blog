@@ -5,7 +5,7 @@ TypeScript, Tailwind CSS, and Markdown.
 
 ## Local development
 
-Use Node.js 22 or newer:
+Use Node.js 22.18 or newer:
 
 ```bash
 npm ci
@@ -39,10 +39,11 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm run test:smoke
 ```
 
 Run all checks together with `npm run check`. GitHub Actions runs the same
-checks and audits production dependencies on every pull request and main-branch
+checks, production-route smoke tests, and audits all dependencies on every pull request and main-branch
 push.
 
 ## AI demo
@@ -62,3 +63,5 @@ The site is designed for Vercel and statically generates its pages, RSS feed,
 sitemap, and Open Graph images. Security headers are configured in
 `next.config.ts`. The Ko-fi support control is a normal external link; it does
 not load third-party scripts or contact Ko-fi until a visitor clicks it.
+
+The smoke test starts a temporary local production server on port 3210 (override with `SMOKE_PORT`), checks every sitemap page and social image, and stops the server on completion. Run it after building. Content tests validate publication metadata, dates, and unique topic URLs.

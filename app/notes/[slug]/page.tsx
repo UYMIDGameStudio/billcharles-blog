@@ -10,6 +10,7 @@ import { formatDisplayDate, getNoteBySlug, getNotes } from '@/lib/posts';
 import {
   ORGANIZATION_SCHEMA,
   PERSON_SCHEMA,
+  RSS_ALTERNATE_TYPES,
   SITE_NAME,
   SITE_URL,
   WEBSITE_SCHEMA,
@@ -47,7 +48,7 @@ export async function generateMetadata({
   return {
     title: note.title,
     description: note.excerpt,
-    alternates: { canonical: canonicalPath },
+    alternates: { canonical: canonicalPath, types: RSS_ALTERNATE_TYPES },
     openGraph: {
       type: 'article',
       url: `${SITE_URL}${canonicalPath}`,
@@ -122,20 +123,20 @@ export default async function NotePage({
       <JsonLd data={pageJsonLd} />
       <SiteHeader activeNav="notes" />
 
-      <article className="max-w-2xl mx-auto px-6 py-20">
+      <article className="max-w-2xl mx-auto px-6 py-20" lang={inLanguage}>
         <header className="mb-12 space-y-5">
-          <div className="flex items-center gap-4 text-sm font-sans text-stone-500 uppercase tracking-widest">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-sans text-ink3 uppercase tracking-widest">
             <span>{formatDisplayDate(note.date)}</span>
             {note.updated && <span>Updated {formatDisplayDate(note.updated)}</span>}
             <span className="w-1 h-1 bg-accent/50 rounded-full" />
             <span className="text-accent">{note.category}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold font-sans text-stone-900 leading-tight tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-bold font-sans text-ink leading-tight tracking-tight">
             {note.title}
           </h1>
         </header>
 
-        <MarkdownContent className="prose prose-stone prose-lg max-w-none text-stone-800 leading-relaxed prose-a:text-accent prose-a:font-medium">
+        <MarkdownContent>
           {note.content}
         </MarkdownContent>
 
@@ -144,7 +145,7 @@ export default async function NotePage({
             {note.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-xs font-mono bg-stone-100 text-stone-500 px-2 py-1 rounded-md border border-stone-200"
+                className="text-xs font-mono bg-surface text-ink2 px-2 py-1 rounded-md border border-line"
               >
                 #{tag}
               </span>
@@ -152,10 +153,10 @@ export default async function NotePage({
           </div>
         )}
 
-        <footer className="mt-16 pt-10 border-t border-stone-200 font-sans text-sm">
+        <footer className="mt-16 pt-10 border-t border-line font-sans text-sm">
           <Link
             href="/notes"
-            className="text-stone-400 hover:text-accent transition-colors"
+            className="text-ink3 hover:text-accent transition-colors"
           >
             ← Back to Notes
           </Link>

@@ -218,7 +218,7 @@ export default async function ArticlePage({
             ← All articles
           </Link>
 
-          <div className="mb-5 flex items-center gap-4 text-[13px] uppercase tracking-[0.06em] text-ink3">
+          <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] uppercase tracking-[0.06em] text-ink3">
             <Link
               href={`/topics/${topicSlug(post.category)}`}
               className="text-accent transition-colors hover:text-ink"
@@ -249,7 +249,7 @@ export default async function ArticlePage({
 
           <div className="mt-9 flex items-center gap-3.5 border-b border-ink pb-10">
             <span className="relative block h-[42px] w-[42px] flex-none overflow-hidden rounded-full border border-line2">
-              <Image src="/image_0.png" alt={authorName} fill className="object-cover" />
+              <Image src="/image_0.png" alt={authorName} fill sizes="42px" className="object-cover" />
             </span>
             <span>
               <span className="block text-base font-bold text-ink">
