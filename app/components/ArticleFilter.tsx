@@ -33,10 +33,11 @@ export default function ArticleFilter({ posts }: { posts: ArticleListItem[] }) {
                 key={c}
                 type="button"
                 onClick={() => setActive(c)}
+                aria-pressed={on}
                 className={
                   'rounded-full border px-4 py-1.5 text-sm tracking-wide transition-colors ' +
                   (on
-                    ? 'border-accent bg-accent text-white'
+                    ? 'border-accent bg-accent text-on-accent'
                     : 'border-line2 text-ink2 hover:border-accent hover:text-accent')
                 }
               >

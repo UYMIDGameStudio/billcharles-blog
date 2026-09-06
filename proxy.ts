@@ -1,17 +1,13 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-const ARTICLE_PATH_PATTERN =
-  /^\/articles\/[a-z0-9]+(?:-[a-z0-9]+)*(?:\/opengraph-image)?\/?$/;
+const CONTENT_PATH_PATTERN =
+  /^\/(?:articles|notes|topics)(?:\/[a-z0-9]+(?:-[a-z0-9]+)*(?:\/opengraph-image)?)?\/?$/;
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (
-    pathname === '/articles' ||
-    pathname === '/articles/' ||
-    ARTICLE_PATH_PATTERN.test(pathname)
-  ) {
+  if (CONTENT_PATH_PATTERN.test(pathname)) {
     return NextResponse.next();
   }
 
@@ -24,5 +20,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/articles/:path*',
+  matcher: ['/articles/:path*', '/notes/:path*', '/topics/:path*'],
 };

@@ -9,8 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "npm run lint && npm run typecheck && npm test && npm run build",
-    "ai:demo": "node scripts/ai-demo.mjs"
+    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:smoke",
+    "ai:demo": "node scripts/ai-demo.mjs",
+    "test:smoke": "node scripts/smoke-test.mjs"
   },
   "dependencies": {
     "ai": "^6.0.191",

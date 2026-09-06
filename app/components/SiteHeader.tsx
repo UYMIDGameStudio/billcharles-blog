@@ -27,14 +27,14 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
       <div className="mx-auto flex h-[66px] max-w-[1080px] items-center justify-between px-5 md:px-8">
         <Link href="/" className="flex items-center gap-2.5">
           <span className="relative block h-[34px] w-[34px] flex-none overflow-hidden rounded-full border border-line2">
-            <Image src="/image_0.png" alt="Bill Charles" fill className="object-cover" />
+            <Image src="/image_0.png" alt="Bill Charles" fill sizes="34px" className="object-cover" />
           </span>
           <span className="hidden text-base font-bold tracking-tight text-ink sm:inline">
             BillCharles
           </span>
         </Link>
 
-        <nav className="flex items-center gap-2.5 text-[12px] uppercase tracking-wide sm:gap-6 sm:text-sm sm:tracking-wider">
+        <nav aria-label="Main" className="flex items-center gap-1.5 text-[11px] uppercase tracking-normal min-[375px]:gap-2.5 min-[375px]:text-[12px] min-[375px]:tracking-wide sm:gap-6 sm:text-sm sm:tracking-wider">
           {navItems.map(({ href, label, shortLabel, key }) => (
             <Link
               key={key}

@@ -311,7 +311,7 @@ export default function Home() {
                   <dt className="text-[10.5px] uppercase tracking-[0.12em] text-ink3">
                     {c.k}
                   </dt>
-                  <dd className="m-0">
+                  <dd className="m-0 min-w-0">
                     <a
                       href={c.href}
                       target="_blank"
