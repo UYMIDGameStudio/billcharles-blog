@@ -1,6 +1,6 @@
 // app/sitemap.ts — 自动生成 /sitemap.xml
 import type { MetadataRoute } from 'next';
-import { getArticles, getNotes } from '../lib/posts';
+import { getArticles } from '../lib/posts';
 import { getTopics } from '../lib/topics';
 import { SITE_URL, toSitemapLastModified } from '../lib/site';
 
@@ -15,10 +15,8 @@ function newestDate(dates: string[]): Date | undefined {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const articles = getArticles();
-  const notes = getNotes();
   const topics = getTopics();
   const latest = newestDate(articles.map((a) => a.updated ?? a.date));
-  const latestNote = newestDate(notes.map((note) => note.updated ?? note.date));
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -37,12 +35,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}/topics`,
       ...(latest ? { lastModified: latest } : {}),
       changeFrequency: 'weekly',
-      priority: 0.6,
-    },
-    {
-      url: `${SITE_URL}/notes`,
-      ...(latestNote ? { lastModified: latestNote } : {}),
-      changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
@@ -101,15 +93,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
-  const notePages: MetadataRoute.Sitemap = notes.map((note) => {
-    const lastModified = toSitemapLastModified(note.updated ?? note.date);
-    return {
-      url: `${SITE_URL}/notes/${encodeURIComponent(note.slug)}`,
-      ...(lastModified ? { lastModified } : {}),
-      changeFrequency: 'yearly',
-      priority: 0.5,
-    };
-  });
-
-  return [...staticPages, ...topicPages, ...articlePages, ...notePages];
+  return [...staticPages, ...topicPages, ...articlePages];
 }

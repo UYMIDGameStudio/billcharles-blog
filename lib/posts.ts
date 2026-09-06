@@ -26,18 +26,6 @@ export type Post = {
   type: 'article';
 };
 
-export type Note = {
-  slug: string;
-  title: string;
-  date: string;
-  updated?: string;
-  category: string;
-  excerpt?: string;
-  tags: string[];
-  lang: string;
-  type: 'note';
-};
-
 const CJK = /[一-鿿]/;
 
 /**
@@ -67,8 +55,6 @@ export type PostWithContent = Post & {
   /** Optional byline override (e.g. the academic name on a published paper). */
   author?: string;
 };
-
-export type NoteWithContent = Note & { content: string };
 
 function frontmatterDate(value: unknown): string {
   if (value instanceof Date) return value.toISOString().split('T')[0];
@@ -197,81 +183,6 @@ export const getPostBySlug = cache((slug: string): PostWithContent | null => {
     type: 'article',
     content,
   };
-});
-
-type NoteEntry = {
-  slug: string;
-  raw: string;
-};
-
-const getNoteEntries = cache((): NoteEntry[] => {
-  const notesDir = path.join(process.cwd(), 'app', 'content', 'notes');
-  if (!fs.existsSync(notesDir)) return [];
-
-  const seenSlugs = new Set<string>();
-  return fs
-    .readdirSync(notesDir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
-    .map((entry) => {
-      const raw = fs.readFileSync(path.join(notesDir, entry.name), 'utf8');
-      const { data } = matter(raw);
-      const slug = effectiveSlug(data, entry.name);
-      if (!isValidArticleSlug(slug)) {
-        throw new Error(`Invalid note slug "${slug}" in app/content/notes/${entry.name}.`);
-      }
-      if (seenSlugs.has(slug)) {
-        throw new Error(`Duplicate note slug "${slug}" in app/content/notes.`);
-      }
-      seenSlugs.add(slug);
-      return { slug, raw };
-    });
-});
-
-function readNote(entry: NoteEntry): NoteWithContent {
-  const { data, content } = matter(entry.raw);
-  const title = typeof data.title === 'string' ? data.title : 'Untitled note';
-  const tags = Array.isArray(data.tags)
-    ? data.tags.filter((tag): tag is string => typeof tag === 'string')
-    : [];
-
-  return {
-    slug: entry.slug,
-    title,
-    date: frontmatterDate(data.date),
-    updated: frontmatterDate(data.updated) || undefined,
-    category: typeof data.category === 'string' ? data.category : 'Notes',
-    excerpt: typeof data.excerpt === 'string' ? data.excerpt : undefined,
-    tags,
-    lang: resolveLang(data, title),
-    type: 'note',
-    content,
-  };
-}
-
-export const getNotes = cache((): Note[] =>
-  getNoteEntries()
-    .map((entry) => {
-      const note = readNote(entry);
-      return {
-        slug: note.slug,
-        title: note.title,
-        date: note.date,
-        updated: note.updated,
-        category: note.category,
-        excerpt: note.excerpt,
-        tags: note.tags,
-        lang: note.lang,
-        type: note.type,
-      };
-    })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-);
-
-export const getNoteBySlug = cache((slug: string): NoteWithContent | null => {
-  const normalizedSlug = slug.replace(/\.md$/, '');
-  if (!isValidArticleSlug(normalizedSlug)) return null;
-  const entry = getNoteEntries().find((note) => note.slug === normalizedSlug);
-  return entry ? readNote(entry) : null;
 });
 
 export function formatDisplayDate(date: string): string {

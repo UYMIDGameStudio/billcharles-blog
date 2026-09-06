@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
-import { formatDisplayDate, getArticles, getNotes } from '@/lib/posts';
+import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { getTopics } from '@/lib/topics';
 import { RSS_ALTERNATE_TYPES, SITE_URL } from '@/lib/site';
 
@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 
 export default function SiteMapPage() {
   const articles = getArticles();
-  const notes = getNotes();
   const topics = getTopics();
 
   return (
@@ -72,11 +71,6 @@ export default function SiteMapPage() {
                 </Link>
               </li>
               <li>
-                <Link href="/notes" className="hover:text-accent transition-colors">
-                  Research Notes
-                </Link>
-              </li>
-              <li>
                 <Link href="/about" className="hover:text-accent transition-colors">
                   About
                 </Link>
@@ -106,29 +100,6 @@ export default function SiteMapPage() {
                   Site Map
                 </Link>
               </li>
-            </ul>
-          </section>
-
-          <section aria-labelledby="notes-heading">
-            <h2
-              id="notes-heading"
-              className="text-sm font-mono uppercase tracking-widest text-ink3 mb-4"
-            >
-              Research Notes ({notes.length})
-            </h2>
-            <ul className="space-y-4">
-              {notes.map((note) => (
-                <li key={note.slug}>
-                  <Link href={`/notes/${note.slug}`} className="block group">
-                    <span className="font-medium text-ink group-hover:text-accent transition-colors">
-                      {note.title}
-                    </span>
-                    <span className="ml-2 text-xs font-mono text-ink3">
-                      {formatDisplayDate(note.date)}
-                    </span>
-                  </Link>
-                </li>
-              ))}
             </ul>
           </section>
 

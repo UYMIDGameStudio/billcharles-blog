@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { getArticles, getNotes, getPostBySlug } from '../lib/posts';
+import { getArticles, getPostBySlug } from '../lib/posts';
 import { PUBLICATIONS } from '../lib/publications';
 import { getTopics } from '../lib/topics';
 
 describe('published content integrity', () => {
   it('requires usable metadata and valid calendar dates for every published item', () => {
-    for (const post of [...getArticles(), ...getNotes()]) {
+    for (const post of getArticles()) {
       expect(typeof post.title, post.slug).toBe('string');
       expect(post.title.trim(), post.slug).not.toBe('');
       expect(typeof post.category, post.slug).toBe('string');

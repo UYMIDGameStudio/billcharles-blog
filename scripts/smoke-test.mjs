@@ -34,6 +34,7 @@ try {
   const paths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1]).pathname);
   assert(paths.length > 0, 'Sitemap must contain pages');
   assert.equal(new Set(paths).size, paths.length, 'Canonical URLs must be unique');
+  assert(!paths.some((path) => path === '/notes' || path.startsWith('/notes/')), 'Retired Notes must stay out of the sitemap');
   const images = new Set();
   for (const path of paths) {
     const response = await request(path);
@@ -67,6 +68,17 @@ try {
       assert.equal((await request(path)).status, 404, path);
     }
   }
+  // Main intentionally retired Notes; do not resurrect its pages or images.
+  for (const path of [
+    '/notes',
+    '/notes/opengraph-image',
+    '/notes/2026-05-10-dao-and-bwo',
+    '/notes/2026-04-28-objectivity',
+    '/notes/2026-04-15-commodity-fetishism-nft',
+    '/notes/2026-05-10-dao-and-bwo/opengraph-image',
+  ]) assert.equal((await request(path)).status, 404, path);
+  const llms = await (await request('/llms.txt')).text();
+  assert(!llms.includes('/notes'), 'Retired Notes must stay out of llms.txt');
   const redirect = await request('/articles/psychoanalysis-intro');
   assert.equal(redirect.status, 308);
   assert(redirect.headers.get('location')?.endsWith('/articles/modernity-epistemology-bacon-to-kant'));
