@@ -17,6 +17,8 @@ type ArticleEntry = {
 export type Post = {
   slug: string;
   title: string;
+  /** Optional concise title for listings and browser metadata. */
+  shortTitle?: string;
   date: string;
   updated?: string;
   category: string;
@@ -50,8 +52,6 @@ export function ogLocale(lang: string): string {
 
 export type PostWithContent = Post & {
   content: string;
-  /** Optional shorter title for the <title> tag (full title stays as headline). */
-  shortTitle?: string;
   /** Optional byline override (e.g. the academic name on a published paper). */
   author?: string;
 };
@@ -67,6 +67,7 @@ function readMarkdownMeta(raw: string, slug: string): Post {
   return {
     slug,
     title,
+    shortTitle: typeof data.shortTitle === 'string' ? data.shortTitle : undefined,
     date: frontmatterDate(data.date),
     updated: frontmatterDate(data.updated) || undefined,
     category: data.category || 'Uncategorized',

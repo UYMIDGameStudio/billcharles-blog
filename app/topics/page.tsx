@@ -48,15 +48,15 @@ export default function TopicsPage() {
       <JsonLd data={jsonLd} />
       <SiteHeader activeNav="articles" />
 
-      <div className="mx-auto max-w-[1080px] px-6 md:px-8">
+      <div className="mx-auto max-w-[1120px] px-6 md:px-8">
         <section className="border-b border-ink py-20">
-          <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">
+          <p className="mb-5 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">
             Browse by subject
           </p>
-          <h1 className="text-[clamp(2.6rem,6vw,3.75rem)] font-normal leading-[1.04] tracking-tight text-ink">
+          <h1 className="page-title">
             Topics
           </h1>
-          <p className="mt-5 max-w-[40em] text-[19px] leading-relaxed text-ink2">
+          <p className="mt-5 max-w-[40em] text-[1.1875rem] leading-relaxed text-ink2">
             {description}
           </p>
         </section>
@@ -66,9 +66,9 @@ export default function TopicsPage() {
             <Link
               key={topic.slug}
               href={`/topics/${topic.slug}`}
-              className="group grid grid-cols-1 gap-2 border-b border-line py-8 pr-3 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3.5 sm:grid-cols-[150px_1fr_30px] sm:items-baseline sm:gap-7"
+              className="group grid grid-cols-1 gap-2 border-b border-line py-8 pr-3 transition-colors duration-200 hover:bg-surface sm:grid-cols-[150px_1fr_30px] sm:items-baseline sm:gap-7"
             >
-              <span className="text-[12.5px] uppercase tracking-[0.1em] text-accent">
+              <span className="text-[0.78125rem] uppercase tracking-[0.1em] text-accent">
                 {topic.posts.length}{' '}
                 {topic.posts.length === 1 ? 'article' : 'articles'}
               </span>
@@ -90,7 +90,7 @@ export default function TopicsPage() {
         <div className="pb-16 pt-8 text-center">
           <Link
             href="/articles"
-            className="text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+            className="text-[0.8125rem] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
           >
             View all articles →
           </Link>

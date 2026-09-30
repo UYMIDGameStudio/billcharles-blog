@@ -28,7 +28,7 @@ export default function SiteMapPage() {
 
       <section className="max-w-2xl mx-auto px-6 py-20 space-y-12">
         <header className="space-y-3">
-          <h1 className="text-4xl font-bold font-sans tracking-tight text-ink">
+          <h1 className="page-title">
             Site Map
           </h1>
           <p className="text-ink2 font-serif leading-relaxed">
@@ -135,7 +135,7 @@ export default function SiteMapPage() {
               Articles ({articles.length})
             </h2>
             {articles.length === 0 ? (
-              <p className="text-ink3 italic font-serif">暂无文章</p>
+              <p lang="zh-Hans" className="text-ink3 font-serif">暂无文章</p>
             ) : (
               <ul className="space-y-4">
                 {articles.map((post) => (
@@ -144,7 +144,7 @@ export default function SiteMapPage() {
                       href={`/articles/${encodeURIComponent(post.slug)}`}
                       className="block group"
                     >
-                      <span className="font-medium text-ink group-hover:text-accent transition-colors">
+                      <span lang={post.lang} className="localized-title font-medium text-ink group-hover:text-accent transition-colors">
                         {post.title}
                       </span>
                       {post.date && (

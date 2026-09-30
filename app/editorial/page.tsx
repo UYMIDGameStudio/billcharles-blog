@@ -51,10 +51,10 @@ export default function EditorialPage() {
 
       <article className="mx-auto max-w-[760px] px-6 py-16 md:px-8">
         <header className="border-b border-ink pb-10">
-          <p className="mb-4 text-[13px] uppercase tracking-[0.18em] text-accent">
+          <p className="mb-4 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">
             Trust &amp; Transparency
           </p>
-          <h1 className="text-[clamp(2.2rem,5vw,3.2rem)] font-normal leading-tight tracking-tight text-ink">
+          <h1 className="page-title">
             Editorial Standards &amp; Corrections
           </h1>
           <p className="mt-5 max-w-[42em] text-lg leading-relaxed text-ink2">
@@ -126,7 +126,7 @@ export default function EditorialPage() {
           <section>
             <h2 className="mb-4 text-2xl font-normal text-ink">Authorship and revision record</h2>
             <p>
-              Bill Charles is the site pen name; Wang Xinhua (王鑫桦) is the legal and academic name used on
+              Bill Charles is the site pen name; Wang Xinhua (<span lang="zh-Hans">王鑫桦</span>) is the legal and academic name used on
               formal publications. Publication and substantive revision dates are shown on article pages and
               in structured data only when they reflect real editorial events.
             </p>

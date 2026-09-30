@@ -5,8 +5,8 @@ import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
 import ArticleFilter, { type ArticleListItem } from '@/app/components/ArticleFilter';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
-import { getTopics } from '@/lib/topics';
 import { RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
+import styles from './archive.module.css';
 
 const description = 'Essays and articles by Bill Charles';
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/articles', types: RSS_ALTERNATE_TYPES },
   openGraph: {
     type: 'website',
-    url: `${SITE_URL}/articles`,
+    url: SITE_URL + '/articles',
     siteName: SITE_NAME,
     title: 'Articles',
     description,
@@ -25,28 +25,28 @@ export const metadata: Metadata = {
 
 export default function ArticlesPage() {
   const posts = getArticles();
-  const topics = getTopics();
-
   const items: ArticleListItem[] = posts.map((post) => ({
     slug: post.slug,
     title: post.title,
     excerpt: post.excerpt ?? '',
     category: post.category,
     date: formatDisplayDate(post.date),
+    dateTime: post.date,
+    lang: post.lang,
   }));
 
   const listJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Essays & Articles',
-    url: `${SITE_URL}/articles`,
+    url: SITE_URL + '/articles',
     description,
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: posts.map((post, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: `${SITE_URL}/articles/${encodeURIComponent(post.slug)}`,
+        url: SITE_URL + '/articles/' + encodeURIComponent(post.slug),
         name: post.title,
       })),
     },
@@ -56,47 +56,29 @@ export default function ArticlesPage() {
     <main>
       <JsonLd data={listJsonLd} />
       <SiteHeader activeNav="articles" />
-
-      <div className="mx-auto max-w-[1080px] px-6 md:px-8">
-        {/* PAGE HEAD */}
-        <section className="border-b border-ink py-20">
-          <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">
-            Index of Writing
-          </p>
-          <h1 className="text-[clamp(2.6rem,6vw,3.75rem)] font-normal leading-[1.04] tracking-tight text-ink">
-            Essays &amp; Articles
-          </h1>
-          <p className="mt-5 max-w-[40em] text-[19px] leading-relaxed text-ink2">
-            Long-form essays, philosophical notes, and research on cryptography —
-            collected and dated. <span className="italic">凡所记述，皆为求真。</span>
-          </p>
-
-          {/* Real links to the topic pages. The filter below is client-side,
-              so on its own it leaves the category views uncrawlable. */}
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
-              Topics
-            </span>
-            {topics.map((topic) => (
-              <Link
-                key={topic.slug}
-                href={`/topics/${topic.slug}`}
-                className="rounded-full border border-line2 px-3.5 py-1 text-[13px] text-ink2 transition-colors hover:border-accent hover:text-accent"
-              >
-                {topic.name}
-                <span className="ml-1.5 text-ink3">{topic.posts.length}</span>
-              </Link>
-            ))}
+      <div className={styles.container}>
+        <header className={styles.heading}>
+          <div className={styles.kicker}>
+            <p>Index of writing</p>
+            <p>{posts.length} {posts.length === 1 ? 'article' : 'articles'}</p>
           </div>
-        </section>
-
+          <h1 className={styles.title}>Essays &amp; Articles<span aria-hidden="true">.</span></h1>
+          <div className={styles.introduction}>
+            <p>
+              Philosophy, cryptography, and the questions in between.
+              Long-form writing, collected and dated.
+            </p>
+            <Link href="/topics" className={styles.topicsLink}>
+              Browse by topic <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+        </header>
         {posts.length === 0 ? (
-          <p className="py-20 italic text-ink3">暂无文章，敬请期待…</p>
+          <p className={styles.empty}>The first article will appear here soon.</p>
         ) : (
           <ArticleFilter posts={items} />
         )}
       </div>
-
       <SiteFooter />
     </main>
   );

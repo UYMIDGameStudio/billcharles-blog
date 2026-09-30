@@ -10,7 +10,7 @@ function TipButton({ link }: { link: SupportLink }) {
       href={link.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-sans font-medium text-on-accent shadow-sm hover:bg-accent-dark transition-colors"
+      className="action-link"
     >
       {link.label}
     </a>
@@ -26,7 +26,7 @@ export default function SupportTip({
 
   if (variant === 'compact') {
     return (
-      <aside className="mt-16 rounded-2xl border border-line bg-surface p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+      <aside className="support-inline" lang="en">
         <div className="space-y-1">
           <p className="font-sans font-bold text-ink flex items-center gap-2">
             <span aria-hidden>☕</span> Enjoyed this piece?
@@ -45,8 +45,8 @@ export default function SupportTip({
   }
 
   return (
-    <section className="px-4">
-      <div className="max-w-2xl mx-auto text-center bg-surface border border-line rounded-3xl p-10 md:p-12 shadow-sm">
+    <section className="support-section" lang="en">
+      <div className="support-panel">
         <div className="text-3xl mb-4" aria-hidden>
           ☕
         </div>

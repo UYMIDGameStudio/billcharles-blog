@@ -1,6 +1,5 @@
 // app/articles/[slug]/page.tsx
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import MarkdownContent from '@/app/components/MarkdownContent';
@@ -12,6 +11,8 @@ import ReadingProgress from '@/app/components/ReadingProgress';
 import { formatDisplayDate, getArticles, getPostBySlug, ogLocale } from '@/lib/posts';
 import { PUBLICATIONS } from '@/lib/publications';
 import { topicSlug } from '@/lib/topics';
+import { getArticleHeadings } from '@/lib/article-headings';
+import styles from './reading.module.css';
 import {
   AUTHOR_ACADEMIC_NAME,
   AUTHOR_NAME,
@@ -132,6 +133,8 @@ export default async function ArticlePage({
   const related = all
     .filter((p) => p.category === post.category && !adjacent.has(p.slug))
     .slice(0, 3);
+  const headings = getArticleHeadings(post.content);
+  const contentsLabel = isChinese ? (inLanguage === 'zh-Hant' ? '文章目錄' : '文章目录') : 'Contents';
   const topicHref = `/topics/${topicSlug(post.category)}`;
 
   const articleJsonLd = {
@@ -207,72 +210,48 @@ export default async function ArticlePage({
     <main>
       <JsonLd data={pageJsonLd} />
       <SiteHeader activeNav="articles" />
-      <ReadingProgress />
+      <ReadingProgress key={post.slug} targetId="article-body" />
 
-      <article className="mx-auto max-w-[720px] px-6" lang={inLanguage}>
-        <header className="pt-16">
-          <Link
-            href="/articles"
-            className="mb-9 inline-block text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
-          >
-            ← All articles
-          </Link>
+      <article className={styles.article} lang={inLanguage}>
+        <header className={styles.header}>
+          <Link href="/articles" lang="en" className={styles.backLink}>← All articles</Link>
 
-          <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] uppercase tracking-[0.06em] text-ink3">
-            <Link
-              href={`/topics/${topicSlug(post.category)}`}
-              className="text-accent transition-colors hover:text-ink"
-            >
-              {post.category}
+          <div className={styles.metadata} lang="en">
+            <Link href={topicHref} className={styles.category}>{post.category}</Link>
+            <time dateTime={post.date}>{formatDisplayDate(post.date)}</time>
+            {post.updated && <span>Updated <time dateTime={post.updated}>{formatDisplayDate(post.updated)}</time></span>}
+            <span lang={inLanguage}>{readLabel}</span>
+          </div>
+
+          <h1 className={styles.title}>{post.title}</h1>
+          {post.excerpt && <p className={styles.deck}>{post.excerpt}</p>}
+
+          <div className={styles.byline} lang="en">
+            <Link href="/about">
+              {isAcademicByline ? <>{authorName} (<span lang="zh-Hans">{AUTHOR_NAME_HANZI}</span>)</> : authorName}
             </Link>
-            <span className="h-px w-4 bg-line2" />
-            <span>{formatDisplayDate(post.date)}</span>
-            {post.updated && (
-              <>
-                <span className="h-px w-4 bg-line2" />
-                <span>Updated {formatDisplayDate(post.updated)}</span>
-              </>
-            )}
-            <span className="h-px w-4 bg-line2" />
-            <span>{readLabel}</span>
+            {isAcademicByline && <span>Writing as {AUTHOR_NAME}</span>}
+            {publication && <a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">Publication record ↗</a>}
           </div>
-
-          <h1 className="text-[clamp(2.1rem,5vw,3.2rem)] font-normal leading-[1.12] tracking-[0.005em] text-ink">
-            {post.title}
-          </h1>
-
-          {post.excerpt && (
-            <p className="mt-6 text-[1.2rem] italic leading-relaxed text-ink2">
-              {post.excerpt}
-            </p>
-          )}
-
-          <div className="mt-9 flex items-center gap-3.5 border-b border-ink pb-10">
-            <span className="relative block h-[42px] w-[42px] flex-none overflow-hidden rounded-full border border-line2">
-              <Image src="/image_0.png" alt={authorName} fill sizes="42px" className="object-cover" />
-            </span>
-            <span>
-              <span className="block text-base font-bold text-ink">
-                {isAcademicByline ? `${authorName} (${AUTHOR_NAME_HANZI})` : authorName}
-              </span>
-              <Link
-                href="/about"
-                className="block text-[13px] tracking-[0.02em] text-ink3 transition-colors hover:text-accent"
-              >
-                {isAcademicByline ? `pen name ${AUTHOR_NAME} · About the author →` : 'About the author →'}
-              </Link>
-            </span>
-          </div>
-
-          {isAcademicByline && (
-            <p className="mt-6 border-l-[3px] border-accent/40 pl-4 text-sm italic text-ink3">
-              {authorName} ({AUTHOR_NAME_HANZI}) is the author&apos;s legal and academic name.{' '}
-              {AUTHOR_NAME} is the pen name used on this site.
-            </p>
-          )}
         </header>
 
-        <div className="pt-10">
+        {headings.length >= 3 && (
+          <details className={styles.contents}>
+            <summary>
+              <span>{contentsLabel}</span>
+              <span className={styles.sectionCount}>{headings.length} {isChinese ? (inLanguage === 'zh-Hant' ? '節' : '节') : 'sections'}</span>
+            </summary>
+            <nav aria-label={contentsLabel}>
+              <ol>
+                {headings.map((heading) => (
+                  <li key={heading.id}><a href={`#${heading.id}`}>{heading.title}</a></li>
+                ))}
+              </ol>
+            </nav>
+          </details>
+        )}
+
+        <div id="article-body" className={styles.body}>
           <MarkdownContent>{post.content}</MarkdownContent>
         </div>
 
@@ -281,9 +260,9 @@ export default async function ArticlePage({
         {/* RELATED — same topic, so readers (and crawlers) move sideways
             through the archive instead of only backwards in time. */}
         {related.length > 0 && (
-          <section className="mt-16 border-t border-line pt-8">
+          <section lang="en" className="mt-16 border-t border-line pt-8">
             <div className="mb-4 flex items-baseline justify-between">
-              <h2 className="text-[11px] uppercase tracking-[0.16em] text-ink3">
+              <h2 className="text-[0.75rem] uppercase tracking-[0.16em] text-ink3">
                 More in {post.category}
               </h2>
               <Link
@@ -298,12 +277,12 @@ export default async function ArticlePage({
                 <li key={r.slug}>
                   <Link
                     href={`/articles/${encodeURIComponent(r.slug)}`}
-                    className="block border-b border-line py-4 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3"
+                    className="block border-b border-line py-4 transition-colors duration-200 hover:bg-surface"
                   >
-                    <span className="block text-[17px] leading-snug text-ink">
+                    <span lang={r.lang} className="localized-title block text-[1.0625rem] leading-snug text-ink">
                       {r.title}
                     </span>
-                    <span className="mt-1 block text-[12px] text-ink3">
+                    <span className="mt-1 block text-[0.75rem] text-ink3">
                       {formatDisplayDate(r.date)}
                     </span>
                   </Link>
@@ -314,7 +293,7 @@ export default async function ArticlePage({
         )}
 
         {/* PREV / NEXT */}
-        <nav className="mt-16 grid gap-4 sm:grid-cols-2">
+        <nav lang="en" className="mt-16 grid gap-4 sm:grid-cols-2">
           {newer ? (
             <Link
               href={`/articles/${encodeURIComponent(newer.slug)}`}
@@ -323,7 +302,7 @@ export default async function ArticlePage({
               <span className="mb-2.5 block text-xs uppercase tracking-[0.12em] text-ink3">
                 ← Newer
               </span>
-              <span className="block text-[18px] leading-snug text-ink">{newer.title}</span>
+              <span lang={newer.lang} className="localized-title block text-[1.125rem] leading-snug text-ink">{newer.title}</span>
             </Link>
           ) : (
             <Link
@@ -333,7 +312,7 @@ export default async function ArticlePage({
               <span className="mb-2.5 block text-xs uppercase tracking-[0.12em] text-ink3">
                 ← Index
               </span>
-              <span className="block text-[18px] text-ink">All articles</span>
+              <span className="block text-[1.125rem] text-ink">All articles</span>
             </Link>
           )}
           {older && (
@@ -344,12 +323,12 @@ export default async function ArticlePage({
               <span className="mb-2.5 block text-xs uppercase tracking-[0.12em] text-ink3">
                 Older →
               </span>
-              <span className="block text-[18px] leading-snug text-ink">{older.title}</span>
+              <span lang={older.lang} className="localized-title block text-[1.125rem] leading-snug text-ink">{older.title}</span>
             </Link>
           )}
         </nav>
 
-        <footer className="mt-12 flex justify-between border-t border-line pt-8 text-sm">
+        <footer lang="en" className="mt-12 flex justify-between border-t border-line pt-8 text-sm">
           <Link href="/articles" className="text-ink3 transition-colors hover:text-accent">
             ← Back to Archive
           </Link>

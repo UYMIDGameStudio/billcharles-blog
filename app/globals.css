@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@import "highlight.js/styles/github.min.css";
 
 /* Dark mode is driven by a `data-theme="dark"` attribute on <html>,
    set by app/components/ThemeToggle.tsx (and the anti-FOUC script in layout.tsx). */
@@ -9,28 +8,32 @@
 /* Raw palette. Swapping these under [data-theme="dark"] re-themes every
    token-based utility (bg-paper, text-ink, border-line, ...) at once. */
 :root {
-  --c-bg: #f1efea;
-  --c-surface: #fcfaf6;
+  --c-bg: #f7f5ef;
+  color-scheme: light;
+  --c-surface: #eeebe3;
   --c-panel: #ffffff;
   --c-ink: #1c1917;
   --c-ink2: #57514a;
-  --c-ink3: #746c62;
+  --c-ink3: #6c645b;
   --c-line: #e3ddd1;
-  --c-line2: #d6cec0;
+  --c-line2: #b8b0a3;
+  --c-control: #80766a;
   --c-accent: #8a2e38;       /* restrained claret */
   --c-accent-dark: #6d2530;
   --c-on-accent: #ffffff;
 }
 
 [data-theme="dark"] {
-  --c-bg: #16130f;
-  --c-surface: #1d1915;
-  --c-panel: #221d18;
+  --c-bg: #191917;
+  color-scheme: dark;
+  --c-surface: #23231f;
+  --c-panel: #292925;
   --c-ink: #f3eee5;
   --c-ink2: #c9c1b4;
-  --c-ink3: #8f867a;
+  --c-ink3: #aaa092;
   --c-line: #332c24;
-  --c-line2: #41382e;
+  --c-line2: #615d53;
+  --c-control: #9a9285;
   --c-accent: #cf7079;       /* lifted claret for dark surfaces */
   --c-accent-dark: #b85a63;
   --c-on-accent: #16130f;
@@ -50,40 +53,91 @@
   --color-accent-dark: var(--c-accent-dark);
   --color-on-accent: var(--c-on-accent);
 
-  /* Chinese 宋体 · English Times New Roman. Latin glyphs resolve to Times,
-     CJK glyphs fall through to a Song/Songti family. Both `font-serif` and
-     `font-sans` map here so any leftover `font-sans` utility stays consistent. */
-  --font-serif: "Times New Roman", "Songti SC", "STSong", "SimSun", "宋体", serif;
-  --font-sans: "Times New Roman", "Songti SC", "STSong", "SimSun", "宋体", serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Songti SC", "STSong", "SimSun", serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Shared reading foundations. Page-specific art direction lives in CSS modules. */
+:root { --header-offset: 4.875rem; --duration-hover: 160ms; --radius-control: .125rem; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-offset) + 1.5rem); }
+body { background: var(--c-bg); color: var(--c-ink); line-height: 1.7; overflow-wrap: anywhere; }
+::selection { background: color-mix(in srgb, var(--c-accent) 18%, transparent); }
+:focus-visible { outline: 3px solid var(--c-accent); outline-offset: 4px; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+h1, h2, h3 { overflow-wrap: anywhere; }
+:lang(zh) { letter-spacing: 0; line-break: strict; }
+:lang(zh) h1, :lang(zh) h2, :lang(zh) h3 { line-height: 1.5; }
+.uppercase { font-family: var(--font-sans); }
+.page-title, .article-title { font-weight: 400; color: var(--c-ink); margin: 0; }
+.page-title { font-size: clamp(2.5rem, 1.5rem + 3vw, 4.5rem); line-height: 1.12; letter-spacing: -.035em; }
+.article-title { font-size: clamp(2rem, 1.6rem + 2vw, 3.25rem); line-height: 1.22; letter-spacing: -.02em; text-wrap: balance; }
+.article-shell { max-width: 48rem; margin-inline: auto; padding-inline: 1.5rem; }
+.reading-prose { font-size: 1.125rem; line-height: 1.9; }
+.reading-prose:lang(zh) { line-height: 2; }
+.reading-prose h2, .reading-prose h3 { scroll-margin-top: calc(var(--header-offset) + 2rem); }
+.reading-prose blockquote { background: var(--c-surface); padding: 1rem 1.5rem; }
+.reading-prose table { font-family: var(--font-sans); font-size: .9375rem; line-height: 1.65; }
+.eyebrow { font-family: var(--font-sans); font-size: .75rem; font-weight: 500; line-height: 1.7; letter-spacing: .12em; text-transform: uppercase; }
+.site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--c-line2); background: var(--c-bg); }
+.site-header-inner { max-width: 76rem; padding: 1rem clamp(1.25rem, 4vw, 3rem); margin-inline: auto; display: grid; grid-template-columns: auto minmax(0,1fr) auto; grid-template-areas: "brand nav theme"; gap: 1.5rem; align-items: center; }
+.site-brand { grid-area: brand; min-width: 0; display: flex; align-items: center; gap: .75rem; min-height: 2.75rem; font-family: var(--font-sans); font-size: .8125rem; font-weight: 500; letter-spacing: -.025em; }
+.site-brand > span { min-width: 0; overflow-wrap: anywhere; }
+.brand-mark { font-family: var(--font-serif); font-size: 1.875rem; font-style: italic; letter-spacing: -.08em; color: var(--c-accent); }
+.brand-period { color: var(--c-accent); }
+.site-theme { grid-area: theme; }
+.site-nav { grid-area: nav; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .125rem 1.5rem; font-family: var(--font-sans); font-size: .8125rem; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: .375rem .125rem; border-bottom: 1px solid transparent; color: var(--c-ink2); transition: color var(--duration-hover) ease, border-color var(--duration-hover) ease; }
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--c-accent); border-bottom-color: var(--c-accent); }
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; border: 1px solid var(--c-control); border-radius: 50%; background: transparent; color: var(--c-ink2); }
+.theme-toggle:hover { color: var(--c-accent); background: var(--c-surface); }
+.action-link { display: inline-flex; align-items: center; justify-content: center; gap: 1rem; min-height: 2.75rem; max-width: 100%; padding: .625rem 1rem; border: 1px solid var(--c-accent); border-radius: var(--radius-control); font-family: var(--font-sans); font-size: .8125rem; font-weight: 500; line-height: 1.5; color: var(--c-accent); background: transparent; }
+.action-link:hover { background: var(--c-accent); color: var(--c-on-accent); }
+.text-link, .quiet-link { display: inline-flex; align-items: center; gap: .75rem; min-height: 2.75rem; font-family: var(--font-sans); font-size: .875rem; }
+.text-link { color: var(--c-accent); text-decoration: underline; text-underline-offset: .35em; }
+.quiet-link { color: var(--c-ink2); }
+.quiet-link:hover { color: var(--c-accent); }
+.support-section { padding-top: 4rem; }
+.support-panel { text-align: center; border-block: 1px solid var(--c-line2); padding: 2rem 1.5rem; }
+.support-panel > p { margin-inline: auto; }
+.support-inline { margin-top: 4rem; border-block: 1px solid var(--c-line2); padding-block: 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
+.site-footer { margin-top: 5.5rem; border-top: 1px solid var(--c-line2); background: var(--c-surface); font-family: var(--font-sans); }
+.site-footer a { display: inline-flex; align-items: center; min-height: 2.25rem; }
+.footer-grid { max-width: 76rem; margin-inline: auto; padding: 3rem clamp(1.25rem,4vw,3rem) 2rem; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; }
+.footer-wordmark { font-family: var(--font-serif); font-size: 2rem; letter-spacing: -.045em; }
+.footer-note { max-width: 23em; margin-top: .5rem; color: var(--c-ink2); font-size: .75rem; }
+.footer-label { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--c-ink3); margin-bottom: .5rem; }
+.footer-nav { display: flex; flex-wrap: wrap; gap: 0 1.25rem; font-size: .8125rem; color: var(--c-ink2); }
+.footer-nav a:hover { color: var(--c-accent); }
+.footer-bottom { max-width: 76rem; margin-inline: auto; padding: 0 clamp(1.25rem,4vw,3rem) 1.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 2rem; font-size: .75rem; color: var(--c-ink3); }
+@media (max-width: 45rem) {
+ :root { --header-offset: 0rem; }
+ .site-header { position: static; }
+ .site-header-inner { grid-template-columns: minmax(0,1fr) auto; grid-template-areas: "brand theme" "nav nav"; gap: .125rem .75rem; padding-block: .625rem .25rem; }
+ .site-nav { justify-content: space-between; gap: .125rem .5rem; }
+ .site-brand { flex-wrap: wrap; }
+ .article-shell { padding-inline: 1.25rem; }
+ .footer-grid { grid-template-columns: minmax(0,1fr); gap: 1.75rem; }
+ .site-footer { margin-top: 3.5rem; }
 }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .site-nav a { transition: none; } }
+@media (forced-colors: active) { .action-link, .theme-toggle { border-color: ButtonText; } :focus-visible { outline-color: Highlight; } }
 
-body {
-  background: var(--c-bg);
-  color: var(--c-ink);
-  transition: background 0.4s ease, color 0.4s ease;
-}
+/* Titles keep the language of the destination article, including related links. */
+.localized-title:lang(zh) { letter-spacing: 0; line-height: 1.5; }
 
-::selection {
-  background: color-mix(in srgb, var(--c-accent) 18%, transparent);
-}
-
-:focus-visible {
-  outline: 2px solid var(--c-accent);
-  outline-offset: 2px;
-  border-radius: 3px;
-}
-
-/* Respect readers who disable motion in their system preferences. */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+/* Highlighted code shares the reading surface instead of importing a white panel. */
+:root { --c-code-string: #285843; --c-code-number: #345d86; --c-code-add-bg: #e2eee4; --c-code-delete-bg: #f4e0e0; }
+[data-theme="dark"] { --c-code-string: #a9c9aa; --c-code-number: #aac5e5; --c-code-add-bg: #25342a; --c-code-delete-bg: #302024; }
+.reading-prose .hljs { color: var(--c-ink); background: transparent; }
+.reading-prose pre { font-size: .875rem; line-height: 1.7; }
+.reading-prose pre code.hljs { display: block; padding: 0; font-size: inherit; }
+.hljs-comment, .hljs-quote, .hljs-formula { color: var(--c-ink3); }
+.hljs-keyword, .hljs-doctag, .hljs-selector-tag, .hljs-type, .hljs-title, .hljs-section { color: var(--c-accent); }
+.hljs-string, .hljs-regexp, .hljs-symbol { color: var(--c-code-string); }
+.hljs-number, .hljs-literal, .hljs-attr, .hljs-attribute, .hljs-meta, .hljs-built_in { color: var(--c-code-number); }
+.hljs-addition { color: var(--c-code-string); background: var(--c-code-add-bg); }
+.hljs-deletion { color: var(--c-accent); background: var(--c-code-delete-bg); }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong, .hljs-section { font-weight: 700; }

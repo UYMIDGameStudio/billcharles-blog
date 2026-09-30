@@ -1,86 +1,120 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import styles from './ArticleFilter.module.css';
 
 export type ArticleListItem = {
   slug: string;
   title: string;
   excerpt: string;
   category: string;
-  date: string; // pre-formatted display date
+  date: string;
+  dateTime: string;
+  lang: string;
 };
 
 export default function ArticleFilter({ posts }: { posts: ArticleListItem[] }) {
-  const categories = useMemo(() => {
-    const set = new Set(posts.map((p) => p.category));
-    return ['All', ...Array.from(set)];
-  }, [posts]);
+  const categories = useMemo(() => Array.from(new Set(posts.map((post) => post.category))), [posts]);
+  const [active, setActive] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
+  const searchRef = useRef<HTMLInputElement>(null);
+  const visible = useMemo(() => {
+    const terms = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+    return posts.filter((post) => {
+      if (active !== null && post.category !== active) return false;
+      const text = (post.title + ' ' + post.excerpt).toLocaleLowerCase();
+      return terms.every((term) => text.includes(term));
+    });
+  }, [posts, active, query]);
+  const filtered = active !== null || query.length > 0;
 
-  const [active, setActive] = useState('All');
-  const visible = active === 'All' ? posts : posts.filter((p) => p.category === active);
+  function resetFilters() {
+    setActive(null);
+    setQuery('');
+    searchRef.current?.focus();
+  }
 
   return (
-    <>
-      {/* FILTER ROW */}
-      <div className="flex flex-wrap items-center gap-3.5 border-b border-line py-5">
-        <span className="text-xs uppercase tracking-[0.16em] text-ink3">Filter</span>
-        <div className="flex flex-wrap gap-2.5">
-          {categories.map((c) => {
-            const on = active === c;
-            return (
+    <section aria-label="Article archive" className={styles.archive}>
+      <div className={styles.tools}>
+        <fieldset className={styles.categories}>
+          <legend className={styles.label}>Subject</legend>
+          <div className={styles.categoryButtons}>
+            {[null, ...categories].map((category) => (
               <button
-                key={c}
+                key={category ?? '__all__'}
                 type="button"
-                onClick={() => setActive(c)}
-                aria-pressed={on}
-                className={
-                  'rounded-full border px-4 py-1.5 text-sm tracking-wide transition-colors ' +
-                  (on
-                    ? 'border-accent bg-accent text-on-accent'
-                    : 'border-line2 text-ink2 hover:border-accent hover:text-accent')
-                }
+                onClick={() => setActive(category)}
+                aria-pressed={active === category}
+                aria-controls="article-results"
+                className={styles.category}
               >
-                {c}
+                {category ?? 'All writing'}
               </button>
-            );
-          })}
+            ))}
+          </div>
+        </fieldset>
+        <div className={styles.search}>
+          <label htmlFor="article-search" className={styles.label}>Search the writing</label>
+          <div className={styles.searchField}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 4 4" />
+            </svg>
+            <input
+              ref={searchRef}
+              id="article-search"
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Title or keyword"
+              aria-controls="article-results"
+              autoComplete="off"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => { setQuery(''); searchRef.current?.focus(); }}
+                className={styles.clearSearch}
+                aria-label="Clear search"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* LIST */}
-      <div className="pb-10">
-        {visible.map((post, i) => (
-          <Link
-            key={post.slug}
-            href={`/articles/${encodeURIComponent(post.slug)}`}
-            className="group grid grid-cols-1 gap-2 border-b border-line py-8 pr-3 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3.5 sm:grid-cols-[64px_150px_1fr_30px] sm:items-baseline sm:gap-7"
-          >
-            <span className="hidden text-[15px] italic text-ink3 sm:block">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <span className="flex gap-2.5 text-[12.5px] leading-relaxed tracking-[0.03em] text-ink3 sm:block">
-              <span className="sm:block">{post.date}</span>
-              <span className="uppercase tracking-[0.1em] text-accent sm:block">
-                {post.category}
-              </span>
-            </span>
-            <span>
-              <span className="mb-2.5 block text-[1.7rem] font-normal leading-snug tracking-[-0.005em] text-ink">
-                {post.title}
-              </span>
-              {post.excerpt && (
-                <span className="block max-w-[48em] text-base leading-relaxed text-ink2">
-                  {post.excerpt}
-                </span>
-              )}
-            </span>
-            <span className="hidden text-right text-xl text-ink3 transition-colors group-hover:text-accent sm:block">
-              →
-            </span>
-          </Link>
-        ))}
+      <div className={styles.resultBar}>
+        <p role="status" aria-live="polite" aria-atomic="true">
+          {filtered ? visible.length + ' of ' + posts.length : posts.length} {posts.length === 1 ? 'article' : 'articles'}
+          <span className={styles.resultDetail}> · Newest first</span>
+        </p>
+        {filtered && <button type="button" onClick={resetFilters} className={styles.reset}>Reset filters</button>}
       </div>
-    </>
+      <div id="article-results" className={styles.results}>
+        {visible.length > 0 ? visible.map((post) => (
+          <article key={post.slug} className={styles.entry}>
+            <div className={styles.metadata}>
+              <time dateTime={post.dateTime}>{post.date}</time>
+              <span>{post.category}</span>
+            </div>
+            <Link href={'/articles/' + encodeURIComponent(post.slug)} className={styles.articleLink}>
+              <div className={styles.articleCopy}>
+                <h2 lang={post.lang} className={styles.articleTitle}>{post.title}</h2>
+                {post.excerpt && <p lang={post.lang} className={styles.excerpt}>{post.excerpt}</p>}
+              </div>
+              <span className={styles.arrow} aria-hidden="true">↗</span>
+            </Link>
+          </article>
+        )) : (
+          <div className={styles.noResults}>
+            <h2>No matching articles</h2>
+            <p>Try another word or clear the filters to browse all writing.</p>
+            <button type="button" onClick={resetFilters} className={styles.showAll}>Show all writing <span aria-hidden="true">→</span></button>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
