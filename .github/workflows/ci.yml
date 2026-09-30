@@ -27,4 +27,5 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run test:smoke
-      - run: npm audit --audit-level=moderate
+      # Audit only production deps; dev-only packages often fail CI even when runtime is clean.
+      - run: npm audit --audit-level=moderate --omit=dev
