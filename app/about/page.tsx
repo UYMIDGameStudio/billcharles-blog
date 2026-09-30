@@ -64,12 +64,12 @@ export default function AboutPage() {
         {/* HEAD */}
         <section className="grid items-center gap-10 border-b border-ink py-16 sm:grid-cols-[1fr_140px]">
           <div>
-            <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">About</p>
+            <p className="mb-5 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">About</p>
             <h1 className="page-title">
               {AUTHOR_NAME}
             </h1>
             <p className="mt-2 text-[1.4rem] font-light italic text-ink2">
-              {AUTHOR_NAME_HANZI}&nbsp;·&nbsp;{AUTHOR_ACADEMIC_NAME}
+              <span lang="zh-Hans" className="font-normal not-italic">{AUTHOR_NAME_HANZI}</span>&nbsp;·&nbsp;{AUTHOR_ACADEMIC_NAME}
             </p>
           </div>
           <div className="hidden sm:block">
@@ -84,7 +84,7 @@ export default function AboutPage() {
           <p>
             I am <span className="text-ink">{AUTHOR_NAME}</span> — my legal and academic name is{' '}
             <span className="text-ink">
-              {AUTHOR_ACADEMIC_NAME} ({AUTHOR_NAME_HANZI})
+              {AUTHOR_ACADEMIC_NAME} (<span lang="zh-Hans" className="font-normal not-italic">{AUTHOR_NAME_HANZI}</span>)
             </span>
             , under which I publish. I am a high school student based in Zhejiang, China, working primarily
             in Western philosophy, post-Marxism, and psychoanalysis.
@@ -106,22 +106,22 @@ export default function AboutPage() {
 
         {/* ON THE NAME */}
         <section className="border-l-[3px] border-accent/40 py-1 pl-5 text-[0.98rem] italic leading-relaxed text-ink3">
-          {AUTHOR_ACADEMIC_NAME} ({AUTHOR_NAME_HANZI}) is my legal and academic name, used on published work
+          {AUTHOR_ACADEMIC_NAME} (<span lang="zh-Hans" className="font-normal not-italic">{AUTHOR_NAME_HANZI}</span>) is my legal and academic name, used on published work
           and indexed records. Bill Charles is the pen name and brand used on this site.
         </section>
 
         {/* PROFILES */}
         <section className="py-12">
-          <h2 className="mb-6 border-b border-ink pb-3.5 text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
+          <h2 className="mb-6 border-b border-ink pb-3.5 text-[0.9375rem] font-medium uppercase tracking-[0.14em] text-ink">
             Profiles &amp; Contact
           </h2>
-          <dl className="text-[13px]">
+          <dl className="text-[0.8125rem]">
             {PROFILES.map((p) => (
               <div
                 key={p.k}
                 className="grid grid-cols-[110px_1fr] items-baseline gap-4 border-b border-line py-3"
               >
-                <dt className="text-[10.5px] uppercase tracking-[0.12em] text-ink3">{p.k}</dt>
+                <dt className="text-[0.75rem] uppercase tracking-[0.12em] text-ink3">{p.k}</dt>
                 <dd className="m-0 min-w-0">
                   <a
                     href={p.href}

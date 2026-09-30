@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@import "highlight.js/styles/github.min.css";
 
 /* Dark mode is driven by a `data-theme="dark"` attribute on <html>,
    set by app/components/ThemeToggle.tsx (and the anti-FOUC script in layout.tsx). */
@@ -108,10 +107,10 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .footer-grid { max-width: 76rem; margin-inline: auto; padding: 3rem clamp(1.25rem,4vw,3rem) 2rem; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; }
 .footer-wordmark { font-family: var(--font-serif); font-size: 2rem; letter-spacing: -.045em; }
 .footer-note { max-width: 23em; margin-top: .5rem; color: var(--c-ink2); font-size: .75rem; }
-.footer-label { font-size: .625rem; letter-spacing: .12em; text-transform: uppercase; color: var(--c-ink3); margin-bottom: .5rem; }
+.footer-label { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--c-ink3); margin-bottom: .5rem; }
 .footer-nav { display: flex; flex-wrap: wrap; gap: 0 1.25rem; font-size: .8125rem; color: var(--c-ink2); }
 .footer-nav a:hover { color: var(--c-accent); }
-.footer-bottom { max-width: 76rem; margin-inline: auto; padding: 0 clamp(1.25rem,4vw,3rem) 1.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 2rem; font-size: .6875rem; color: var(--c-ink3); }
+.footer-bottom { max-width: 76rem; margin-inline: auto; padding: 0 clamp(1.25rem,4vw,3rem) 1.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 2rem; font-size: .75rem; color: var(--c-ink3); }
 @media (max-width: 45rem) {
  :root { --header-offset: 0rem; }
  .site-header { position: static; }
@@ -124,3 +123,21 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .site-nav a { transition: none; } }
 @media (forced-colors: active) { .action-link, .theme-toggle { border-color: ButtonText; } :focus-visible { outline-color: Highlight; } }
+
+/* Titles keep the language of the destination article, including related links. */
+.localized-title:lang(zh) { letter-spacing: 0; line-height: 1.5; }
+
+/* Highlighted code shares the reading surface instead of importing a white panel. */
+:root { --c-code-string: #285843; --c-code-number: #345d86; --c-code-add-bg: #e2eee4; --c-code-delete-bg: #f4e0e0; }
+[data-theme="dark"] { --c-code-string: #a9c9aa; --c-code-number: #aac5e5; --c-code-add-bg: #25342a; --c-code-delete-bg: #302024; }
+.reading-prose .hljs { color: var(--c-ink); background: transparent; }
+.reading-prose pre { font-size: .875rem; line-height: 1.7; }
+.reading-prose pre code.hljs { display: block; padding: 0; font-size: inherit; }
+.hljs-comment, .hljs-quote, .hljs-formula { color: var(--c-ink3); }
+.hljs-keyword, .hljs-doctag, .hljs-selector-tag, .hljs-type, .hljs-title, .hljs-section { color: var(--c-accent); }
+.hljs-string, .hljs-regexp, .hljs-symbol { color: var(--c-code-string); }
+.hljs-number, .hljs-literal, .hljs-attr, .hljs-attribute, .hljs-meta, .hljs-built_in { color: var(--c-code-number); }
+.hljs-addition { color: var(--c-code-string); background: var(--c-code-add-bg); }
+.hljs-deletion { color: var(--c-accent); background: var(--c-code-delete-bg); }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong, .hljs-section { font-weight: 700; }

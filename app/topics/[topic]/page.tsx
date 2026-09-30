@@ -90,17 +90,17 @@ export default async function TopicPage({
         <section className="border-b border-ink py-20">
           <Link
             href="/topics"
-            className="mb-6 inline-block text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+            className="mb-6 inline-block text-[0.8125rem] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
           >
             ← All topics
           </Link>
-          <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">
+          <p className="mb-5 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">
             {topic.posts.length} {topic.posts.length === 1 ? 'article' : 'articles'}
           </p>
           <h1 className="page-title">
             {topic.name}
           </h1>
-          <p className="mt-5 max-w-[40em] text-[19px] leading-relaxed text-ink2">
+          <p className="mt-5 max-w-[40em] text-[1.1875rem] leading-relaxed text-ink2">
             {topic.description}
           </p>
         </section>
@@ -110,20 +110,20 @@ export default async function TopicPage({
             <Link
               key={post.slug}
               href={`/articles/${encodeURIComponent(post.slug)}`}
-              className="group grid grid-cols-1 gap-2 border-b border-line py-8 pr-3 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3.5 sm:grid-cols-[64px_150px_1fr_30px] sm:items-baseline sm:gap-7"
+              className="group grid grid-cols-1 gap-2 border-b border-line py-8 pr-3 transition-colors duration-200 hover:bg-surface sm:grid-cols-[64px_150px_1fr_30px] sm:items-baseline sm:gap-7"
             >
-              <span className="hidden text-[15px] italic text-ink3 sm:block">
+              <span className="hidden text-[0.9375rem] italic text-ink3 sm:block">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <span className="text-[12.5px] leading-relaxed tracking-[0.03em] text-ink3">
+              <span className="text-[0.78125rem] leading-relaxed tracking-[0.03em] text-ink3">
                 {formatDisplayDate(post.date)}
               </span>
               <span>
-                <span className="mb-2.5 block text-[1.7rem] font-normal leading-snug tracking-[-0.005em] text-ink">
+                <span lang={post.lang} className="localized-title mb-2.5 block text-[1.7rem] font-normal leading-snug tracking-[-0.005em] text-ink">
                   {post.title}
                 </span>
                 {post.excerpt && (
-                  <span className="block max-w-[48em] text-base leading-relaxed text-ink2">
+                  <span lang={post.lang} className="block max-w-[48em] text-base leading-relaxed text-ink2">
                     {post.excerpt}
                   </span>
                 )}
@@ -138,7 +138,7 @@ export default async function TopicPage({
         {/* Sideways links so every topic page reaches the others. */}
         {others.length > 0 && (
           <section className="border-t border-line py-10">
-            <h2 className="mb-5 text-[11px] uppercase tracking-[0.16em] text-ink3">
+            <h2 className="mb-5 text-[0.75rem] uppercase tracking-[0.16em] text-ink3">
               Other topics
             </h2>
             <div className="flex flex-wrap gap-2.5">
@@ -158,7 +158,7 @@ export default async function TopicPage({
         <div className="pb-16 text-center">
           <Link
             href="/articles"
-            className="text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
+            className="text-[0.8125rem] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
           >
             View all articles →
           </Link>

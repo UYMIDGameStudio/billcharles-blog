@@ -26,7 +26,7 @@ export default function SupportTip({
 
   if (variant === 'compact') {
     return (
-      <aside className="support-inline">
+      <aside className="support-inline" lang="en">
         <div className="space-y-1">
           <p className="font-sans font-bold text-ink flex items-center gap-2">
             <span aria-hidden>☕</span> Enjoyed this piece?
@@ -45,7 +45,7 @@ export default function SupportTip({
   }
 
   return (
-    <section className="support-section">
+    <section className="support-section" lang="en">
       <div className="support-panel">
         <div className="text-3xl mb-4" aria-hidden>
           ☕

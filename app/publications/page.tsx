@@ -62,11 +62,11 @@ export default function PublicationsPage() {
       <div className="mx-auto max-w-[860px] px-6 md:px-8">
         {/* HEAD */}
         <section className="border-b border-ink py-16">
-          <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">Academic Record</p>
+          <p className="mb-5 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">Academic Record</p>
           <h1 className="page-title">
             Publications
           </h1>
-          <p className="mt-5 max-w-[44em] text-[18px] leading-relaxed text-ink2">
+          <p className="mt-5 max-w-[44em] text-[1.125rem] leading-relaxed text-ink2">
             Papers and formal academic work. Each entry links to its archived record of permanent citation,
             and to an on-site copy where available.
           </p>
@@ -79,9 +79,9 @@ export default function PublicationsPage() {
               key={pub.title}
               className="grid grid-cols-1 items-baseline gap-3 border-b border-line py-9 sm:grid-cols-[40px_minmax(0,1fr)] sm:gap-6"
             >
-              <span className="text-[15px] italic text-ink3">{String(i + 1).padStart(2, '0')}</span>
+              <span className="text-[0.9375rem] italic text-ink3">{String(i + 1).padStart(2, '0')}</span>
               <div>
-                <div className="mb-2 flex flex-wrap items-center gap-3 text-[12.5px] uppercase tracking-[0.06em] text-ink3">
+                <div className="mb-2 flex flex-wrap items-center gap-3 text-[0.78125rem] uppercase tracking-[0.06em] text-ink3">
                   <span className="text-accent">{pub.year}</span>
                   <span className="h-px w-4 bg-line2" />
                   <span>{pub.venue}</span>
@@ -89,8 +89,8 @@ export default function PublicationsPage() {
                 <h2 className="text-[clamp(1.4rem,3vw,1.85rem)] font-normal leading-snug tracking-tight text-ink">
                   {pub.title}
                 </h2>
-                <p className="mt-3 text-[15px] text-ink2">{pub.authors}</p>
-                <div className="mt-4 flex flex-wrap gap-6 text-[13px]">
+                <p className="mt-3 text-[0.9375rem] text-ink2">{pub.authors}</p>
+                <div className="mt-4 flex flex-wrap gap-6 text-[0.8125rem]">
                   {pub.links.map((l) => (
                     <a
                       key={l.href}

@@ -25,7 +25,7 @@ export default function SiteFooter() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} {AUTHOR_NAME} ({AUTHOR_NAME_HANZI})</p>
+        <p>© {new Date().getFullYear()} {AUTHOR_NAME} (<span lang="zh-Hans">{AUTHOR_NAME_HANZI}</span>)</p>
         <nav aria-label="Site policies" className="footer-nav"><Link href="/editorial">Editorial &amp; corrections</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></nav>
       </div>
     </footer>

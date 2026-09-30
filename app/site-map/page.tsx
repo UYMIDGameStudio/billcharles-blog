@@ -135,7 +135,7 @@ export default function SiteMapPage() {
               Articles ({articles.length})
             </h2>
             {articles.length === 0 ? (
-              <p className="text-ink3 italic font-serif">暂无文章</p>
+              <p lang="zh-Hans" className="text-ink3 font-serif">暂无文章</p>
             ) : (
               <ul className="space-y-4">
                 {articles.map((post) => (
@@ -144,7 +144,7 @@ export default function SiteMapPage() {
                       href={`/articles/${encodeURIComponent(post.slug)}`}
                       className="block group"
                     >
-                      <span className="font-medium text-ink group-hover:text-accent transition-colors">
+                      <span lang={post.lang} className="localized-title font-medium text-ink group-hover:text-accent transition-colors">
                         {post.title}
                       </span>
                       {post.date && (
