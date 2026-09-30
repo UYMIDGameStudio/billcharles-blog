@@ -77,7 +77,7 @@ export default function PublicationsPage() {
           {PUBLICATIONS.map((pub, i) => (
             <li
               key={pub.title}
-              className="grid grid-cols-[60px_1fr] items-baseline gap-6 border-b border-line py-9"
+              className="grid grid-cols-1 items-baseline gap-3 border-b border-line py-9 sm:grid-cols-[40px_minmax(0,1fr)] sm:gap-6"
             >
               <span className="text-[15px] italic text-ink3">{String(i + 1).padStart(2, '0')}</span>
               <div>

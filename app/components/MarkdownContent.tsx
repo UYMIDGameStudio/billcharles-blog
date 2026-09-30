@@ -1,8 +1,9 @@
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import remarkGfm from 'remark-gfm';
+import { remarkArticleHeadings } from '@/lib/article-headings';
 
-// Tuned for Times New Roman / 宋体 long-form reading: generous line-height,
+// Long-form reading: generous line-height,
 // normal-weight serif headings, claret links and rules. Colors are token-based
 // so the prose follows light/dark theme automatically.
 const proseClassName = [
@@ -10,7 +11,7 @@ const proseClassName = [
   'text-ink [overflow-wrap:anywhere]',
   'prose-p:my-7 prose-p:text-ink prose-p:tracking-normal',
   'prose-headings:font-normal prose-headings:text-ink prose-headings:tracking-normal',
-  'prose-h2:text-[1.7rem] prose-h2:mt-14 prose-h2:mb-5 prose-h2:pb-3 prose-h2:border-b prose-h2:border-line',
+  'prose-h2:text-[1.55rem] prose-h2:mt-14 prose-h2:mb-5',
   'prose-h3:text-[1.35rem] prose-h3:mt-10 prose-h3:mb-3 prose-h3:text-ink2',
   'prose-strong:text-ink prose-strong:font-bold',
   'prose-em:italic',
@@ -36,7 +37,7 @@ export default function MarkdownContent({
   return (
     <div className={className}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkArticleHeadings]}
         rehypePlugins={[rehypeHighlight]}
         components={{
           table: ({ children }) => (

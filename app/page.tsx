@@ -4,24 +4,11 @@ import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
-import SupportTip from '@/app/components/SupportTip';
-import WritingPager, { type WritingPage } from '@/app/components/WritingPager';
-import KofiButton from '@/app/components/KofiButton';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { PUBLICATIONS } from '@/lib/publications';
 import { getTopics } from '@/lib/topics';
-import {
-  AUTHOR_EMAIL,
-  AUTHOR_ORCID,
-  AUTHOR_SCHOLAR,
-  ORGANIZATION_SCHEMA,
-  PERSON_SCHEMA,
-  RSS_ALTERNATE_TYPES,
-  SITE_DESCRIPTION,
-  SITE_NAME,
-  SITE_URL,
-  WEBSITE_SCHEMA,
-} from '@/lib/site';
+import { AUTHOR_EMAIL, AUTHOR_ORCID, AUTHOR_SCHOLAR, ORGANIZATION_SCHEMA, PERSON_SCHEMA, RSS_ALTERNATE_TYPES, SITE_DESCRIPTION, SITE_NAME, SITE_URL, WEBSITE_SCHEMA } from '@/lib/site';
+import styles from './page.module.css';
 
 export const metadata: Metadata = {
   title: { absolute: 'BillCharles Blog — Philosophy, Post-Marxism & Cryptography' },
@@ -37,28 +24,6 @@ export const metadata: Metadata = {
 };
 
 const homeJsonLd = [WEBSITE_SCHEMA, ORGANIZATION_SCHEMA, PERSON_SCHEMA];
-
-const FIELDS = [
-  'Western Philosophy',
-  'Post-Marxism',
-  'Psychoanalysis',
-  'Political Economy',
-  'Cryptography',
-  'DAO',
-];
-
-const CRYPTO_TOPICS = [
-  { k: '01', label: 'Web3' },
-  { k: '02', label: 'DAO' },
-  { k: '03', label: 'ZK Rollups' },
-];
-
-const HUMANITIES_TOPICS = [
-  { k: '01', label: 'Philosophy' },
-  { k: '02', label: 'Psychology' },
-  { k: '03', label: 'Psychoanalysis' },
-  { k: '04', label: 'Literature' },
-];
 
 const READING = [
   { title: 'Organs without Bodies: On Deleuze and Consequences', author: 'Slavoj Žižek' },
@@ -80,234 +45,94 @@ const CONNECT = [
 ];
 
 export default function Home() {
-  // The writing pager is generated from content/*.md — add a markdown file and it appears here.
+  const articles = getArticles();
+  const publicationSlugs = new Set(PUBLICATIONS.map((item) => item.articleSlug));
+  const featured = articles.find((post) => publicationSlugs.has(post.slug)) ?? articles[0];
+  const essays = articles.filter((post) => post.slug !== featured?.slug && !publicationSlugs.has(post.slug)).slice(0, 3);
   const topics = getTopics();
-  const pages: WritingPage[] = getArticles()
-    .slice(0, 5)
-    .map((post, i) => ({
-      num: String(i + 1).padStart(2, '0'),
-      kicker: post.category,
-      date: formatDisplayDate(post.date),
-      title: post.title,
-      excerpt: post.excerpt ?? '',
-      href: `/articles/${encodeURIComponent(post.slug)}`,
-    }));
 
   return (
     <main>
       <JsonLd data={homeJsonLd} />
       <SiteHeader activeNav="home" />
+      <div className={styles.journal}>
+        <header className={styles.masthead}>
+          <div className={styles.edition}><span>A personal journal</span><span>Philosophy · Knowledge · Systems</span></div>
+          <div className={styles.nameRow}>
+            <h1>Bill Charles<span>.</span></h1>
+            <p><span lang="zh-Hans">王鑫桦</span><br />Wang Xinhua</p>
+          </div>
+        </header>
 
-      <div className="mx-auto max-w-[1120px] px-6 md:px-8">
-        <section id="author" className="home-hero">
-          <div>
-            <p className="eyebrow hero-kicker">Personal academic journal <span aria-hidden> / </span> Zhejiang, China</p>
-            <h1 className="hero-title">Bill Charles<span className="text-accent">.</span></h1>
-            <p className="hero-byline"><span lang="zh-Hans">王鑫桦</span><span aria-hidden> / </span>Wang Xinhua</p>
-            <p className="hero-intro">A space where rigorous thinking meets diverse insight. I write on Western philosophy, post-Marxism, and psychoanalysis — and chase the same questions through cryptography and decentralized systems.</p>
-            <p className="hero-detail">Secretary-General of the organizing committee for the 2nd &amp; 3rd Zhejiang Secondary School Philosophy Conference (SSPC). Co-founder, Ateleios Diexodos.</p>
-            <div className="hero-actions">
-              <Link href="#writing" className="action-link">Explore the writing <span aria-hidden>↗</span></Link>
-              <Link href="/about" className="text-link">About the author <span aria-hidden>→</span></Link>
+        <section className={styles.cover} aria-label="Featured writing and author">
+          {featured && <article className={styles.lead}>
+            <div className={styles.storyMeta}><span className={styles.accentLabel}>{publicationSlugs.has(featured.slug) ? 'Featured research' : 'Latest writing'}</span><span>{featured.category}</span><time dateTime={featured.date}>{formatDisplayDate(featured.date)}</time></div>
+            <h2 lang={featured.lang}><Link href={'/articles/' + encodeURIComponent(featured.slug)}>{featured.shortTitle ?? featured.title}</Link></h2>
+            <p className={styles.leadExcerpt} lang={featured.lang}>{featured.excerpt}</p>
+            <Link href={'/articles/' + encodeURIComponent(featured.slug)} className={styles.readLink}>Read the essay <span aria-hidden>↗</span></Link>
+          </article>}
+          <aside className={styles.author} aria-label="About the author">
+            <Image src="/image_0.png" alt="Abstract geometric portrait used by Bill Charles" width={240} height={240} sizes="(min-width: 800px) 200px, 96px" className={styles.portrait} />
+            <div>
+              <p className={styles.authorLabel}>Behind the writing</p>
+              <p className={styles.authorIntro}>I write on Western philosophy, post-Marxism and psychoanalysis, with an interest in cryptography and decentralized systems.</p>
+              <Link href="/about" className={styles.smallLink}>More about me <span aria-hidden>↗</span></Link>
             </div>
-          </div>
-          <figure className="hero-portrait">
-            <div className="portrait-mat">
-              <Image src="/image_0.png" alt="Abstract geometric portrait" width={360} height={360} sizes="(min-width: 768px) 320px, 260px" priority className="aspect-square w-full object-cover" />
-            </div>
-            <figcaption><span>Philosophy &amp; cryptography</span><span aria-hidden>01 — BC</span></figcaption>
-          </figure>
+          </aside>
         </section>
 
-        {/* FIELDS */}
-        <section className="field-strip">
-          <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
-            Fields
-          </span>
-          <div className="flex flex-wrap gap-2.5">
-            {FIELDS.map((f) => (
-              <span
-                key={f}
-                className="field-label"
-              >
-                {f}
-              </span>
-            ))}
+        <section id="writing" className={styles.writing} aria-labelledby="writing-title">
+          <div className={styles.sectionHead}><h2 id="writing-title">From the journal</h2><Link href="/articles">All articles <span aria-hidden>↗</span></Link></div>
+          <div className={styles.essayGrid}>
+            {essays.map((post, i) => <article className={styles.essay} key={post.slug}>
+              <div className={styles.storyMeta}><span>{post.category}</span><span className={styles.index} aria-hidden>{String(i + 1).padStart(2, '0')}</span></div>
+              <h3 lang={post.lang}><Link href={'/articles/' + encodeURIComponent(post.slug)}>{post.shortTitle ?? post.title}</Link></h3>
+              <p lang={post.lang}>{post.excerpt}</p>
+              <div className={styles.essayFoot}><time dateTime={post.date}>{formatDisplayDate(post.date)}</time><Link href={'/articles/' + encodeURIComponent(post.slug)} aria-label={'Read ' + post.title}>Read <span aria-hidden>↗</span></Link></div>
+            </article>)}
           </div>
         </section>
 
-        {/* PUBLICATIONS (dynamic from lib/publications) */}
-        <section id="publications" className="scroll-mt-20 pt-16">
-          <div className="flex items-baseline justify-between border-b border-ink pb-3.5">
-            <h2 className="text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
-              Publications
-            </h2>
-            <Link
-              href="/publications"
-              className="text-xs uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
-            >
-              All publications →
-            </Link>
+        <section className={styles.inquiries} aria-labelledby="inquiries-title">
+          <div className={styles.inquiryIntro}>
+            <p className={styles.accentLabel}>Lines of inquiry</p>
+            <h2 id="inquiries-title">What changes.<br /><em>What remains.</em></h2>
+            <p>From the identity of a theory to the structures of public life: questions pursued through philosophy, essays, and the study of decentralized systems.</p>
           </div>
-          {PUBLICATIONS.map((pub) => (
-            <div
-              key={pub.title}
-              className="grid items-baseline gap-3 border-b border-line py-7 pr-3 md:grid-cols-[120px_1fr] md:gap-10"
-            >
-              <div className="text-xs leading-relaxed text-ink3">
-                <div className="font-medium text-accent">{pub.year}</div>
-                <div>{pub.venue}</div>
-              </div>
-              <div>
-                <h3 className="mb-2 text-[clamp(1.25rem,3vw,1.6rem)] font-normal leading-snug tracking-tight text-ink">
-                  {pub.title}
-                </h3>
-                {pub.abstract && (
-                  <p className="mb-3 max-w-[46em] text-[15px] leading-relaxed text-ink2">
-                    {pub.abstract}
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-6 text-[13px]">
-                  {pub.links.map((l) => (
-                    <a
-                      key={l.href}
-                      href={l.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border-b border-accent/40 pb-0.5 text-accent transition-colors hover:border-accent"
-                    >
-                      {l.label} →
-                    </a>
-                  ))}
-                  {pub.articleSlug && (
-                    <Link
-                      href={`/articles/${encodeURIComponent(pub.articleSlug)}`}
-                      className="border-b border-line2 pb-0.5 text-ink3 transition-colors hover:text-accent"
-                    >
-                      Read on this site →
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </section>
-
-        {/* WRITING — manually browsed selections from content/*.md */}
-        <WritingPager pages={pages} />
-
-        {/* TOPICS — crawlable entry points into each subject */}
-        <section className="flex flex-wrap items-center gap-3 border-t border-line pt-8">
-          <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
-            Topics
-          </span>
-          {topics.map((topic) => (
-            <Link
-              key={topic.slug}
-              href={`/topics/${topic.slug}`}
-              className="rounded-full border border-line2 px-3.5 py-1 text-[13px] text-ink2 transition-colors hover:border-accent hover:text-accent"
-            >
-              {topic.name}
-              <span className="ml-1.5 text-ink3">{topic.posts.length}</span>
-            </Link>
-          ))}
-        </section>
-
-        {/* COLUMNS */}
-        <section id="columns" className="scroll-mt-20 pt-20">
-          <div className="research-columns grid md:grid-cols-2">
-            <div className="border-line p-9 md:border-r">
-              <p className="mb-4 text-[11px] uppercase tracking-[0.16em] text-accent">
-                Cryptography Column
-              </p>
-              <h3 className="mb-4 text-[1.55rem] font-normal tracking-tight text-ink">
-                Decentralized systems &amp; trust
-              </h3>
-              <ul className="flex flex-col gap-3">
-                {CRYPTO_TOPICS.map((t) => (
-                  <li key={t.k} className="flex items-baseline gap-3 text-base text-ink2">
-                    <span className="font-mono text-[11px] text-ink3">{t.k}</span>
-                    {t.label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="border-t border-line p-9 md:border-t-0">
-              <p className="mb-4 text-[11px] uppercase tracking-[0.16em] text-accent">
-                Humanities Column
-              </p>
-              <h3 className="mb-4 text-[1.55rem] font-normal tracking-tight text-ink">
-                Thought, mind &amp; meaning
-              </h3>
-              <ul className="flex flex-col gap-3">
-                {HUMANITIES_TOPICS.map((t) => (
-                  <li key={t.k} className="flex items-baseline gap-3 text-base text-ink2">
-                    <span className="font-mono text-[11px] text-ink3">{t.k}</span>
-                    {t.label}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className={styles.topicList}>
+            {topics.map((topic) => <Link href={'/topics/' + topic.slug} key={topic.slug}>
+              <span><strong>{topic.name}</strong><span className={styles.topicDescription}>{topic.description}</span></span>
+              <span className={styles.topicCount}>{topic.posts.length} <span className="sr-only">articles</span><span aria-hidden>↗</span></span>
+            </Link>)}
           </div>
         </section>
 
-        {/* READING + CONNECT */}
-        <section className="grid gap-16 pt-20 md:grid-cols-2">
-          <div>
-            <h2 className="mb-6 border-b border-ink pb-3.5 text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
-              Currently Reading
-            </h2>
-            <ul className="flex flex-col">
-              {READING.map((r) => (
-                <li key={r.title} className="border-b border-line py-3.5">
-                  <span className="text-[18px] italic text-ink">{r.title}</span>
-                  <span className="mt-1 block text-[12px] tracking-[0.02em] text-ink3">
-                    {r.author}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div id="connect" className="scroll-mt-20">
-            <h2 className="mb-6 border-b border-ink pb-3.5 text-[15px] font-medium uppercase tracking-[0.14em] text-ink">
-              Connect
-            </h2>
-            <dl className="text-[13px]">
-              {CONNECT.map((c) => (
-                <div
-                  key={c.k}
-                  className="grid grid-cols-[96px_1fr] items-baseline gap-4 border-b border-line py-3"
-                >
-                  <dt className="text-[10.5px] uppercase tracking-[0.12em] text-ink3">
-                    {c.k}
-                  </dt>
-                  <dd className="m-0 min-w-0">
-                    <a
-                      href={c.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="break-words border-b border-transparent text-ink transition-colors hover:border-accent hover:text-accent"
-                    >
-                      {c.label}
-                    </a>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <p className="mt-5 text-sm leading-relaxed text-ink3">
-              中文交流请发邮件至上方邮箱。Open to correspondence on philosophy,
-              post-Marxism, and DAO research.
-            </p>
-          </div>
+        <section className={styles.publications} aria-labelledby="publications-title">
+          <div className={styles.sectionHead}><h2 id="publications-title">Research &amp; publications</h2><Link href="/publications">Full records <span aria-hidden>↗</span></Link></div>
+          <p className={styles.sectionNote}>Academic work published under Wang Xinhua.</p>
+          <ol className={styles.bibliography}>
+            {PUBLICATIONS.map((pub) => <li key={pub.doi}>
+              <span className={styles.pubYear}>{pub.year}</span>
+              <div><h3>{pub.articleSlug ? <Link href={'/articles/' + encodeURIComponent(pub.articleSlug)}>{pub.title}</Link> : pub.title}</h3><p>{pub.venue} · Version {pub.version}</p></div>
+              <div className={styles.pubLinks}>{pub.links.map((link) => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">{link.label} <span aria-hidden>↗</span></a>)}</div>
+            </li>)}
+          </ol>
         </section>
 
-        {/* SUPPORT */}
-        <SupportTip variant="section" />
-        <div className="h-12" />
+        <section className={styles.desk} aria-label="Reading and correspondence">
+          <div className={styles.reading}>
+            <p className={styles.accentLabel}>On the desk</p><h2>Currently reading</h2>
+            <ul>{READING.map((book) => <li key={book.title}><cite>{book.title}</cite><span>{book.author}</span></li>)}</ul>
+          </div>
+          <div id="connect" className={styles.correspondence}>
+            <p className={styles.accentLabel}>Correspondence</p><h2>Keep the conversation<br /><em>open.</em></h2>
+            <p>Open to correspondence on philosophy, post-Marxism, and DAO research. <span lang="zh-Hans">欢迎中文交流。</span></p>
+            <a className={styles.readLink} href={'mailto:' + AUTHOR_EMAIL}>Write to me <span aria-hidden>↗</span></a>
+            <div className={styles.profiles}>{CONNECT.filter((profile) => profile.k !== 'Email').map((profile) => <a key={profile.k} href={profile.href} target="_blank" rel="noopener noreferrer">{profile.k} <span aria-hidden>↗</span></a>)}</div>
+          </div>
+        </section>
       </div>
-
       <SiteFooter />
-      <KofiButton />
     </main>
   );
 }

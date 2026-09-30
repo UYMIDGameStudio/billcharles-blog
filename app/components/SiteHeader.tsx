@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 
@@ -15,7 +14,7 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
     <header className="site-header">
       <div className="site-header-inner">
         <Link href="/" className="site-brand" aria-label="BillCharles home">
-          <Image src="/image_0.png" alt="" width={32} height={32} className="rounded-full" />
+          <span className="brand-mark" aria-hidden>Bc.</span>
           <span>BillCharles<span className="brand-period">.</span></span>
         </Link>
         <nav aria-label="Main" className="site-nav">
