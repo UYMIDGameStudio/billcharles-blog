@@ -98,59 +98,29 @@ export default function Home() {
       <JsonLd data={homeJsonLd} />
       <SiteHeader activeNav="home" />
 
-      <div className="mx-auto max-w-[1080px] px-6 md:px-8">
-        {/* HERO */}
-        <section
-          id="author"
-          className="scroll-mt-24 grid items-center gap-14 py-16 md:grid-cols-[1fr_280px] md:py-20"
-        >
+      <div className="mx-auto max-w-[1120px] px-6 md:px-8">
+        <section id="author" className="home-hero">
           <div>
-            <p className="mb-6 text-xs uppercase tracking-[0.18em] text-accent">
-              Personal Academic Journal
-            </p>
-            <h1 className="text-[clamp(2.6rem,6vw,3.9rem)] font-normal leading-[1.02] tracking-tight text-ink">
-              Bill Charles
-            </h1>
-            <p className="mt-2 text-[1.7rem] font-light italic text-ink2">
-              王鑫桦 &nbsp;·&nbsp; Wang Xinhua
-            </p>
-            <p className="mt-7 max-w-[36em] text-lg leading-relaxed text-ink2">
-              A space where rigorous thinking meets diverse insight. I write on{' '}
-              <em className="not-italic text-ink underline decoration-accent/40 underline-offset-4">
-                Western philosophy
-              </em>
-              , post-Marxism, and psychoanalysis — and chase the same questions
-              through cryptography and decentralized systems.
-            </p>
-            <p className="mt-4 max-w-[34em] text-[15px] leading-relaxed text-ink3">
-              Secretary-General of the organizing committee for the 2nd &amp; 3rd
-              Zhejiang Secondary School Philosophy Conference (SSPC). Co-founder,
-              Ateleios Diexodos.
-            </p>
-            <Link
-              href="/about"
-              className="mt-5 inline-block text-[13px] uppercase tracking-[0.08em] text-ink3 transition-colors hover:text-accent"
-            >
-              More about me →
-            </Link>
-          </div>
-          <div className="relative">
-            <div className="absolute -bottom-3.5 -right-3.5 left-3.5 top-3.5 rounded-sm border border-line2" />
-            <div className="relative rounded-sm border border-line bg-panel p-2.5 shadow-[0_18px_40px_-28px_rgba(28,25,23,0.5)]">
-              <Image
-                src="/image_0.png"
-                alt="Abstract geometric portrait"
-                width={280}
-                height={280}
-                priority
-                className="aspect-square w-full rounded-[2px] object-cover"
-              />
+            <p className="eyebrow hero-kicker">Personal academic journal <span aria-hidden> / </span> Zhejiang, China</p>
+            <h1 className="hero-title">Bill Charles<span className="text-accent">.</span></h1>
+            <p className="hero-byline"><span lang="zh-Hans">王鑫桦</span><span aria-hidden> / </span>Wang Xinhua</p>
+            <p className="hero-intro">A space where rigorous thinking meets diverse insight. I write on Western philosophy, post-Marxism, and psychoanalysis — and chase the same questions through cryptography and decentralized systems.</p>
+            <p className="hero-detail">Secretary-General of the organizing committee for the 2nd &amp; 3rd Zhejiang Secondary School Philosophy Conference (SSPC). Co-founder, Ateleios Diexodos.</p>
+            <div className="hero-actions">
+              <Link href="#writing" className="action-link">Explore the writing <span aria-hidden>↗</span></Link>
+              <Link href="/about" className="text-link">About the author <span aria-hidden>→</span></Link>
             </div>
           </div>
+          <figure className="hero-portrait">
+            <div className="portrait-mat">
+              <Image src="/image_0.png" alt="Abstract geometric portrait" width={360} height={360} sizes="(min-width: 768px) 320px, 260px" priority className="aspect-square w-full object-cover" />
+            </div>
+            <figcaption><span>Philosophy &amp; cryptography</span><span aria-hidden>01 — BC</span></figcaption>
+          </figure>
         </section>
 
         {/* FIELDS */}
-        <section className="flex flex-wrap items-center gap-4 border-y border-line py-5">
+        <section className="field-strip">
           <span className="text-[11px] uppercase tracking-[0.16em] text-ink3">
             Fields
           </span>
@@ -158,7 +128,7 @@ export default function Home() {
             {FIELDS.map((f) => (
               <span
                 key={f}
-                className="rounded-full border border-line2 px-3 py-1 text-[13px] text-ink2"
+                className="field-label"
               >
                 {f}
               </span>
@@ -223,7 +193,7 @@ export default function Home() {
           ))}
         </section>
 
-        {/* WRITING — wheel/touch-paged reader (dynamic from content/*.md) */}
+        {/* WRITING — manually browsed selections from content/*.md */}
         <WritingPager pages={pages} />
 
         {/* TOPICS — crawlable entry points into each subject */}
@@ -245,7 +215,7 @@ export default function Home() {
 
         {/* COLUMNS */}
         <section id="columns" className="scroll-mt-20 pt-20">
-          <div className="grid overflow-hidden rounded-sm border border-line md:grid-cols-2">
+          <div className="research-columns grid md:grid-cols-2">
             <div className="border-line p-9 md:border-r">
               <p className="mb-4 text-[11px] uppercase tracking-[0.16em] text-accent">
                 Cryptography Column

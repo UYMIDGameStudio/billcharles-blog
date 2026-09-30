@@ -3,62 +3,29 @@ import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 
 type NavKey = 'home' | 'articles' | 'publications' | 'about';
+const navItems: { href: string; label: string; key: NavKey }[] = [
+  { href: '/', label: 'Home', key: 'home' },
+  { href: '/articles', label: 'Articles', key: 'articles' },
+  { href: '/publications', label: 'Publications', key: 'publications' },
+  { href: '/about', label: 'About', key: 'about' },
+];
 
 export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
-  const navItems: {
-    href: string;
-    label: string;
-    shortLabel?: string;
-    key: NavKey;
-  }[] = [
-    { href: '/', label: 'Home', key: 'home' },
-    { href: '/articles', label: 'Articles', key: 'articles' },
-    {
-      href: '/publications',
-      label: 'Publications',
-      shortLabel: 'Pubs',
-      key: 'publications',
-    },
-    { href: '/about', label: 'About', key: 'about' },
-  ];
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-line bg-paper/85 backdrop-blur-md">
-      <div className="mx-auto flex h-[66px] max-w-[1080px] items-center justify-between px-5 md:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="relative block h-[34px] w-[34px] flex-none overflow-hidden rounded-full border border-line2">
-            <Image src="/image_0.png" alt="Bill Charles" fill sizes="34px" className="object-cover" />
-          </span>
-          <span className="hidden text-base font-bold tracking-tight text-ink sm:inline">
-            BillCharles
-          </span>
+    <header className="site-header">
+      <div className="site-header-inner">
+        <Link href="/" className="site-brand" aria-label="BillCharles home">
+          <Image src="/image_0.png" alt="" width={32} height={32} className="rounded-full" />
+          <span>BillCharles<span className="brand-period">.</span></span>
         </Link>
-
-        <nav aria-label="Main" className="flex items-center gap-1.5 text-[11px] uppercase tracking-normal min-[375px]:gap-2.5 min-[375px]:text-[12px] min-[375px]:tracking-wide sm:gap-6 sm:text-sm sm:tracking-wider">
-          {navItems.map(({ href, label, shortLabel, key }) => (
-            <Link
-              key={key}
-              href={href}
-              aria-label={label}
-              aria-current={activeNav === key ? 'page' : undefined}
-              className={
-                activeNav === key
-                  ? 'border-b border-accent pb-0.5 text-accent'
-                  : 'text-ink2 transition-colors hover:text-accent'
-              }
-            >
-              {shortLabel ? (
-                <>
-                  <span className="sm:hidden">{shortLabel}</span>
-                  <span className="hidden sm:inline">{label}</span>
-                </>
-              ) : (
-                label
-              )}
+        <nav aria-label="Main" className="site-nav">
+          {navItems.map(({ href, label, key }) => (
+            <Link key={key} href={href} aria-current={activeNav === key ? 'page' : undefined}>
+              {label}
             </Link>
           ))}
-          <ThemeToggle />
         </nav>
+        <div className="site-theme"><ThemeToggle /></div>
       </div>
     </header>
   );

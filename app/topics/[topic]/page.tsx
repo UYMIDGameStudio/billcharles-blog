@@ -86,7 +86,7 @@ export default async function TopicPage({
       <JsonLd data={[jsonLd, breadcrumbJsonLd]} />
       <SiteHeader activeNav="articles" />
 
-      <div className="mx-auto max-w-[1080px] px-6 md:px-8">
+      <div className="mx-auto max-w-[1120px] px-6 md:px-8">
         <section className="border-b border-ink py-20">
           <Link
             href="/topics"
@@ -97,7 +97,7 @@ export default async function TopicPage({
           <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">
             {topic.posts.length} {topic.posts.length === 1 ? 'article' : 'articles'}
           </p>
-          <h1 className="text-[clamp(2.6rem,6vw,3.75rem)] font-normal leading-[1.04] tracking-tight text-ink">
+          <h1 className="page-title">
             {topic.name}
           </h1>
           <p className="mt-5 max-w-[40em] text-[19px] leading-relaxed text-ink2">

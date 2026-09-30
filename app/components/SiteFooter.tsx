@@ -5,8 +5,8 @@ export default function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 border-t border-line bg-paper/60">
-      <div className="mx-auto flex max-w-[1080px] flex-col gap-8 px-6 py-12 md:px-8 sm:flex-row sm:items-start sm:justify-between">
+    <footer className="site-footer">
+      <div className="mx-auto flex max-w-[1120px] flex-col gap-8 px-6 py-12 md:px-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-xs space-y-2">
           <p className="text-lg font-bold tracking-tight text-ink">
             BillCharles Blog
@@ -79,7 +79,7 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1080px] px-6 pb-10 md:px-8">
+      <div className="mx-auto max-w-[1120px] px-6 pb-10 md:px-8">
         <p className="text-xs text-ink3">
           © {year} {AUTHOR_NAME} ({AUTHOR_NAME_HANZI}). All rights reserved.
         </p>

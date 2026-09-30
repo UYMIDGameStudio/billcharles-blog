@@ -22,7 +22,7 @@ export default function PrivacyPage() {
       <SiteHeader />
 
       <section className="max-w-2xl mx-auto px-6 py-20 prose prose-lg prose-headings:text-ink prose-p:text-ink2 prose-a:text-accent prose-a:font-medium prose-strong:text-ink">
-        <h1 className="font-sans tracking-tight">Privacy Policy</h1>
+        <h1 className="page-title">Privacy Policy</h1>
         <p className="text-ink3 text-sm font-sans not-prose mb-10">
           Last updated: July 17, 2026
         </p>

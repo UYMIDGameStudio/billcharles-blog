@@ -6,10 +6,10 @@ import remarkGfm from 'remark-gfm';
 // normal-weight serif headings, claret links and rules. Colors are token-based
 // so the prose follows light/dark theme automatically.
 const proseClassName = [
-  'prose prose-lg max-w-none',
-  'text-ink leading-[2] text-[1.1rem] [overflow-wrap:anywhere]',
-  'prose-p:my-7 prose-p:text-ink prose-p:tracking-[0.01em]',
-  'prose-headings:font-normal prose-headings:text-ink prose-headings:tracking-[0.005em]',
+  'reading-prose prose prose-lg max-w-none',
+  'text-ink [overflow-wrap:anywhere]',
+  'prose-p:my-7 prose-p:text-ink prose-p:tracking-normal',
+  'prose-headings:font-normal prose-headings:text-ink prose-headings:tracking-normal',
   'prose-h2:text-[1.7rem] prose-h2:mt-14 prose-h2:mb-5 prose-h2:pb-3 prose-h2:border-b prose-h2:border-line',
   'prose-h3:text-[1.35rem] prose-h3:mt-10 prose-h3:mb-3 prose-h3:text-ink2',
   'prose-strong:text-ink prose-strong:font-bold',

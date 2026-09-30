@@ -63,7 +63,7 @@ export default function PublicationsPage() {
         {/* HEAD */}
         <section className="border-b border-ink py-16">
           <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">Academic Record</p>
-          <h1 className="text-[clamp(2.4rem,5.5vw,3.4rem)] font-normal leading-[1.04] tracking-tight text-ink">
+          <h1 className="page-title">
             Publications
           </h1>
           <p className="mt-5 max-w-[44em] text-[18px] leading-relaxed text-ink2">

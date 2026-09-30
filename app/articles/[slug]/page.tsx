@@ -209,7 +209,7 @@ export default async function ArticlePage({
       <SiteHeader activeNav="articles" />
       <ReadingProgress />
 
-      <article className="mx-auto max-w-[720px] px-6" lang={inLanguage}>
+      <article className="article-shell" lang={inLanguage}>
         <header className="pt-16">
           <Link
             href="/articles"
@@ -237,7 +237,7 @@ export default async function ArticlePage({
             <span>{readLabel}</span>
           </div>
 
-          <h1 className="text-[clamp(2.1rem,5vw,3.2rem)] font-normal leading-[1.12] tracking-[0.005em] text-ink">
+          <h1 className="article-title">
             {post.title}
           </h1>
 

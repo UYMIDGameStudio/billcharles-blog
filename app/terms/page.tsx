@@ -51,7 +51,7 @@ export default function TermsPage() {
       <article className="mx-auto max-w-[760px] px-6 py-16 md:px-8">
         <header className="border-b border-ink pb-10">
           <p className="mb-4 text-[13px] uppercase tracking-[0.18em] text-accent">Site Policy</p>
-          <h1 className="text-[clamp(2.2rem,5vw,3.2rem)] font-normal leading-tight tracking-tight text-ink">
+          <h1 className="page-title">
             Terms of Use
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-ink2">

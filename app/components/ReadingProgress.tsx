@@ -18,9 +18,9 @@ export default function ReadingProgress() {
   }, []);
 
   return (
-    <div className="sticky top-[66px] z-40 h-0.5 bg-transparent">
+    <div className="reading-progress sticky top-[var(--header-offset)] z-40 h-0.5 bg-transparent">
       <div
-        className="h-full bg-accent transition-[width] duration-100 ease-linear"
+        className="h-full bg-accent"
         style={{ width: `${pct}%` }}
       />
     </div>

@@ -65,7 +65,7 @@ export default function AboutPage() {
         <section className="grid items-center gap-10 border-b border-ink py-16 sm:grid-cols-[1fr_140px]">
           <div>
             <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-accent">About</p>
-            <h1 className="text-[clamp(2.2rem,5vw,3rem)] font-normal leading-[1.05] tracking-tight text-ink">
+            <h1 className="page-title">
               {AUTHOR_NAME}
             </h1>
             <p className="mt-2 text-[1.4rem] font-light italic text-ink2">

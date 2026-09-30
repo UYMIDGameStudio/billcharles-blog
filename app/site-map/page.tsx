@@ -28,7 +28,7 @@ export default function SiteMapPage() {
 
       <section className="max-w-2xl mx-auto px-6 py-20 space-y-12">
         <header className="space-y-3">
-          <h1 className="text-4xl font-bold font-sans tracking-tight text-ink">
+          <h1 className="page-title">
             Site Map
           </h1>
           <p className="text-ink2 font-serif leading-relaxed">

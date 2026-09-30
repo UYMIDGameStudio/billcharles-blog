@@ -35,7 +35,7 @@ export default function ArticleFilter({ posts }: { posts: ArticleListItem[] }) {
                 onClick={() => setActive(c)}
                 aria-pressed={on}
                 className={
-                  'rounded-full border px-4 py-1.5 text-sm tracking-wide transition-colors ' +
+                  'filter-button ' +
                   (on
                     ? 'border-accent bg-accent text-on-accent'
                     : 'border-line2 text-ink2 hover:border-accent hover:text-accent')
@@ -54,19 +54,19 @@ export default function ArticleFilter({ posts }: { posts: ArticleListItem[] }) {
           <Link
             key={post.slug}
             href={`/articles/${encodeURIComponent(post.slug)}`}
-            className="group grid grid-cols-1 gap-2 border-b border-line py-8 pr-3 transition-[background,padding] duration-200 hover:bg-surface hover:pl-3.5 sm:grid-cols-[64px_150px_1fr_30px] sm:items-baseline sm:gap-7"
+            className="archive-entry group"
           >
             <span className="hidden text-[15px] italic text-ink3 sm:block">
               {String(i + 1).padStart(2, '0')}
             </span>
-            <span className="flex gap-2.5 text-[12.5px] leading-relaxed tracking-[0.03em] text-ink3 sm:block">
+            <span className="archive-meta">
               <span className="sm:block">{post.date}</span>
               <span className="uppercase tracking-[0.1em] text-accent sm:block">
                 {post.category}
               </span>
             </span>
             <span>
-              <span className="mb-2.5 block text-[1.7rem] font-normal leading-snug tracking-[-0.005em] text-ink">
+              <span className="archive-title">
                 {post.title}
               </span>
               {post.excerpt && (

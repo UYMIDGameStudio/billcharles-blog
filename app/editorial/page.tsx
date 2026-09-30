@@ -54,7 +54,7 @@ export default function EditorialPage() {
           <p className="mb-4 text-[13px] uppercase tracking-[0.18em] text-accent">
             Trust &amp; Transparency
           </p>
-          <h1 className="text-[clamp(2.2rem,5vw,3.2rem)] font-normal leading-tight tracking-tight text-ink">
+          <h1 className="page-title">
             Editorial Standards &amp; Corrections
           </h1>
           <p className="mt-5 max-w-[42em] text-lg leading-relaxed text-ink2">
