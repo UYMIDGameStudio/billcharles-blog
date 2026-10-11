@@ -61,7 +61,7 @@ export default function PublicationsPage() {
 
       <div className="mx-auto max-w-[860px] px-6 md:px-8">
         {/* HEAD */}
-        <section className="border-b border-ink py-16">
+        <section className="border-b border-line2 py-10">
           <p className="mb-5 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">Academic Record</p>
           <h1 className="page-title">
             Publications

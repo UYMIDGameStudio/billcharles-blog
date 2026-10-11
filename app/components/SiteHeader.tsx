@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 
-type NavKey = 'home' | 'articles' | 'publications' | 'about';
+type NavKey = 'home' | 'articles' | 'topics' | 'publications' | 'about';
 const navItems: { href: string; label: string; key: NavKey }[] = [
   { href: '/', label: 'Home', key: 'home' },
   { href: '/articles', label: 'Articles', key: 'articles' },
+  { href: '/topics', label: 'Topics', key: 'topics' },
   { href: '/publications', label: 'Publications', key: 'publications' },
   { href: '/about', label: 'About', key: 'about' },
 ];

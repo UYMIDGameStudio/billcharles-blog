@@ -62,7 +62,7 @@ export default function AboutPage() {
 
       <div className="mx-auto max-w-[760px] px-6 md:px-8">
         {/* HEAD */}
-        <section className="grid items-center gap-10 border-b border-ink py-16 sm:grid-cols-[1fr_140px]">
+        <section className="grid items-center gap-8 border-b border-line2 py-10 sm:grid-cols-[1fr_96px]">
           <div>
             <p className="mb-5 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">About</p>
             <h1 className="page-title">
@@ -74,13 +74,13 @@ export default function AboutPage() {
           </div>
           <div className="hidden sm:block">
             <span className="relative block aspect-square w-full overflow-hidden rounded-sm border border-line2">
-              <Image src="/image_0.png" alt={AUTHOR_NAME} fill sizes="140px" className="object-cover" />
+              <Image src="/image_0.png" alt={AUTHOR_NAME} fill sizes="96px" className="object-cover" />
             </span>
           </div>
         </section>
 
         {/* BIO */}
-        <section className="space-y-6 py-12 text-[1.08rem] leading-[1.9] text-ink2">
+        <section className="space-y-5 py-8 text-[1.08rem] leading-[1.85] text-ink2">
           <p>
             I am <span className="text-ink">{AUTHOR_NAME}</span> — my legal and academic name is{' '}
             <span className="text-ink">

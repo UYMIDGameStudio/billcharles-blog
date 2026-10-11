@@ -3,6 +3,7 @@ import Link from 'next/link';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
+import ArrowUpRight from '@/app/components/ArrowUpRight';
 import ArticleFilter, { type ArticleListItem } from '@/app/components/ArticleFilter';
 import { formatDisplayDate, getArticles } from '@/lib/posts';
 import { RSS_ALTERNATE_TYPES, SITE_NAME, SITE_URL } from '@/lib/site';
@@ -62,14 +63,13 @@ export default function ArticlesPage() {
             <p>Index of writing</p>
             <p>{posts.length} {posts.length === 1 ? 'article' : 'articles'}</p>
           </div>
-          <h1 className={styles.title}>Essays &amp; Articles<span aria-hidden="true">.</span></h1>
+          <h1 className={styles.title}>Essays &amp; Articles</h1>
           <div className={styles.introduction}>
             <p>
-              Philosophy, cryptography, and the questions in between.
-              Long-form writing, collected and dated.
+              Essays and research on philosophy, social theory, and cryptography.
             </p>
             <Link href="/topics" className={styles.topicsLink}>
-              Browse by topic <span aria-hidden="true">↗</span>
+              Browse by topic <ArrowUpRight />
             </Link>
           </div>
         </header>

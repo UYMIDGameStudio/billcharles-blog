@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import ArrowUpRight from './ArrowUpRight';
 import styles from './ArticleFilter.module.css';
 
 export type ArticleListItem = {
@@ -104,7 +105,7 @@ export default function ArticleFilter({ posts }: { posts: ArticleListItem[] }) {
                 <h2 lang={post.lang} className={styles.articleTitle}>{post.title}</h2>
                 {post.excerpt && <p lang={post.lang} className={styles.excerpt}>{post.excerpt}</p>}
               </div>
-              <span className={styles.arrow} aria-hidden="true">↗</span>
+              <ArrowUpRight className={styles.arrow} />
             </Link>
           </article>
         )) : (

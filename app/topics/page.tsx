@@ -46,10 +46,10 @@ export default function TopicsPage() {
   return (
     <main>
       <JsonLd data={jsonLd} />
-      <SiteHeader activeNav="articles" />
+      <SiteHeader activeNav="topics" />
 
       <div className="mx-auto max-w-[1120px] px-6 md:px-8">
-        <section className="border-b border-ink py-20">
+        <section className="border-b border-line2 py-10">
           <p className="mb-5 text-[0.8125rem] uppercase tracking-[0.18em] text-accent">
             Browse by subject
           </p>

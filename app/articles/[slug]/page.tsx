@@ -6,6 +6,7 @@ import MarkdownContent from '@/app/components/MarkdownContent';
 import SiteHeader from '@/app/components/SiteHeader';
 import SiteFooter from '@/app/components/SiteFooter';
 import JsonLd from '@/app/components/JsonLd';
+import ArrowUpRight from '@/app/components/ArrowUpRight';
 import SupportTip from '@/app/components/SupportTip';
 import ReadingProgress from '@/app/components/ReadingProgress';
 import { formatDisplayDate, getArticles, getPostBySlug, ogLocale } from '@/lib/posts';
@@ -231,12 +232,12 @@ export default async function ArticlePage({
               {isAcademicByline ? <>{authorName} (<span lang="zh-Hans">{AUTHOR_NAME_HANZI}</span>)</> : authorName}
             </Link>
             {isAcademicByline && <span>Writing as {AUTHOR_NAME}</span>}
-            {publication && <a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">Publication record ↗</a>}
+            {publication && <a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">Publication record <ArrowUpRight /></a>}
           </div>
         </header>
 
         {headings.length >= 3 && (
-          <details className={styles.contents}>
+          <details className={styles.contents} open>
             <summary>
               <span>{contentsLabel}</span>
               <span className={styles.sectionCount}>{headings.length} {isChinese ? (inLanguage === 'zh-Hant' ? '節' : '节') : 'sections'}</span>
