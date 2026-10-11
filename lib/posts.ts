@@ -3,6 +3,14 @@ import fs from 'fs';
 import path from 'path';
 import { cache } from 'react';
 import matter from 'gray-matter';
+import { load } from 'js-yaml';
+
+/** Keep gray-matter's delimiters while using the supported YAML 4 loader. */
+export function parseFrontmatter(raw: string) {
+  return matter(raw, {
+    engines: { yaml: (source: string) => (load(source) ?? {}) as object },
+  });
+}
 
 const ARTICLE_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const RETIRED_ARTICLE_SLUGS = ['psychoanalysis-intro'] as const;
@@ -62,7 +70,7 @@ function frontmatterDate(value: unknown): string {
 }
 
 function readMarkdownMeta(raw: string, slug: string): Post {
-  const { data } = matter(raw);
+  const { data } = parseFrontmatter(raw);
   const title = data.title || '未命名';
   return {
     slug,
@@ -93,7 +101,7 @@ const getArticleEntries = cache((): ArticleEntry[] => {
   const seenSlugs = new Map<string, string>();
 
   const register = (filePath: string, fileName: string, raw: string) => {
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     const slug = effectiveSlug(data, fileName);
     // Keep retired source files available for reference while ensuring they
     // never re-enter archives, static params, feeds, or the sitemap.
@@ -168,7 +176,7 @@ export const getPostBySlug = cache((slug: string): PostWithContent | null => {
   const entry = resolveArticleEntry(normalizedSlug);
   if (!entry) return null;
 
-  const { data, content } = matter(entry.raw);
+  const { data, content } = parseFrontmatter(entry.raw);
   const title = data.title || '未命名';
 
   return {
