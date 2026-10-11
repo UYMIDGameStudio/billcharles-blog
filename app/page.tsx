@@ -57,7 +57,6 @@ export default function Home() {
       <SiteHeader activeNav="home" />
       <div className={styles.journal}>
         <header className={styles.masthead}>
-          <div className={styles.edition}><span>A personal journal</span><span>Philosophy · Knowledge · Systems</span></div>
           <div className={styles.nameRow}>
             <h1>Bill Charles<span>.</span></h1>
             <p><span lang="zh-Hans">王鑫桦</span><br />Wang Xinhua</p>
@@ -93,12 +92,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.inquiries} aria-labelledby="inquiries-title">
-          <div className={styles.inquiryIntro}>
-            <p className={styles.accentLabel}>Lines of inquiry</p>
-            <h2 id="inquiries-title">What changes.<br /><em>What remains.</em></h2>
-            <p>From the identity of a theory to the structures of public life: questions pursued through philosophy, essays, and the study of decentralized systems.</p>
-          </div>
+        <section className={styles.topics} aria-labelledby="topics-title">
+          <div className={styles.sectionHead}><h2 id="topics-title">Topics</h2><Link href="/topics">All topics <span aria-hidden>↗</span></Link></div>
           <div className={styles.topicList}>
             {topics.map((topic) => <Link href={'/topics/' + topic.slug} key={topic.slug}>
               <span><strong>{topic.name}</strong><span className={styles.topicDescription}>{topic.description}</span></span>

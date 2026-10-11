@@ -53,8 +53,8 @@
   --color-accent-dark: var(--c-accent-dark);
   --color-on-accent: var(--c-on-accent);
 
-  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Songti SC", "STSong", "SimSun", serif;
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-serif: "Times New Roman", Times, "Songti SC", "STSong", "SimSun", serif;
+  --font-sans: "Times New Roman", Times, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
@@ -82,12 +82,11 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .eyebrow { font-family: var(--font-sans); font-size: .75rem; font-weight: 500; line-height: 1.7; letter-spacing: .12em; text-transform: uppercase; }
 .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--c-line2); background: var(--c-bg); }
 .site-header-inner { max-width: 76rem; padding: 1rem clamp(1.25rem, 4vw, 3rem); margin-inline: auto; display: grid; grid-template-columns: auto minmax(0,1fr) auto; grid-template-areas: "brand nav theme"; gap: 1.5rem; align-items: center; }
-.site-brand { grid-area: brand; min-width: 0; display: flex; align-items: center; gap: .75rem; min-height: 2.75rem; font-family: var(--font-sans); font-size: .8125rem; font-weight: 500; letter-spacing: -.025em; }
+.site-brand { grid-area: brand; min-width: 0; display: flex; align-items: center; min-height: 2.75rem; font-family: var(--font-serif); }
 .site-brand > span { min-width: 0; overflow-wrap: anywhere; }
-.brand-mark { font-family: var(--font-serif); font-size: 1.875rem; font-style: italic; letter-spacing: -.08em; color: var(--c-accent); }
-.brand-period { color: var(--c-accent); }
+.brand-mark { font-size: clamp(1.375rem, 1.125rem + .5vw, 1.625rem); line-height: 1.2; font-weight: 400; letter-spacing: -.025em; color: var(--c-accent); }
 .site-theme { grid-area: theme; }
-.site-nav { grid-area: nav; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .125rem 1.5rem; font-family: var(--font-sans); font-size: .8125rem; }
+.site-nav { grid-area: nav; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .125rem 1.5rem; font-family: var(--font-sans); font-size: .9375rem; }
 .site-nav a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: .375rem .125rem; border-bottom: 1px solid transparent; color: var(--c-ink2); transition: color var(--duration-hover) ease, border-color var(--duration-hover) ease; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--c-accent); border-bottom-color: var(--c-accent); }
 .theme-toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; border: 1px solid var(--c-control); border-radius: 50%; background: transparent; color: var(--c-ink2); }
@@ -106,7 +105,6 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .site-footer a { display: inline-flex; align-items: center; min-height: 2.25rem; }
 .footer-grid { max-width: 76rem; margin-inline: auto; padding: 3rem clamp(1.25rem,4vw,3rem) 2rem; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; }
 .footer-wordmark { font-family: var(--font-serif); font-size: 2rem; letter-spacing: -.045em; }
-.footer-note { max-width: 23em; margin-top: .5rem; color: var(--c-ink2); font-size: .75rem; }
 .footer-label { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--c-ink3); margin-bottom: .5rem; }
 .footer-nav { display: flex; flex-wrap: wrap; gap: 0 1.25rem; font-size: .8125rem; color: var(--c-ink2); }
 .footer-nav a:hover { color: var(--c-accent); }

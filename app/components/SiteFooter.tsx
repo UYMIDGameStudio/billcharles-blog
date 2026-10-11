@@ -8,7 +8,6 @@ export default function SiteFooter() {
       <div className="footer-grid">
         <div>
           <p className="footer-wordmark">Bill Charles<span className="text-accent">.</span></p>
-          <p className="footer-note">A personal journal on philosophy, knowledge, and decentralized systems.</p>
         </div>
         <div>
           <p className="footer-label">Explore</p>

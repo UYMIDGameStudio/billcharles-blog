@@ -13,9 +13,8 @@ export default function SiteHeader({ activeNav }: { activeNav?: NavKey }) {
   return (
     <header className="site-header">
       <div className="site-header-inner">
-        <Link href="/" className="site-brand" aria-label="BillCharles home">
-          <span className="brand-mark" aria-hidden>Bc.</span>
-          <span>BillCharles<span className="brand-period">.</span></span>
+        <Link href="/" className="site-brand" aria-label="Billcharles‘sBlog home">
+          <span className="brand-mark">Billcharles‘sBlog</span>
         </Link>
         <nav aria-label="Main" className="site-nav">
           {navItems.map(({ href, label, key }) => (
